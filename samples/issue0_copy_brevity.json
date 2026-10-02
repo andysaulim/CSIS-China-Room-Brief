@@ -161,5 +161,31 @@
   "name": "Nina Prieur",
   "title": "Director of Strategic Communications, External Relations",
   "email": "nprieur@csis.org"
- }
+ },
+ "by_the_numbers": [
+  {
+   "figure": "$30 billion",
+   "label": "Goods each way covered by the summit's tariff cuts",
+   "source": "AP, September 27",
+   "url": "https://apnews.com/article/china-us-agreement-xi-trump-visit-e8f858ed9094b99bc8d3d339f9899f31"
+  },
+  {
+   "figure": "$14 billion",
+   "label": "Taiwan arms package still on hold",
+   "source": "AP, September 29",
+   "url": "https://apnews.com/article/taiwan-us-arms-sales-trump-xi-93e85b8f22662ae21b5a5b2dadff5b3b"
+  },
+  {
+   "figure": "50.1",
+   "label": "China's September manufacturing PMI, back in expansion",
+   "source": "CNBC, September 30",
+   "url": "https://www.cnbc.com/2026/09/30/china-manufacturing-exports-capacity-economy-.html"
+  },
+  {
+   "figure": "¥1.2 trillion",
+   "label": "PBOC reverse repo set for October 8",
+   "source": "Reuters, September 29",
+   "url": "https://www.reuters.com/world/asia-pacific/china-unveils-rate-cut-mortgage-subsidies-spur-growth-2026-09-29/"
+  }
+ ]
 }

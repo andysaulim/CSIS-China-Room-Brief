@@ -39,6 +39,7 @@ def main():
     ap.add_argument("--copy", default="samples/issue0_copy_house.json")
     ap.add_argument("--banner", default="../assets/banner_china_room.png",
                     help="banner URL; a sent email needs a public https URL")
+    ap.add_argument("--theme", default="newsroom", choices=["newsroom", "pubs", "briefing"])
     ap.add_argument("--suffix", default="", help="added to output file names, e.g. _brevity")
     ap.add_argument("--out", default="out")
     a = ap.parse_args()
@@ -70,8 +71,8 @@ def main():
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     sfx = a.suffix
-    (out / f"draft_{iso}{sfx}.html").write_text(render.render(issue, "draft"), encoding="utf-8")
-    final = render.render(issue, "final")
+    (out / f"draft_{iso}{sfx}.html").write_text(render.render(issue, "draft", a.theme), encoding="utf-8")
+    final = render.render(issue, "final", a.theme)
     (out / f"email_{iso}{sfx}.html").write_text(final, encoding="utf-8")
     # Self-contained preview with the banner embedded, for sharing as a file.
     import base64

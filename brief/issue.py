@@ -121,6 +121,7 @@ def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date
         "banner_src": banner_src,
         "re_line": copy.get("re_line", ""),
         "editors_note": copy.get("editors_note", ""),
+        "by_the_numbers": copy.get("by_the_numbers", []),
         "back_window": f"{label(back[0])} to {label(back[1])}",
         "ahead_window": f"{label(ahead_start)} onward",
         "week_at_a_glance": {
