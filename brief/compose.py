@@ -129,13 +129,15 @@ def draft(news, research, glance: list[dict], window: str, style: str = "house")
     text, index = corpus(news, research, glance)
     user = (f"Week covered: {window}.\nStyle: {STYLE[style]}\n\n"
             f"G sources are the calendar for the seven days after the issue date"
-            f"{'' if glance else ' (none this week: leave week_at_a_glance empty)'}.\n\nSources:\n" + text)
+            f"{'' if glance else ' (none this week: use only N sources that state a specific date inside those seven days)'}.\n\nSources:\n" + text)
     # A key that is not scoped to a workspace must name one on every request.
     ws = os.environ.get("ANTHROPIC_WORKSPACE_ID", "").strip()
     client = anthropic.Anthropic(default_headers={"anthropic-workspace-id": ws} if ws else None)
-    resp = client.beta.messages.create(
+    # Streamed: with the larger corpus and high effort, thinking plus the JSON
+    # outgrew 16k tokens, and a non-streamed call this large times out.
+    with client.beta.messages.stream(
         model=MODEL,
-        max_tokens=16000,
+        max_tokens=64000,
         betas=["server-side-fallback-2026-07-01"],
         # On a policy decline, re-run on Anthropic's recommended fallback model.
         fallbacks="default",
@@ -143,7 +145,9 @@ def draft(news, research, glance: list[dict], window: str, style: str = "house")
         output_config={"effort": "high",
                        "format": {"type": "json_schema", "schema": SCHEMA}},
         messages=[{"role": "user", "content": user}],
-    )
+    ) as stream:
+        resp = stream.get_final_message()
+    print(f"model usage: {resp.usage.input_tokens} in, {resp.usage.output_tokens} out")
     if resp.stop_reason == "refusal":
         raise RuntimeError(f"model declined: {resp.stop_details}")
     if resp.stop_reason == "max_tokens":

@@ -245,7 +245,7 @@ def hill_releases(start: date, end: date) -> list[dict]:
 
     lo = datetime.combine(start, datetime.min.time(), tzinfo=timezone.utc)
     hi = datetime.combine(end + timedelta(days=1), datetime.min.time(), tzinfo=timezone.utc)
-    out = []
+    out, log = [], []
     for body, urls in HILL_FEEDS.items():
         entries, url = [], ""
         for url in urls:
@@ -253,6 +253,7 @@ def hill_releases(start: date, end: date) -> list[dict]:
             entries = feedparser.parse(r.content).entries if r else []
             if entries:
                 break
+        log.append(f"{body}: {len(entries)} in feed" + (" (Google News)" if "news.google.com" in url else ""))
         for e in entries[:60]:
             t = e.get("published_parsed") or e.get("updated_parsed")
             if not t or not (lo <= datetime(*t[:6], tzinfo=timezone.utc) < hi):
@@ -268,6 +269,7 @@ def hill_releases(start: date, end: date) -> list[dict]:
             out.append({"date": datetime(*t[:6]).date().isoformat(), "section": "Committee release",
                         "tag": body, "headline": title, "body": summary[:600],
                         "url": e.get("link", ""), "primary": body})
+    print("committee feeds: " + "; ".join(log))
     return out
 
 
