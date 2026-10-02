@@ -239,6 +239,51 @@ class R:
             html = html[:cut] + 'style=""' + html[cut + len(f'style="border-bottom:1px solid {t["rule"]};"'):]
         return html
 
+    def horizon(self, s):
+        """Next 30 days in full; later dates one line each."""
+        t = self.t
+        def type_label(e):
+            color = "#B52B2B" if e["type"] == "Deadline" else t["accent"]
+            return (f'<span style="font-family:{t["label"]};font-size:12px;font-weight:700;letter-spacing:0.5px;'
+                    f'text-transform:uppercase;color:{color};">{esc(e["type"])}</span>')
+        def head(x, top):
+            return (f'<div style="font-family:{t["label"]};font-size:13px;font-weight:700;color:{t["navy"]};'
+                    f'margin:{top} 0 0;padding-bottom:6px;border-bottom:2px solid {t["navy"]};">{x}</div>')
+        html = ""
+        if s.get("near"):
+            html += head("Next 30 days", "6px")
+            for n, e in enumerate(s["near"]):
+                mon = e["group"].split(" ")[0][:3].upper()
+                where = (f'<div style="font-family:{t["label"]};font-size:13px;color:{t["mute"]};margin-top:3px;">'
+                         f'{esc(e["where"])}</div>') if e.get("where") else ""
+                html += (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
+                         f'style="{"" if n == len(s["near"]) - 1 else "border-bottom:1px solid " + t["rule"] + ";"}"><tr>'
+                         f'<td width="70" style="padding:14px 10px 14px 0;vertical-align:top;">'
+                         f'<div style="font-family:{t["label"]};font-size:12px;font-weight:700;letter-spacing:1px;color:{t["mute"]};">{mon}</div>'
+                         f'<div style="font-family:{t["head"]};font-size:22px;font-weight:700;line-height:1.1;color:{t["navy"]};'
+                         f'white-space:nowrap;">{esc(e["day"])}</div></td>'
+                         f'<td style="padding:14px 0;vertical-align:top;">{type_label(e)}'
+                         f'<div style="margin-top:2px;">{self.headline(e["headline"], e.get("url", ""))}</div>'
+                         f'{self.body(e.get("angle", ""), 4)}{where}</td></tr></table>')
+        if s.get("far"):
+            html += head("Further out", "22px")
+            for n, e in enumerate(s["far"]):
+                when = e["group"].split(" ")[0] + (f' {e["day"]}' if e["day"] and e["day"] != "TBC" else " (TBC)")
+                where = f', {esc(e["where"])}' if e.get("where") else ""
+                html += (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
+                         f'style="{"" if n == len(s["far"]) - 1 else "border-bottom:1px solid " + t["rule"] + ";"}"><tr>'
+                         f'<td width="120" style="padding:10px 10px 10px 0;vertical-align:top;font-family:{t["label"]};'
+                         f'font-size:14px;font-weight:700;color:{t["navy"]};">{esc(when)}</td>'
+                         f'<td style="padding:10px 0;vertical-align:top;">'
+                         f'<div style="font-family:{t["text"]};font-size:15px;font-weight:700;color:{t["ink"]};">'
+                         f'{self.link(esc(e["headline"]), e.get("url", ""))}</div>'
+                         f'<div style="font-family:{t["label"]};font-size:13px;color:{t["mute"]};margin-top:2px;">'
+                         f'<span style="font-weight:700;color:{"#B52B2B" if e["type"] == "Deadline" else t["accent"]};">'
+                         f'{esc(e["type"])}</span>{where}</div>'
+                         f'{self.body(e.get("angle", ""), 3) if e.get("angle") else ""}'
+                         f'</td></tr></table>')
+        return html
+
     def docket(self, dk, issue_iso):
         t = self.t
         if not dk or not (dk.get("hearings") or dk.get("bills")):
@@ -374,7 +419,9 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
         _, title, half = next(x for x in SECTIONS if x[0] == key)
         s = issue.get(key, {})
         items = s.get("items", [])
-        if key in ("in_the_works", "on_the_horizon"):
+        if key == "on_the_horizon" and ("near" in s or "far" in s):
+            inner = r.horizon(s)
+        elif key in ("in_the_works", "on_the_horizon"):
             inner = r.agenda(items)
         elif key == "in_the_news":
             inner = r.news(items)

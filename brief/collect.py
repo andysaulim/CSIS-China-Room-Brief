@@ -187,3 +187,14 @@ def tracker_file(url: str, dest: str) -> str | None:
     with open(dest, "wb") as f:
         f.write(r.content)
     return dest
+
+
+def daily_upcoming(day: date) -> list[dict]:
+    """The Upcoming calendar from the most recent daily issue on or before day."""
+    from .horizon import parse_daily_upcoming
+    for back in range(0, 4):
+        d = day - timedelta(days=back)
+        r = _get(f"{DAILY_PAGES}/{d.isoformat()}.html")
+        if r:
+            return parse_daily_upcoming(r.text, d)
+    return []

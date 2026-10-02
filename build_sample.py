@@ -24,7 +24,7 @@ import os
 from datetime import date
 from pathlib import Path
 
-from brief import archive, daily_feed, render, tracker
+from brief import archive, daily_feed, horizon, render, tracker
 from brief.issue import assemble
 
 ISSUE = date(2026, 10, 2)
@@ -56,6 +56,9 @@ def main():
     iso = ISSUE.isoformat()
     issue = assemble(
         copy, items, ISSUE, BACK, issue_label="Issue 0 (sample)", banner_src=a.banner,
+        daily_upcoming=horizon.parse_daily_upcoming(
+            (Path("data/daily") / f"{BACK[1].isoformat()}.html").read_text(encoding="utf-8"), BACK[1])
+        if (Path("data/daily") / f"{BACK[1].isoformat()}.html").exists() else [],
         web_base=WEB_BASE,
         candidates={
             "glance": [{"text": i.name, "url": i.link, "date_label": i.date_label, "source": "tracker"}

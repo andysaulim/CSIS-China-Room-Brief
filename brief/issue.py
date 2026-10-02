@@ -8,6 +8,7 @@ import os
 import re
 from datetime import date, timedelta
 
+from . import horizon as hz
 from . import tracker
 
 FOOTER = ("The China Room Brief is compiled by CSIS External Relations. Look-back items draw on the "
@@ -103,14 +104,18 @@ def calendars(items, issue_date: date):
 
 def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date], *,
              issue_label: str, banner_src: str = "", candidates: dict | None = None,
-             research_note: str = "", web_base: str | None = None) -> dict:
+             research_note: str = "", web_base: str | None = None,
+             daily_upcoming: list | None = None) -> dict:
     candidates = candidates or {}
     copy = csis_style(copy)
     for r in copy.get("research_roundup", []):
         r["headline"] = headline_case(r["headline"])
     web_base = (os.environ.get("CHINA_ROOM_WEB_BASE", "") if web_base is None else web_base).rstrip("/")
     iso = issue_date.isoformat()
-    works, horizon = csis_style(list(calendars(tracker_items, issue_date)))
+    works, _ = csis_style(list(calendars(tracker_items, issue_date)))
+    hzn = hz.build(hz.from_tracker(tracker_items, issue_date) + (daily_upcoming or [])
+                   + hz.from_docket(copy.get("hill_docket") or {}, issue_date), issue_date)
+    hzn = csis_style(hzn)
     ahead_start = issue_date + timedelta(days=(7 - issue_date.weekday()) % 7 or 7)
     return {
         "date_line": f"{issue_date.strftime('%A, %B')} {issue_date.day}, {issue_date.year}",
@@ -145,7 +150,8 @@ def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date
             "gap": research_note,
         },
         "in_the_works": {"items": works},
-        "on_the_horizon": {"items": horizon},
+        "on_the_horizon": {"items": hzn["near"] + hzn["far"], "near": hzn["near"], "far": hzn["far"],
+                           "spec": "Calendar check", "gap": " ".join(hzn["notes"])},
         "contact": copy.get("contact", CONTACT),
         "footer": FOOTER,
     }

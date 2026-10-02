@@ -83,7 +83,9 @@ def cmd_draft(issue_date: date, style: str) -> None:
     if missing:
         notes.append("Daily brief issues missing for " + ", ".join(missing) + ".")
     notes += copy.get("warnings", [])
+    upcoming = collect.daily_upcoming(end)
     issue = assemble(copy, items, issue_date, (start, end), issue_label="Draft", banner_src=BANNER,
+                     daily_upcoming=upcoming,
                      research_note=" ".join(notes) or "Check each item on its page before send.",
                      candidates={"hill": [], "glance": []})
     html = render.render(issue, "draft", os.environ.get("BRIEF_THEME", "briefing"))
@@ -104,7 +106,8 @@ def cmd_send(issue_date: date) -> None:
     copy = json.loads(f.read_text(encoding="utf-8"))
     items, _ = load_tracker()
     n = len(sorted(ISSUES.glob("*.json")))
-    issue = assemble(copy, items, issue_date, window(issue_date), issue_label=f"No. {n}", banner_src=BANNER)
+    issue = assemble(copy, items, issue_date, window(issue_date), issue_label=f"No. {n}", banner_src=BANNER,
+                     daily_upcoming=collect.daily_upcoming(issue_date))
     html = render.render(issue, "final", os.environ.get("BRIEF_THEME", "briefing"))
     archive.publish(ROOT / "site", issue_date.isoformat(), html,
                     {"date_line": issue["date_line"], "label": f"No. {n}", "re_line": issue["re_line"]})
