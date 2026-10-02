@@ -20,8 +20,8 @@ MODEL = "claude-opus-5-5"
 STYLE = {
     "house": (
         "Write in the house style of a CSIS internal brief: write \"U.S.\" never \"US\"; plain declarative sentences, numbers over "
-        "adjectives, named actors, dated events. Headlines under 60 characters, in sentence case. Each item "
-        "is one or two sentences. Lead with what happened, not with background. No bold labels, no bullets, "
+        "adjectives, named actors, dated events. Headlines under 60 characters, in sentence case. Items run "
+        "one to three sentences and should not all be the same length. Lead with what happened, not with background. No bold labels, no bullets, "
         "no rhetorical questions, no em-dashes. Leave why and bullets empty. Vary sentence length. Headlines say what happened in plain "
         "words: no metaphors, wordplay or question headlines. Avoid: underscore, landscape, navigate, robust, "
         "pivotal, key takeaway, it remains to be seen, it is important to note. Use the sources' own wording "
@@ -41,13 +41,20 @@ Rules that are never broken:
 - Name the outlet in the text when a claim comes from reporting ("Reuters reported").
 - Prefer US-China relations over China's domestic news when choosing what leads.
 
+Every item carries an event label: the underlying event in a few words, worded identically wherever that event recurs in any section.
+
+Prose (every section):
+- Name the outlet once per item, where the claim first appears. Do not end every sentence with "X reported."
+- Vary the shape of items. Some are one sentence, some two or three. Lead some with the figure, the quote or the place, not always with the actor.
+- Write months in full ("September 30"), never "Sept." or "Oct.". No em dashes.
+
 Sections:
 - re_line: four or five short phrases separated by commas, the week's main threads.
-- editors_note: one or two sentences, under 40 words, plain and direct.
-- week_at_a_glance: up to three things scheduled or expected in the seven days after the issue date (nothing later; fewer than three is fine) that matter for U.S.-China relations (trade, Taiwan, security, technology, diplomacy, Congress), from the sources only; one or two sentences each. Skip domestic Chinese consumer or travel stories.
-- heard_on_the_hill: three to five items on Congress (members, bills, hearings, letters) from the past week. Sources marked "Congress.gov" are the official record of hearings and newly introduced bills: flag the most significant ones here, and use scheduled hearings in week_at_a_glance.
-- in_the_news: the five most important China stories of the past week from the priority-outlet sources (marked [priority tier N], tier 1 best), ranked by importance to U.S.-China relations; a story many outlets covered outranks one only a single outlet ran. Count each story once. Set source_id to the item from the best-tier outlet that covered it (New York Times, Wall Street Journal and Washington Post are tier 1; Bloomberg and Financial Times tier 2; Reuters and AP tier 3), and list every other source on the same story in also_ids. Give each a summary (body) of two sentences and under 60 words saying what happened, drawing on every source that covered the story and naming outlets for claims; leave why empty unless the style asks for it.
-- research_roundup: three to six publications from the R sources, at most one per institution. Prefer U.S. institutions (Brookings, CFR, Carnegie, RAND, CNAS, AEI, Hudson, Heritage, PIIE, Stimson, Hoover) and the Congressional Research Service; use non-U.S. institutions only to fill. For each, one sentence on the argument or finding, naming the authors when the source does."""
+- editors_note: one or two sentences, under 40 words, on what the week's stories add up to for U.S.-China relations. Do not restate the top In the News story. Leave it empty if there is no through-line.
+- week_at_a_glance: up to four things happening in the seven days after the issue date that matter for U.S.-China relations. Build first on G sources (dated calendar entries); source_id is the G id and the tag is left empty, since it is filled from the calendar. Only when the G sources run out, an N source may be used if it states a specific date inside those seven days; then the tag is the topic and that date ("Trade, October 7"). Never an item without such a date. Say what happens and what to watch, with any N sources that explain the stakes in context_ids.
+- heard_on_the_hill: three to five items on Congress (members, bills, hearings, letters) from the past week, one per thread: several reports on the same bill, hold or arms package are one item, folded together. Prefer primary sources (marked [primary], including Congress.gov records of hearings and newly introduced bills), then U.S. outlets; use a non-U.S. outlet only when nothing else covers the item. Put the best source in source_id and the others in context_ids.
+- in_the_news: the five most important China events of the past week from the priority-outlet sources (marked [priority tier N], tier 1 best), ranked by importance to U.S.-China relations. Five distinct events: reactions to, follow-ups of and side deals from one event are that event, so fold them into its summary instead of giving them a slot. A story many outlets covered outranks one only a single outlet ran. Set source_id to the item from the best-tier outlet that covered it (New York Times, Wall Street Journal and Washington Post are tier 1; Bloomberg and Financial Times tier 2; Reuters and AP tier 3), and list every other source on the same event in also_ids. Give each a summary (body) of two or three sentences, under 70 words, drawing on every source that covered it; leave why empty unless the style asks for it.
+- research_roundup: three to six publications from the R sources, at most one per institution and at most two on the same news event. Prefer U.S. institutions (Brookings, CFR, Carnegie, RAND, CNAS, AEI, Hudson, Heritage, PIIE, Stimson, Hoover) and the Congressional Research Service; use non-U.S. institutions only to fill. For each, one or two sentences on what the piece argues or finds, from its text, naming the authors listed. Never restate the title. Skip an R source that has no text beyond its title."""
 
 ITEM = {
     "type": "object",
@@ -58,8 +65,10 @@ ITEM = {
         "body": {"type": "string"},
         "why": {"type": "string"},
         "bullets": {"type": "array", "items": {"type": "string"}},
+        "context_ids": {"type": "array", "items": {"type": "string"}},
+        "event": {"type": "string", "description": "Short name of the underlying event, the same wording wherever it recurs, e.g. 'Trump-Xi Washington summit'"},
     },
-    "required": ["source_id", "tag", "headline", "body", "why", "bullets"],
+    "required": ["source_id", "tag", "headline", "body", "why", "bullets", "context_ids", "event"],
     "additionalProperties": False,
 }
 SCHEMA = {
@@ -75,12 +84,14 @@ SCHEMA = {
                            "headline": {"type": "string", "description": "The source's headline in sentence case, wording unchanged"},
                            "also_ids": {"type": "array", "items": {"type": "string"},
                                         "description": "Other source ids covering the same story"},
-                           "body": {"type": "string"}, "why": {"type": "string"}},
-            "required": ["source_id", "headline", "also_ids", "body", "why"], "additionalProperties": False}},
+                           "body": {"type": "string"}, "why": {"type": "string"},
+                           "event": {"type": "string", "description": "Short name of the underlying event, the same wording wherever it recurs, e.g. 'Trump-Xi Washington summit'"}},
+            "required": ["source_id", "headline", "also_ids", "body", "why", "event"], "additionalProperties": False}},
         "research_roundup": {"type": "array", "items": {
             "type": "object",
-            "properties": {"source_id": {"type": "string"}, "body": {"type": "string"}},
-            "required": ["source_id", "body"], "additionalProperties": False}},
+            "properties": {"source_id": {"type": "string"}, "body": {"type": "string"},
+                           "event": {"type": "string", "description": "Short name of the underlying event, the same wording wherever it recurs, e.g. 'Trump-Xi Washington summit'"}},
+            "required": ["source_id", "body", "event"], "additionalProperties": False}},
     },
     "required": ["re_line", "editors_note", "week_at_a_glance", "heard_on_the_hill",
                  "in_the_news", "research_roundup"],
@@ -88,27 +99,37 @@ SCHEMA = {
 }
 
 
-def corpus(news: list[dict], research: list[dict]) -> tuple[str, dict]:
+def corpus(news: list[dict], research: list[dict], glance: list[dict] | None = None) -> tuple[str, dict]:
     """Number every source; return the prompt text and an id -> source map."""
     index, lines = {}, []
+    for n, e in enumerate(glance or [], 1):
+        sid = f"G{n}"
+        index[sid] = {"kind": "glance", **e}
+        when = e["start"].isoformat() + (f" to {e['end'].isoformat()}" if e["end"] != e["start"] else "")
+        where = f", {e['where']}" if e.get("where") else ""
+        lines.append(f"{sid} | {when} | {e['type']} | from {e['source']}\n   {e['title']}{where}\n   {e.get('angle', '')}")
     for n, x in enumerate(news, 1):
         sid = f"N{n}"
         index[sid] = {"kind": "news", **x}
         pri = f" [priority tier {x['outlet_rank']}: {x['outlet']}]" if x.get("outlet") else ""
+        if x.get("primary") or (x.get("section") or "").startswith("Congress.gov"):
+            pri += f" [primary: {x.get('primary') or 'Congress.gov'}]"
         lines.append(f"{sid} | {x['date']} | {x.get('section') or ''} | {x.get('tag') or ''}{pri}\n"
                      f"   {x['headline']}\n   {x.get('body', '')}")
     for n, x in enumerate(research, 1):
         sid = f"R{n}"
         index[sid] = {"kind": "research", **x}
-        lines.append(f"{sid} | {x['date']} | {x['institution']}\n   {x['title']}\n   {x.get('summary', '')}")
+        by = f" | by {', '.join(x['authors'])}" if x.get("authors") else ""
+        lines.append(f"{sid} | {x['date']} | {x['institution']}{by}\n   {x['title']}\n   "
+                     f"{x.get('summary') or '(title only)'}")
     return "\n".join(lines), index
 
 
-def draft(news, research, calendar_lines: list[str], window: str, style: str = "house") -> dict:
-    text, index = corpus(news, research)
+def draft(news, research, glance: list[dict], window: str, style: str = "house") -> dict:
+    text, index = corpus(news, research, glance)
     user = (f"Week covered: {window}.\nStyle: {STYLE[style]}\n\n"
-            f"Scheduled items from the editorial calendar (usable for Week at a Glance):\n"
-            + ("\n".join(calendar_lines) or "(none)") + "\n\nSources:\n" + text)
+            f"G sources are the calendar for the seven days after the issue date"
+            f"{'' if glance else ' (none this week: leave week_at_a_glance empty)'}.\n\nSources:\n" + text)
     # A key that is not scoped to a workspace must name one on every request.
     ws = os.environ.get("ANTHROPIC_WORKSPACE_ID", "").strip()
     client = anthropic.Anthropic(default_headers={"anthropic-workspace-id": ws} if ws else None)
@@ -149,20 +170,31 @@ def resolve(out: dict, index: dict) -> dict:
     """Replace source ids with links and outlet names; drop anything uncited."""
     copy = {"re_line": _clean(out["re_line"]), "editors_note": _clean(out["editors_note"]),
             "warnings": []}
-    for sec in ("week_at_a_glance", "heard_on_the_hill"):
-        copy[sec] = []
-        for it in out[sec]:
-            src = index.get(it["source_id"])
-            if not src:
-                copy["warnings"].append(f"{sec}: dropped item citing unknown {it['source_id']}")
-                continue
-            if len(it["headline"]) > 60:
-                copy["warnings"].append(f"{sec}: headline over 60 characters: {it['headline']}")
-            copy[sec].append({"tag": it["tag"].replace(" \u00b7 ", ", "),
-                              "headline": _clean(it["headline"]), "body": _clean(it["body"]),
-                              "why": _clean(it.get("why", "")),
-                              "bullets": [_clean(b) for b in it.get("bullets", [])],
-                              "url": src.get("url", "")})
+    copy["week_at_a_glance"] = []
+    for it in out["week_at_a_glance"][:4]:
+        src = index.get(it["source_id"])
+        ctx = [index[i] for i in it.get("context_ids") or [] if i in index and index[i]["kind"] == "news"]
+        if src and src["kind"] == "glance":
+            item = _item(it, copy, "week_at_a_glance", tag=f"{src['type']}, {_span(src['start'], src['end'])}",
+                         url=src.get("url") or (ctx[0]["url"] if ctx else ""), iso=src["start"].isoformat())
+            item["calendar_title"] = src["title"]
+        elif src and src["kind"] == "news" and re.search(r"\d", it.get("tag", "")):
+            item = _item(it, copy, "week_at_a_glance", tag=it["tag"], url=src.get("url", ""), iso="")
+            item["from_news"] = True
+        else:
+            copy["warnings"].append(f"week_at_a_glance: dropped {it['source_id']} (no dated calendar entry)")
+            continue
+        copy["week_at_a_glance"].append(item)
+    copy["heard_on_the_hill"] = []
+    for it in out["heard_on_the_hill"][:5]:
+        cands = [index[i] for i in [it["source_id"]] + list(it.get("context_ids") or [])
+                 if i in index and index[i]["kind"] == "news"]
+        if not cands:
+            copy["warnings"].append(f"heard_on_the_hill: dropped item citing unknown {it['source_id']}")
+            continue
+        src = min(cands, key=_hill_rank)       # link the primary record when there is one
+        copy["heard_on_the_hill"].append(_item(it, copy, "heard_on_the_hill", tag=it["tag"],
+                                               url=src.get("url", ""), iso=src["date"]))
     copy["in_the_news"] = []
     for it in out["in_the_news"][:5]:
         # Link the best-ranked priority outlet that ran the story, whatever id the model led with.
@@ -180,7 +212,7 @@ def resolve(out: dict, index: dict) -> dict:
             headline = own if own and not _title_case(own) else src["headline"]
         d = src["date"]
         copy["in_the_news"].append({
-            "tag": f"{src['outlet']}, {_md(d)}",
+            "iso": d, "event": it.get("event", ""), "tag": f"{src['outlet']}, {_md(d)}",
             "headline": _clean(headline),
             "body": _clean(it.get("body", "")), "why": _clean(it.get("why", "")),
             "url": src["url"]})
@@ -196,9 +228,34 @@ def resolve(out: dict, index: dict) -> dict:
             continue
         used.add(src["institution"])
         copy["research_roundup"].append({"institution": src["institution"], "date": _md(src["date"]),
+                                         "iso": src["date"], "authors": src.get("authors", []),
+                                         "event": it.get("event", ""),
                                          "headline": src["title"], "body": _clean(it["body"]),
                                          "url": src["url"]})
     return copy
+
+
+def _item(it, copy, sec, *, tag, url, iso) -> dict:
+    if len(it["headline"]) > 60:
+        copy["warnings"].append(f"{sec}: headline over 60 characters: {it['headline']}")
+    return {"tag": tag.replace(" \u00b7 ", ", "), "headline": _clean(it["headline"]), "body": _clean(it["body"]),
+            "why": _clean(it.get("why", "")), "bullets": [_clean(b) for b in it.get("bullets", [])],
+            "url": url, "iso": iso, "event": it.get("event", "")}
+
+
+def _hill_rank(src: dict) -> int:
+    """Congress.gov and committee releases first, then priority outlets by tier, then the rest."""
+    if src.get("primary") or (src.get("section") or "").startswith("Congress.gov"):
+        return 0
+    return src.get("outlet_rank") or 99
+
+
+def _span(s, e) -> str:
+    if s == e:
+        return f"{s.strftime('%B')} {s.day}"
+    if s.month == e.month:
+        return f"{s.strftime('%B')} {s.day}\u2013{e.day}"
+    return f"{s.strftime('%B')} {s.day} to {e.strftime('%B')} {e.day}"
 
 
 def _title_case(h: str) -> bool:

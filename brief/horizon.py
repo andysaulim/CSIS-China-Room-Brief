@@ -194,10 +194,24 @@ def _chip(e) -> tuple[str, str]:
     return s.strftime("%B %Y"), f"{s.day}–{t.strftime('%b')} {t.day}"
 
 
-def build(entries: list[dict], issue_date: date, near_days: int = 30, far_cap: int = 6) -> dict:
+GLANCE_DAYS = 7
+
+
+def glance(entries: list[dict], issue_date: date, days: int = GLANCE_DAYS) -> list[dict]:
+    """Everything on the calendars in the week after the issue date, best first.
+    Week at a Glance is written from these, so it can only name a dated event."""
+    merged, _ = merge(entries)
+    end = issue_date + timedelta(days=days)
+    week = [e for e in merged if e["end"] > issue_date and e["start"] <= end]
+    return sorted(week, key=lambda e: (-e["score"], e["start"]))
+
+
+def build(entries: list[dict], issue_date: date, near_days: int = 30, far_cap: int = 6,
+          skip_days: int = GLANCE_DAYS) -> dict:
+    """On the Horizon picks up where Week at a Glance stops (day skip_days + 1)."""
     merged, notes = merge(entries)
     cutoff = issue_date + timedelta(days=near_days)
-    near = [e for e in merged if e["end"] >= issue_date and e["start"] <= cutoff]
+    near = [e for e in merged if e["start"] > issue_date + timedelta(days=skip_days) and e["start"] <= cutoff]
     far = [e for e in merged if cutoff < e["start"] <= issue_date + timedelta(days=90)]
     far = sorted(sorted(far, key=lambda e: -e["score"])[:far_cap], key=lambda e: e["start"])
 

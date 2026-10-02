@@ -26,8 +26,9 @@ import tempfile
 from datetime import date, timedelta
 from pathlib import Path
 
-from brief import archive, collect, compose, congress, mailer, render, tracker
-from brief.issue import assemble, label
+from brief import archive, collect, compose, congress, enrich, mailer, qa, render, tracker
+from brief import horizon as hz
+from brief.issue import assemble, csis_style, label
 
 ROOT = Path(__file__).parent
 ISSUES = ROOT / "issues"
@@ -61,6 +62,8 @@ def cmd_draft(issue_date: date, style: str) -> None:
     news, missing = collect.daily_items(start, end)
     collect.tag_outlets(news)
     research = collect.research_items(start, end)
+    read = enrich.research(research)
+    print(f"research pages read: {read} of {len(research)}")
     by_inst = {}
     for x in research:
         by_inst[x["institution"]] = by_inst.get(x["institution"], 0) + 1
@@ -77,15 +80,21 @@ def cmd_draft(issue_date: date, style: str) -> None:
         news.append({"date": b["introduced"], "section": "Congress.gov new bill",
                      "tag": f'{b["number"]}, {b["sponsor"]}', "headline": b["title"],
                      "body": f'Introduced {b["introduced"]}', "url": b["url"]})
+    hill = collect.hill_releases(start, end)
+    news += hill
+    print(f"committee releases: {len(hill)}")
     items, audit = load_tracker()
-    cal = [f"{i.date_label}: {i.name}" for i in tracker.week_ahead(items, issue_date + timedelta(days=1))]
+    upcoming = collect.daily_upcoming(end)
+    week = hz.glance(hz.from_tracker(items, issue_date) + upcoming + hz.from_docket(dk, issue_date), issue_date)
+    print(f"calendar entries for Week at a Glance: {len(week)}")
 
-    copy = compose.draft(news, research, cal, f"{label(start)} to {label(end)}", style)
+    copy = compose.draft(news, research, week, f"{label(start)} to {label(end)}", style)
     copy["hill_docket"] = dk
-    for it in copy.get("research_roundup", []):
-        it["url"] = collect.publisher_url(it["url"])
-    gn = sum("news.google.com" in it["url"] for it in copy.get("research_roundup", []))
-    print(f"research links still on news.google.com: {gn}")
+    for sec in ("research_roundup", "heard_on_the_hill"):
+        for it in copy.get(sec, []):
+            it["url"] = collect.publisher_url(it["url"])
+    copy["qa"] = qa.check(csis_style(copy), (start, end), calendar_count=len(week))
+    print("checks:\n  " + "\n  ".join(copy["qa"] or ["none"]))
     ISSUES.mkdir(exist_ok=True)
     f = ISSUES / f"{issue_date.isoformat()}.json"
     f.write_text(json.dumps(copy, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -94,11 +103,13 @@ def cmd_draft(issue_date: date, style: str) -> None:
     if missing:
         notes.append("Daily brief issues missing for " + ", ".join(missing) + ".")
     notes += copy.get("warnings", [])
-    upcoming = collect.daily_upcoming(end)
     issue = assemble(copy, items, issue_date, (start, end), issue_label="Draft", banner_src=BANNER,
                      daily_upcoming=upcoming,
                      research_note=" ".join(notes) or "Check each item on its page before send.",
-                     candidates={"hill": [], "glance": []})
+                     candidates={"hill": [], "glance": [
+                         {"text": e["title"], "date_label": compose._span(e["start"], e["end"]),
+                          "source": e["source"], "url": e.get("url", "")}
+                         for e in week if e["title"] not in {g.get("calendar_title") for g in copy["week_at_a_glance"]}][:6]})
     html = render.render(issue, "draft", os.environ.get("BRIEF_THEME", "briefing"))
     (ROOT / "out").mkdir(exist_ok=True)
     (ROOT / "out" / f"draft_{issue_date.isoformat()}.html").write_text(html, encoding="utf-8")

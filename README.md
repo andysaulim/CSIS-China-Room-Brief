@@ -5,10 +5,10 @@ A weekly internal email on US-China relations, sent Friday mornings to CSIS staf
 | # | Section | Half | Drafted by | Items | Comes from |
 |---|---------|------|------------|-------|------------|
 | 0 | Editor's Note | top | Agent, rewritten by the coordinator | 1 | The week's sources |
-| 1 | Week at a Glance | ahead | Agent, rewritten by the coordinator | 3 | Tracker dates and forward-looking daily-brief items |
-| 2 | Heard on the Hill | back | Agent, rewritten by the coordinator | 3-6, plus lists | Congress items in the daily brief; China-related hearings (held and scheduled) and new bills from Congress.gov |
+| 1 | Week at a Glance | ahead | Agent, rewritten by the coordinator | 3 | Calendar entries for the seven days after the issue (ER sheet, daily brief Upcoming, Congress.gov); a news item only if it names a date in that week |
+| 2 | Heard on the Hill | back | Agent, rewritten by the coordinator | 3-6, plus lists | Congress.gov hearings and new bills, committee releases (Select Committee on the CCP, HFAC, SFRC, armed services, banking, CECC, USCC), then Congress items in the daily brief |
 | 3 | In the News | back | Agent | 5 | Top five China stories in priority outlets, under the outlet's own headline |
-| 4 | Research Roundup | back | Agent | 2-6 | Think-tank and CRS feeds; institution in its own column |
+| 4 | Research Roundup | back | Agent | 2-6 | Think-tank and CRS feeds; each page is opened for its authors and opening text; institution in its own column |
 | 5 | In the Works @ CSIS | ahead | Tracker | up to 5 | `CSIS Activities` tab |
 | 6 | On the Horizon | ahead | Tracker | up to 6 | `Global Events` and `Policy Developments` tabs |
 
@@ -20,6 +20,7 @@ The back half runs on black section bars, the ahead half on navy, and an In this
 |------|------|-----|
 | Wed 5 pm | Tracker updated for Friday's issue | Comms coordinator and interns |
 | Thu 12 pm | `weekly.py draft`: reads the past Friday through Thursday, drafts the copy, saves `issues/YYYY-MM-DD.json`, emails the draft | GitHub Actions |
+| Thu noon | Reads the "Checks before send" box at the top of the draft: outlet mix, repeated events, Google redirect links, Hill sourcing, research summaries that restate titles, prose tells | Comms coordinator |
 | Thu afternoon | Rewrites Editor's Note, Week at a Glance and Heard on the Hill in `issues/YYYY-MM-DD.json` (GitHub's web editor works) | Comms coordinator |
 | Fri 8 am | Final review | Nina Prieur |
 | Fri 9 am | `weekly.py send`, run from the Actions tab | Coordinator |

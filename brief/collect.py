@@ -220,6 +220,57 @@ def publisher_url(url: str) -> str:
         return url
 
 
+# ---------- 4. Congress's own releases ----------
+
+# Committees that put out China statements most weeks. Direct feeds first
+# where the site is known to publish one, then a Google News site search.
+HILL_FEEDS = {
+    "House Select Committee on the CCP": ["https://selectcommitteeontheccp.house.gov/rss.xml",
+                                          _gnews("site:selectcommitteeontheccp.house.gov")],
+    "House Foreign Affairs Committee": ["https://foreignaffairs.house.gov/feed/",
+                                        _gnews("China site:foreignaffairs.house.gov")],
+    "Senate Foreign Relations Committee": [_gnews("China site:foreign.senate.gov")],
+    "House Armed Services Committee": [_gnews("China site:armedservices.house.gov")],
+    "Senate Armed Services Committee": [_gnews("China site:armed-services.senate.gov")],
+    "Senate Banking Committee": [_gnews("China site:banking.senate.gov")],
+    "House Financial Services Committee": [_gnews("China site:financialservices.house.gov")],
+    "Congressional-Executive Commission on China": [_gnews("site:cecc.gov")],
+    "U.S.-China Economic and Security Review Commission": [_gnews("site:uscc.gov")],
+}
+
+
+def hill_releases(start: date, end: date) -> list[dict]:
+    """China statements, letters and hearing notices from committee sites, as news-shaped items."""
+    import feedparser
+
+    lo = datetime.combine(start, datetime.min.time(), tzinfo=timezone.utc)
+    hi = datetime.combine(end + timedelta(days=1), datetime.min.time(), tzinfo=timezone.utc)
+    out = []
+    for body, urls in HILL_FEEDS.items():
+        entries, url = [], ""
+        for url in urls:
+            r = _get(url)
+            entries = feedparser.parse(r.content).entries if r else []
+            if entries:
+                break
+        for e in entries[:60]:
+            t = e.get("published_parsed") or e.get("updated_parsed")
+            if not t or not (lo <= datetime(*t[:6], tzinfo=timezone.utc) < hi):
+                continue
+            title = _html.unescape(e.get("title", "")).strip()
+            summary = _html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", e.get("summary", "")))).strip()
+            if "news.google.com" in url:
+                for _ in range(2):
+                    title = re.sub(r"\s+[-|–]\s+[^-|–]{2,60}$", "", title)
+                summary = ""
+            if not _CHINA.search(title + " " + summary) and "ccp" not in body.lower() and "China" not in body:
+                continue
+            out.append({"date": datetime(*t[:6]).date().isoformat(), "section": "Committee release",
+                        "tag": body, "headline": title, "body": summary[:600],
+                        "url": e.get("link", ""), "primary": body})
+    return out
+
+
 # ---------- the tracker ----------
 
 def tracker_file(url: str, dest: str) -> str | None:

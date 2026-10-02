@@ -131,14 +131,15 @@ def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date
         "by_the_numbers": copy.get("by_the_numbers", []),
         "back_window": f"{label(back[0])} to {label(back[1])}",
         "ahead_window": f"{label(ahead_start)} onward",
+        "qa": copy.get("qa", []),
         "week_at_a_glance": {
             "items": copy.get("week_at_a_glance", []),
-            "spec": "Draft above. Rewrite or swap from the candidates below.",
+            "spec": "Drafted from the calendars for the seven days after the issue date. Rewrite or swap from the candidates below.",
             "candidates": candidates.get("glance", []),
         },
         "heard_on_the_hill": {
             "items": copy.get("heard_on_the_hill", []),
-            "spec": "Draft above, from the daily brief's Congress items. Add hearings and floor action it missed.",
+            "spec": "Drafted from Congress.gov, committee releases and the daily brief. Add hearings and floor action it missed.",
             "candidates": candidates.get("hill", []),
             "docket": copy.get("hill_docket") or {},
         },

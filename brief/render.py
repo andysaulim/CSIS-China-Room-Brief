@@ -413,6 +413,14 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
                    f'padding:20px 24px 18px;">{mast}</div></div>')
     else:
         out.append(f'<div class="sec" style="padding:22px 32px 18px;">{mast}</div>')
+    if draft and issue.get("qa"):
+        rows = "".join(f'<li style="margin:0 0 6px;">{esc(q)}</li>' for q in issue["qa"])
+        out.append(f'<div class="sec" style="padding:0 20px 16px;"><div class="card-in" style="background:#FFFFFF;'
+                   f'border-left:4px solid #B52B2B;padding:16px 24px 12px;">'
+                   f'<div style="font-family:{SANS};font-size:14px;font-weight:700;color:{t["navy"]};">'
+                   f'Checks before send ({len(issue["qa"])})</div>'
+                   f'<ul style="margin:8px 0 0 18px;padding:0;font-family:{SANS};font-size:13px;line-height:1.45;'
+                   f'color:#2E2B28;">{rows}</ul></div></div>')
     out.append(r.numbers(issue.get("by_the_numbers") or []))
 
     def sec(key):
