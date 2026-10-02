@@ -38,6 +38,8 @@ def main():
     ap.add_argument("--tracker", required=True)
     ap.add_argument("--ledger", required=True)
     ap.add_argument("--copy", default="samples/issue0_copy_house.json")
+    ap.add_argument("--banner", default="../assets/banner_china_room.png",
+                    help="banner URL; a sent email needs a public https URL")
     ap.add_argument("--suffix", default="", help="added to output file names, e.g. _brevity")
     ap.add_argument("--out", default="out")
     a = ap.parse_args()
@@ -78,7 +80,6 @@ def main():
         "archive_url": f"{WEB_BASE}/archive.html" if WEB_BASE else "site/archive.html",
         "re_line": copy["re_line"],
         "editors_note": copy["editors_note"],
-        "bottom_line": copy.get("bottom_line", ""),
         "back_window": "Sep 28 to Oct 4",
         "ahead_window": "Oct 6 onward",
         "week_at_a_glance": {
@@ -90,14 +91,14 @@ def main():
         },
         "heard_on_the_hill": {
             "items": copy["heard_on_the_hill"],
-            "big_picture": copy.get("heard_on_the_hill_big_picture", ""),
             "spec": "Draft above, from the daily brief's Congress items. Add hearings and floor action it missed.",
             "candidates": [cand(x) for x in daily_feed.hill_candidates(ledger)],
         },
-        "in_the_news": copy["in_the_news"],
+        "in_the_news": {"items": copy["in_the_news"],
+                        "dek": "The week's top China stories in priority outlets"},
+        "banner_src": a.banner,
         "research_roundup": {
             "items": copy["research_roundup"],
-            "big_picture": copy.get("research_roundup_big_picture", ""),
             "spec": "Verify each item on its page before send.",
             "gap": "Found by search; the publication pages could not be opened from the build "
                    "machine. No CRS China product was found dated Sep 28 to Oct 2.",
@@ -115,7 +116,14 @@ def main():
     (out / f"draft_{iso}{sfx}.html").write_text(render.render(issue, "draft"), encoding="utf-8")
     final = render.render(issue, "final")
     (out / f"email_{iso}{sfx}.html").write_text(final, encoding="utf-8")
-    archive.publish(out / "site", iso, final.replace('href="site/', 'href="'),
+    # Self-contained preview with the banner embedded, for sharing as a file.
+    import base64
+    png = Path(__file__).parent / "assets" / "banner_china_room.png"
+    if a.banner and png.exists():
+        data = "data:image/png;base64," + base64.b64encode(png.read_bytes()).decode()
+        (out / f"preview_{iso}{sfx}.html").write_text(final.replace(a.banner, data), encoding="utf-8")
+    archive.publish(out / "site", iso, final.replace('href="site/', 'href="').replace(
+                        a.banner, "../../assets/banner_china_room.png"),
                     {"date_line": issue["date_line"], "label": "Issue 0", "re_line": issue["re_line"]})
 
     findings = tracker.audit(a.tracker, items) + skipped

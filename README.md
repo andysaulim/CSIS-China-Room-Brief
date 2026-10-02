@@ -1,6 +1,6 @@
 # CSIS China Room Brief
 
-A weekly email on US-China relations, sent Tuesday mornings. About 1,000 to 1,500 words, a five to seven minute read, built to the length of Axios AM or POLITICO Playbook. It borrows its section bars, item cards and date chips from the [China Daily Brief](https://github.com/andysaulim/Daily-China-Digest) so the two read as one family, under a newspaper nameplate set in live type.
+A weekly email on US-China relations, sent Tuesday mornings. About 1,000 to 1,500 words, a five to seven minute read, built to the length of Axios AM or POLITICO Playbook. It borrows its section bars, item cards and date chips from the [China Daily Brief](https://github.com/andysaulim/Daily-China-Digest) so the two read as one family. The top follows the CSIS comms email template (the "Released This Week" send): a grey preheader strip, then a 600 x 200 banner. `assets/banner_china_room.png` is a stand-in until External Relations supplies a banner in the house set; for a live send it needs a public URL (the Pardot file host). Issue 0 is built in two writing styles from the same sources: `samples/issue0_copy_house.json` and `samples/issue0_copy_brevity.json` (Axios Smart Brevity).
 
 The brief has two halves. **The Week That Was** looks back seven days. **The Week Ahead** looks forward.
 
@@ -9,12 +9,12 @@ The brief has two halves. **The Week That Was** looks back seven days. **The Wee
 | 0 | Editor's Note | lede | Comms coordinator | 1 | 60-80 | |
 | 1 | Week at a Glance | ahead | Comms coordinator | 3 | ~150 | Candidates pulled from the tracker and from forward-looking daily headlines |
 | 2 | Heard on the Hill | back | Comms coordinator | 3-5 | ~180 | Congress-related daily headlines, pulled as candidates |
-| 3 | In the News | back | Agent | 1 lead + 5 | ~300 | The China story the most priority outlets carried, with how each covered it, then five one-line runners-up |
+| 3 | In the News | back | Agent | 8-12 | ~150 | The week's top China stories in priority outlets: headline, outlet and date, no summary |
 | 4 | Research Roundup | back | Agent | 2-5 | ~150 | Think-tank and CRS publications (needs the daily change below) |
 | 5 | In the Works @ CSIS | ahead | Sheet | 2-4 | ~110 | `CSIS Activities` tab of the ER tracker |
 | 6 | On the Horizon | ahead | Sheet | 4-6 | ~80 | `Global Events` and `Policy Developments` tabs, linked to the full calendar |
 
-Sections are easy to find three ways: an In this issue row under the nameplate links to each one; every section bar carries a one-line description; and the look-back half runs on black bars, the look-ahead half on navy. The issue closes with a contact line for questions (Nina Prieur, nprieur@csis.org). The outlet list and its ranking live in `brief/config.py`.
+An In this issue row under the date line links to each section, and the look-back half runs on black bars, the look-ahead half on navy. The issue closes with a contact line for questions (Nina Prieur, nprieur@csis.org). The outlet list and its ranking live in `brief/config.py`.
 
 ## Weekly schedule (ET)
 
