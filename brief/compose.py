@@ -22,7 +22,7 @@ STYLE = {
         "Write in the house style of a CSIS internal brief: write \"U.S.\" never \"US\"; plain declarative sentences, numbers over "
         "adjectives, named actors, dated events. Headlines under 60 characters, in sentence case. Each item "
         "is one or two sentences. Lead with what happened, not with background. No bold labels, no bullets, "
-        "no rhetorical questions, no em-dashes. Vary sentence length. Headlines say what happened in plain "
+        "no rhetorical questions, no em-dashes. Leave why and bullets empty. Vary sentence length. Headlines say what happened in plain "
         "words: no metaphors, wordplay or question headlines. Avoid: underscore, landscape, navigate, robust, "
         "pivotal, key takeaway, it remains to be seen, it is important to note. Use the sources' own wording "
         "where you can."),
@@ -44,10 +44,10 @@ Rules that are never broken:
 Sections:
 - re_line: four or five short phrases separated by commas, the week's main threads.
 - editors_note: one or two sentences, under 40 words, plain and direct.
-- week_at_a_glance: exactly three things scheduled or expected in the coming week, from the sources only; one or two sentences each.
+- week_at_a_glance: exactly three things scheduled or expected in the coming week that matter for U.S.-China relations (trade, Taiwan, security, technology, diplomacy, Congress), from the sources only; one or two sentences each. Skip domestic Chinese consumer or travel stories.
 - heard_on_the_hill: three to five items on Congress (members, bills, hearings, letters) from the past week. Sources marked "Congress.gov" are the official record of hearings and newly introduced bills: flag the most significant ones here, and use scheduled hearings in week_at_a_glance.
-- in_the_news: the five most important China stories of the past week from the priority-outlet sources (marked [priority]), ranked; when several outlets covered the same story, pick the best-ranked outlet's item and count the story once. Give each a two-sentence summary (body) of what happened, drawing on every source that covered the story and naming outlets for claims; leave why empty unless the style asks for it.
-- research_roundup: two to six publications from the R sources; for each, one sentence on the argument or finding, naming the authors when the source does."""
+- in_the_news: the five most important China stories of the past week from the priority-outlet sources (marked [priority]), ranked; when several outlets covered the same story, pick the best-ranked outlet's item and count the story once. Give each a summary (body) of two sentences and under 60 words saying what happened, drawing on every source that covered the story and naming outlets for claims; leave why empty unless the style asks for it.
+- research_roundup: three to six publications from the R sources, at most one per institution. Prefer U.S. institutions (Brookings, CFR, Carnegie, RAND, CNAS, AEI, Hudson, Heritage, PIIE, Stimson, Hoover) and the Congressional Research Service; use non-U.S. institutions only to fill. For each, one sentence on the argument or finding, naming the authors when the source does."""
 
 ITEM = {
     "type": "object",
@@ -71,9 +71,10 @@ SCHEMA = {
         "heard_on_the_hill": {"type": "array", "items": ITEM},
         "in_the_news": {"type": "array", "items": {
             "type": "object",
-            "properties": {"source_id": {"type": "string"}, "body": {"type": "string"},
-                           "why": {"type": "string"}},
-            "required": ["source_id", "body", "why"], "additionalProperties": False}},
+            "properties": {"source_id": {"type": "string"},
+                           "headline": {"type": "string", "description": "The source's headline in sentence case, wording unchanged"},
+                           "body": {"type": "string"}, "why": {"type": "string"}},
+            "required": ["source_id", "headline", "body", "why"], "additionalProperties": False}},
         "research_roundup": {"type": "array", "items": {
             "type": "object",
             "properties": {"source_id": {"type": "string"}, "body": {"type": "string"}},
@@ -125,7 +126,15 @@ def draft(news, research, calendar_lines: list[str], window: str, style: str = "
     if resp.stop_reason == "max_tokens":
         raise RuntimeError("draft hit max_tokens")
     raw = next(b.text for b in resp.content if b.type == "text")
-    return resolve(json.loads(raw), index)
+    copy = resolve(json.loads(raw), index)
+    if style == "house":
+        # House style carries no signposts: fold any why or bullets into the paragraph.
+        for sec in ("week_at_a_glance", "heard_on_the_hill", "in_the_news"):
+            for it in copy.get(sec, []):
+                extra = " ".join(x for x in [it.pop("why", "")] + it.pop("bullets", []) if x)
+                if extra:
+                    it["body"] = (it.get("body", "") + " " + extra).strip()
+    return copy
 
 
 def _clean(s: str) -> str:
@@ -161,7 +170,7 @@ def resolve(out: dict, index: dict) -> dict:
         d = src["date"]
         copy["in_the_news"].append({
             "tag": f"{src['outlet']}, {_md(d)}",
-            "headline": src.get("original_headline") or src["headline"],
+            "headline": src.get("original_headline") or it.get("headline") or src["headline"],
             "body": _clean(it.get("body", "")), "why": _clean(it.get("why", "")),
             "url": src["url"]})
     copy["research_roundup"] = []

@@ -54,7 +54,7 @@ THEMES = {
     "briefing": {
         "page": "#E6E9EE", "body_bg": "#E6E9EE", "head": SS, "text": SS, "label": SS,
         "ink": "#111418", "body": "#2A2E35", "mute": "#5F6670", "rule": "#E3E6EA",
-        "accent": CERULEAN, "navy": BANNER_NAVY, "size": 15, "hl": 17, "news_hl": 19,
+        "accent": CERULEAN, "navy": BANNER_NAVY, "size": 16, "hl": 18, "news_hl": 20,
     },
 }
 
@@ -102,7 +102,7 @@ class R:
         if not text:
             return ""
         color = t["accent"] if self.name != "pubs" else t["mute"]
-        return (f'<div style="font-family:{t["label"]};font-size:12px;font-weight:700;color:{color};'
+        return (f'<div style="font-family:{t["label"]};font-size:13px;font-weight:700;color:{color};'
                 f'margin-bottom:3px;">{text}</div>')
 
     def body(self, text, top=5):
@@ -154,11 +154,11 @@ class R:
                f'{esc(count)}</td>') if count else ""
         return (f'<div class="sec" style="padding:0 20px 16px;">{anchor}'
                 f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF;">'
-                f'<tr><td style="background:{t["navy"]};padding:12px 20px;">'
+                f'<tr><td style="background:{t["navy"]};padding:13px 24px;">'
                 f'<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
                 f'<td style="font-family:{t["head"]};font-size:17px;font-weight:700;color:#FFFFFF;">{esc(title)}</td>'
                 f'{cnt}</tr></table></td></tr>'
-                f'<tr><td class="card-in" style="padding:6px 20px 12px;">{inner}</td></tr></table></div>')
+                f'<tr><td class="card-in" style="padding:8px 24px 14px;">{inner}</td></tr></table></div>')
 
     def part(self, label, dek):
         t = self.t
@@ -179,7 +179,7 @@ class R:
         out = []
         for n, i in enumerate(items):
             why = self.axiom("Why it matters", i["why"]) if i.get("why") else ""
-            out.append(f'<div style="padding:14px 0 16px;{self.sep(n == 0)}">{self.tag(i.get("tag", ""))}'
+            out.append(f'<div style="padding:16px 0 18px;{self.sep(n == 0)}">{self.tag(i.get("tag", ""))}'
                        f'{self.headline(i["headline"], i.get("url", ""))}{self.body(i.get("body", ""))}'
                        f'{why}{self.bullets(i.get("bullets", []))}</div>')
         return "".join(out)
@@ -342,9 +342,9 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
                f'{links}</td></tr></table>')
     if issue.get("banner_src"):
         out.append(f'<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
-                   f'<td bgcolor="{BANNER_NAVY}" style="background:{BANNER_NAVY};line-height:0;">'
+                   f'<td align="center" bgcolor="{BANNER_NAVY}" style="background:{BANNER_NAVY};line-height:0;">'
                    f'<img src="{esc(issue["banner_src"])}" width="600" height="200" alt="CSIS China Room Brief" '
-                   f'style="display:block;width:100%;max-width:600px;height:auto;border:0;color:#FFFFFF;'
+                   f'style="display:block;margin:0 auto;width:100%;max-width:600px;height:auto;border:0;color:#FFFFFF;'
                    f'font-family:{SERIF};font-size:28px;font-weight:700;line-height:1.2;"></td></tr></table>')
 
     # Masthead block: date, reading time, editor's note, contents
@@ -365,7 +365,7 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
             f'<table width="100%" cellpadding="0" cellspacing="0" border="0">{toc}</table></div>')
     if theme == "briefing":
         out.append(f'<div class="sec" style="padding:16px 20px;"><div class="card-in" style="background:#FFFFFF;'
-                   f'padding:18px 20px 16px;">{mast}</div></div>')
+                   f'padding:20px 24px 18px;">{mast}</div></div>')
     else:
         out.append(f'<div class="sec" style="padding:22px 32px 18px;">{mast}</div>')
     out.append(r.numbers(issue.get("by_the_numbers") or []))
@@ -418,8 +418,8 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
 <title>China Room Brief, {esc(issue["date_line"])}</title>
 <style>
 body {{ margin:0; padding:0; background:{t["page"]}; -webkit-text-size-adjust:100%; }}
-.container {{ width:600px; max-width:100%; margin:0 auto; background:{t["body_bg"]}; }}
-@media only screen and (max-width:600px) {{
+.container {{ width:680px; max-width:100%; margin:0 auto; background:{t["body_bg"]}; }}
+@media only screen and (max-width:680px) {{
   .sec {{ padding-left:16px !important; padding-right:16px !important; }}
   .card-in {{ padding-left:14px !important; padding-right:14px !important; }}
   .util-row .util-cell {{ display:block !important; text-align:left !important; padding:6px 16px !important; }}

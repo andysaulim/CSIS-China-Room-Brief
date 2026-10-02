@@ -91,6 +91,8 @@ def cmd_draft(issue_date: date, style: str) -> None:
     (ROOT / "out" / f"draft_{issue_date.isoformat()}.html").write_text(html, encoding="utf-8")
     sent = mailer.send(html, f"[DRAFT] China Room Brief, {label(issue_date)}: {copy['re_line']}", "DRAFT_TO", BANNER)
     print(f"draft for {issue_date}: {len(news)} news, {len(research)} research, "
+          f"{len(dk.get('hearings', []))} hearings, {len(dk.get('bills', []))} new bills"
+          f"{'' if os.environ.get('CONGRESS_API_KEY') else ' (no CONGRESS_API_KEY)'}, "
           f"{len(audit)} tracker findings, sent to {len(sent)}")
 
 

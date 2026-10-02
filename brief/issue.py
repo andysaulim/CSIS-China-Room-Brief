@@ -30,7 +30,9 @@ def csis_style(obj):
     if isinstance(obj, list):
         return [csis_style(x) for x in obj]
     if isinstance(obj, str):
-        return _MON.sub(lambda m: _MONTHS[m.group(1)], _US.sub("U.S.", obj))
+        out = _MON.sub(lambda m: _MONTHS[m.group(1)], _US.sub("U.S.", obj))
+        # day ranges ("October 1-7") take an en dash; ISO dates are left alone
+        return re.sub(r"(?<![\d-])(\d{1,2})-(\d{1,2})(?![\d-])", "\\1\u2013\\2", out)
     return obj
 
 
