@@ -1,7 +1,7 @@
 {
  "_note": "Issue 0 copy. Every sentence traces to a China Daily Brief item (Sep 28 to Oct 2, 2026) or the tracker. Editor's Note, Week at a Glance and Heard on the Hill are drafts for the comms coordinator to rewrite.",
- "re_line": "Perdue's arms-offer disclosure · $60B tariff lists · Senators press on Taiwan arms · PBOC stimulus · Xi's National Day Taiwan line",
- "editors_note": "This is the first China Room Brief. Each Tuesday it collects what moved in US-China relations over the past seven days, what is scheduled for the next seven, and what CSIS scholars have in the pipeline.\n\nWashington spent the week after Xi Jinping's state visit working out what the summit produced. The answer so far: two published tariff lists worth $60 billion, an ambassador's disclosure the White House then denied, and senators from both parties pressing for a $14 billion Taiwan arms package that has not moved.",
+ "re_line": "Trump-Xi summit's $30B tariff deal · Perdue's arms-offer disclosure · Senators press on Taiwan arms · Xi's National Day Taiwan line",
+ "editors_note": "This is the first China Room Brief. Each Friday it collects what moved in US-China relations over the past seven days, what is scheduled for the week ahead, and what CSIS scholars have in the pipeline.\n\nWashington spent the week after Xi Jinping's state visit working out what the summit produced. The answer so far: two published tariff lists worth $60 billion, an ambassador's disclosure the White House then denied, and senators from both parties pressing for a $14 billion Taiwan arms package that has not moved.",
  "week_at_a_glance": [
   {
    "tag": "Energy &middot; Oct 7",
@@ -16,10 +16,10 @@
    "url": "https://asia.nikkei.com/editor-s-picks/interview/us-won-t-sit-there-and-take-overproduction-from-china-ustr-greer"
   },
   {
-   "tag": "Economy &middot; Oct 12",
-   "headline": "IMF and World Bank open their Annual Meetings in Bangkok",
-   "body": "China's numbers arrive with fresh support behind them: a nationwide mortgage-interest subsidy took effect Oct 1, and the PBOC's 1.2 trillion yuan reverse repo is set for Oct 8. September manufacturing PMIs came in at 50.1, the first expansion after two months of contraction.",
-   "url": ""
+   "tag": "Economy &middot; Oct 8",
+   "headline": "Beijing's 1.2 trillion yuan liquidity injection lands Oct 8",
+   "body": "The PBOC's three-month reverse repo follows a nationwide mortgage-interest subsidy that took effect Oct 1. September manufacturing PMIs came in at 50.1, the first expansion after two months of contraction.",
+   "url": "https://www.reuters.com/world/asia-pacific/china-unveils-rate-cut-mortgage-subsidies-spur-growth-2026-09-29/"
   }
  ],
  "heard_on_the_hill": [
@@ -58,28 +58,29 @@
    "headline": "Starbucks told to close its first Xinjiang stores",
    "body": "A US congressman demanded the closures, citing forced labor in the region, Reuters reported.",
    "url": "https://www.reuters.com/world/us/us-congressman-demands-starbucks-close-its-first-stores-chinas-xinjiang-2026-10-02/"
+  },
+  {
+   "tag": "Congress &middot; Sep 25",
+   "headline": "Lawmakers move to bar Chinese datacenter tech",
+   "url": "https://www.reuters.com/legal/litigation/us-lawmakers-aim-keep-chinas-datacenter-tech-out-sensitive-government-systems-2026-09-25/",
+   "body": "Members of Congress are moving to keep Chinese-origin datacenter hardware and software out of sensitive US government systems, Reuters reported, after warnings about data-security risks to federal networks."
   }
  ],
  "in_the_news": [
+  {
+   "tag": "Associated Press &middot; Sep 27",
+   "headline": "China, US agree to AI-incident channel, $30bn tariff cuts in eight-point summit consensus",
+   "url": "https://apnews.com/article/china-us-agreement-xi-trump-visit-e8f858ed9094b99bc8d3d339f9899f31"
+  },
   {
    "tag": "New York Times &middot; Sep 27",
    "headline": "Trump asked Xi if China wanted to buy US weapons, ambassador says",
    "url": "https://www.nytimes.com/2026/09/27/us/politics/trump-weapons-sale-china.html"
   },
   {
-   "tag": "CNN &middot; Sep 28",
-   "headline": "US, China publish $60 billion tariff-cut lists, leave rare earths untouched",
-   "url": "https://www.cnn.com/2026/09/28/business/us-china-tariff-cuts-60-billion-intl"
-  },
-  {
-   "tag": "Wall Street Journal &middot; Oct 1",
-   "headline": "Behind summit pageantry, Xi's eyes were on Taiwan",
-   "url": "https://www.wsj.com/world/china/behind-summit-pageantry-xis-eyes-were-on-taiwan-9c2f713b"
-  },
-  {
-   "tag": "Reuters &middot; Sep 30",
-   "headline": "Xi vows to \"resolutely fight\" Taiwan independence forces at National Day reception",
-   "url": "https://www.reuters.com/world/china/chinas-xi-talks-economy-taiwan-reception-marking-national-day-2026-09-30/"
+   "tag": "CNBC &middot; Oct 1",
+   "headline": "Xi marks 77th PRC anniversary with hardened Taiwan message",
+   "url": "https://www.cnbc.com/2026/10/01/china-golden-week-holiday-taiwan-consumption-travel.html"
   },
   {
    "tag": "Reuters &middot; Oct 1",
@@ -90,69 +91,50 @@
    "tag": "Reuters &middot; Sep 29",
    "headline": "Beijing unveils mortgage subsidy, rate cut and 1.2 trillion yuan liquidity injection",
    "url": "https://www.reuters.com/world/asia-pacific/china-unveils-rate-cut-mortgage-subsidies-spur-growth-2026-09-29/"
-  },
-  {
-   "tag": "CNBC &middot; Sep 30",
-   "headline": "China's factory activity returns to growth as PMI hits 50.1",
-   "url": "https://www.cnbc.com/2026/09/30/china-manufacturing-exports-capacity-economy-.html"
-  },
-  {
-   "tag": "CNN &middot; Oct 1",
-   "headline": "Suspected Chinese hackers impersonated US AI insiders",
-   "url": "https://www.cnn.com/2026/10/01/politics/china-linked-hackers-impersonated-us-ai-insiders"
-  },
-  {
-   "tag": "New York Times &middot; Oct 2",
-   "headline": "China resumes curbs on fuel exports as domestic inventories dwindle",
-   "url": "https://www.nytimes.com/2026/10/02/business/china-exports-diesel-energy.html"
-  },
-  {
-   "tag": "Reuters &middot; Sep 30",
-   "headline": "China opens rare joint military support center in Laos",
-   "url": "https://www.reuters.com/world/asia-pacific/china-carves-new-military-presence-southeast-asian-neighbour-2026-09-30/"
-  },
-  {
-   "tag": "New York Times &middot; Sep 30",
-   "headline": "DeepSeek and Huawei unveil AI chip tools to rival Nvidia's software",
-   "url": "https://www.nytimes.com/2026/09/30/business/china-ai-deepseek-huawei.html"
   }
  ],
  "research_roundup": [
   {
-   "tag": "RAND &middot; Sep 29",
    "headline": "The Scope and Nature of the U.S.-China Competition",
    "body": "Michael J. Mazarr and colleagues open a multi-report RAND study with a plain finding: \"The United States can protect its interests and gain leverage against China without blowing up the relationship.\"",
-   "url": "https://www.rand.org/pubs/research_reports/RRA4254-2.html"
+   "url": "https://www.rand.org/pubs/research_reports/RRA4254-2.html",
+   "institution": "RAND",
+   "date": "Sep 29"
   },
   {
-   "tag": "Brookings &middot; Sep 29",
    "headline": "What did the Trump-Xi summit actually accomplish?",
    "body": "Ryan Hass, Yun Sun, Susan Thornton, Mireya Solís, Michael O'Hanlon and others on what the state visit reveals about where the relationship goes next.",
-   "url": "https://www.brookings.edu/articles/what-did-the-trump-xi-summit-actually-accomplish/"
+   "url": "https://www.brookings.edu/articles/what-did-the-trump-xi-summit-actually-accomplish/",
+   "institution": "Brookings",
+   "date": "Sep 29"
   },
   {
-   "tag": "Asia Society Center for China Analysis &middot; Sep 29",
    "headline": "What Actually Happened at the Xi-Trump Summit",
    "body": "A ChinaFile conversation with Neil Thomas, Lizzi C. Lee, Lyle Morris and others: the summit \"launched the U.S.-China bilateral dialogue on artificial intelligence\" and left Taiwan and technology competition unresolved.",
-   "url": "https://asiasociety.org/policy-institute/what-actually-happened-xi-trump-summit"
+   "url": "https://asiasociety.org/policy-institute/what-actually-happened-xi-trump-summit",
+   "institution": "Asia Society Policy Institute",
+   "date": "Sep 29"
   },
   {
-   "tag": "Carnegie Endowment &middot; Sep 30",
    "headline": "Trump Had the Chance to Address U.S.-China AI Safety. He Threw Xi a Party Instead.",
    "body": "Jeffrey Prescott on the gap between \"sobering risk and opulent inaction\" on AI safety.",
-   "url": "https://carnegieendowment.org/emissary/2026/09/trump-xi-ai-safety-no-deal"
+   "url": "https://carnegieendowment.org/emissary/2026/09/trump-xi-ai-safety-no-deal",
+   "institution": "Carnegie Endowment",
+   "date": "Sep 30"
   },
   {
-   "tag": "German Marshall Fund &middot; Sep 28",
    "headline": "A Trump-Xi Summit Scorecard",
    "body": "Bonnie Glaser grades the visit item by item, starting from Trump's bet that the trappings of respect would advance his agenda with Beijing.",
-   "url": "https://www.gmfus.org/news/trump-xi-summit-scorecard"
+   "url": "https://www.gmfus.org/news/trump-xi-summit-scorecard",
+   "institution": "German Marshall Fund",
+   "date": "Sep 28"
   },
   {
-   "tag": "AEI &middot; Sep 28",
    "headline": "Why Trump Rolled Out the Red Carpet for Xi, and Why He Shouldn't Have",
    "body": "Dan Blumenthal and Ian Jones argue the treatment tells allies \"that they are irrelevant as Beijing and Washington manage world affairs as coequal powers.\"",
-   "url": "https://www.aei.org/foreign-and-defense-policy/why-trump-rolled-out-the-red-carpet-for-xi-and-why-he-shouldnt-have/"
+   "url": "https://www.aei.org/foreign-and-defense-policy/why-trump-rolled-out-the-red-carpet-for-xi-and-why-he-shouldnt-have/",
+   "institution": "AEI",
+   "date": "Sep 28"
   }
  ],
  "contact": {

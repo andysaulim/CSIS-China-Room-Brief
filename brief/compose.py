@@ -1,0 +1,173 @@
+"""Draft the week's copy with Claude from the collected corpus.
+
+The model sees numbered sources (N for news, R for research) and returns
+source ids, never URLs, through a JSON schema. Links and outlet names are
+filled in from the corpus afterwards, so a link in the brief can only be one
+the collector found. Same rule as the daily brief: every claim traces to a
+collected item, and an omission beats an invention.
+"""
+
+from __future__ import annotations
+
+import json
+import re
+
+import anthropic
+
+MODEL = "claude-opus-5-5"
+
+STYLE = {
+    "house": (
+        "Write in the house style of a CSIS internal brief: plain declarative sentences, numbers over "
+        "adjectives, named actors, dated events. Headlines under 60 characters, in sentence case. Each item "
+        "is one or two sentences. Lead with what happened, not with background. No bold labels, no bullets, "
+        "no rhetorical questions, no em-dashes. Vary sentence length."),
+    "brevity": (
+        "Write in Axios Smart Brevity: headline under 60 characters; a one-sentence lede saying what is new; "
+        "optionally a one-sentence 'why' and up to three short bullets. Plain words, subject-verb-object. "
+        "No em-dashes."),
+}
+
+SYSTEM = """You draft the CSIS China Room Brief, a weekly internal email on US-China relations that goes out on Fridays to CSIS staff.
+
+Rules that are never broken:
+- Every sentence must be supported by the numbered sources provided. Do not add facts, dates, figures, titles or quotes from memory. If a source does not say it, leave it out.
+- Quote only words that appear in a source, inside quotation marks, attributed.
+- Cite each item with the id of the source it rests on (N12, R3). Never write a URL.
+- Name the outlet in the text when a claim comes from reporting ("Reuters reported").
+- Prefer US-China relations over China's domestic news when choosing what leads.
+
+Sections:
+- re_line: four or five short phrases separated by " · ", the week's main threads.
+- editors_note: two short paragraphs, 50 to 90 words in all, plain and direct.
+- week_at_a_glance: exactly three things scheduled or expected in the coming week, from the sources only.
+- heard_on_the_hill: three to six items on Congress (members, bills, hearings, letters) from the past week.
+- in_the_news: the five most important China stories of the past week from the priority-outlet sources (marked [priority]), ranked; when several outlets covered the same story, pick the best-ranked outlet's item and count the story once.
+- research_roundup: two to six publications from the R sources; for each, one sentence on the argument or finding, naming the authors when the source does."""
+
+ITEM = {
+    "type": "object",
+    "properties": {
+        "source_id": {"type": "string"},
+        "tag": {"type": "string", "description": "Short label and date, e.g. 'Senate · Oct 1'"},
+        "headline": {"type": "string"},
+        "body": {"type": "string"},
+        "why": {"type": "string"},
+        "bullets": {"type": "array", "items": {"type": "string"}},
+    },
+    "required": ["source_id", "tag", "headline", "body", "why", "bullets"],
+    "additionalProperties": False,
+}
+SCHEMA = {
+    "type": "object",
+    "properties": {
+        "re_line": {"type": "string"},
+        "editors_note": {"type": "string"},
+        "week_at_a_glance": {"type": "array", "items": ITEM},
+        "heard_on_the_hill": {"type": "array", "items": ITEM},
+        "in_the_news": {"type": "array", "items": {
+            "type": "object", "properties": {"source_id": {"type": "string"}},
+            "required": ["source_id"], "additionalProperties": False}},
+        "research_roundup": {"type": "array", "items": {
+            "type": "object",
+            "properties": {"source_id": {"type": "string"}, "body": {"type": "string"}},
+            "required": ["source_id", "body"], "additionalProperties": False}},
+    },
+    "required": ["re_line", "editors_note", "week_at_a_glance", "heard_on_the_hill",
+                 "in_the_news", "research_roundup"],
+    "additionalProperties": False,
+}
+
+
+def corpus(news: list[dict], research: list[dict]) -> tuple[str, dict]:
+    """Number every source; return the prompt text and an id -> source map."""
+    index, lines = {}, []
+    for n, x in enumerate(news, 1):
+        sid = f"N{n}"
+        index[sid] = {"kind": "news", **x}
+        pri = f" [priority: {x['outlet']}]" if x.get("outlet") else ""
+        lines.append(f"{sid} | {x['date']} | {x.get('section') or ''} | {x.get('tag') or ''}{pri}\n"
+                     f"   {x['headline']}\n   {x.get('body', '')}")
+    for n, x in enumerate(research, 1):
+        sid = f"R{n}"
+        index[sid] = {"kind": "research", **x}
+        lines.append(f"{sid} | {x['date']} | {x['institution']}\n   {x['title']}\n   {x.get('summary', '')}")
+    return "\n".join(lines), index
+
+
+def draft(news, research, calendar_lines: list[str], window: str, style: str = "house") -> dict:
+    text, index = corpus(news, research)
+    user = (f"Week covered: {window}.\nStyle: {STYLE[style]}\n\n"
+            f"Scheduled items from the editorial calendar (usable for Week at a Glance):\n"
+            + ("\n".join(calendar_lines) or "(none)") + "\n\nSources:\n" + text)
+    client = anthropic.Anthropic()
+    resp = client.beta.messages.create(
+        model=MODEL,
+        max_tokens=16000,
+        betas=["server-side-fallback-2026-07-01"],
+        # On a policy decline, re-run on Anthropic's recommended fallback model.
+        fallbacks="default",
+        system=SYSTEM,
+        output_config={"effort": "high",
+                       "format": {"type": "json_schema", "schema": SCHEMA}},
+        messages=[{"role": "user", "content": user}],
+    )
+    if resp.stop_reason == "refusal":
+        raise RuntimeError(f"model declined: {resp.stop_details}")
+    if resp.stop_reason == "max_tokens":
+        raise RuntimeError("draft hit max_tokens")
+    raw = next(b.text for b in resp.content if b.type == "text")
+    return resolve(json.loads(raw), index)
+
+
+def _clean(s: str) -> str:
+    """Zero em-dashes in what ships; flagging the rest is the reviewer's job."""
+    s = re.sub(r"\s*—\s*", ", ", s or "")
+    return s.strip()
+
+
+def resolve(out: dict, index: dict) -> dict:
+    """Replace source ids with links and outlet names; drop anything uncited."""
+    copy = {"re_line": _clean(out["re_line"]), "editors_note": _clean(out["editors_note"]),
+            "warnings": []}
+    for sec in ("week_at_a_glance", "heard_on_the_hill"):
+        copy[sec] = []
+        for it in out[sec]:
+            src = index.get(it["source_id"])
+            if not src:
+                copy["warnings"].append(f"{sec}: dropped item citing unknown {it['source_id']}")
+                continue
+            if len(it["headline"]) > 60:
+                copy["warnings"].append(f"{sec}: headline over 60 characters: {it['headline']}")
+            copy[sec].append({"tag": it["tag"].replace(" · ", " &middot; "),
+                              "headline": _clean(it["headline"]), "body": _clean(it["body"]),
+                              "why": _clean(it.get("why", "")),
+                              "bullets": [_clean(b) for b in it.get("bullets", [])],
+                              "url": src.get("url", "")})
+    copy["in_the_news"] = []
+    for it in out["in_the_news"][:5]:
+        src = index.get(it["source_id"])
+        if not src or not src.get("outlet"):
+            copy["warnings"].append(f"in_the_news: dropped {it['source_id']} (unknown or not a priority outlet)")
+            continue
+        d = src["date"]
+        copy["in_the_news"].append({
+            "tag": f"{src['outlet']} &middot; {_md(d)}",
+            "headline": src.get("original_headline") or src["headline"],
+            "url": src["url"]})
+    copy["research_roundup"] = []
+    for it in out["research_roundup"]:
+        src = index.get(it["source_id"])
+        if not src or src["kind"] != "research":
+            copy["warnings"].append(f"research_roundup: dropped {it['source_id']}")
+            continue
+        copy["research_roundup"].append({"institution": src["institution"], "date": _md(src["date"]),
+                                         "headline": src["title"], "body": _clean(it["body"]),
+                                         "url": src["url"]})
+    return copy
+
+
+def _md(iso: str) -> str:
+    from datetime import date
+    d = date.fromisoformat(iso)
+    return f"{d.strftime('%b')} {d.day}"

@@ -1,92 +1,85 @@
 # CSIS China Room Brief
 
-A weekly email on US-China relations, sent Tuesday mornings. About 1,000 to 1,500 words, a five to seven minute read, built to the length of Axios AM or POLITICO Playbook. It borrows its section bars, item cards and date chips from the [China Daily Brief](https://github.com/andysaulim/Daily-China-Digest) so the two read as one family. The top follows the CSIS comms email template (the "Released This Week" send): a grey preheader strip, then a 600 x 200 banner. `assets/banner_china_room.png` is a stand-in until External Relations supplies a banner in the house set; for a live send it needs a public URL (the Pardot file host). Issue 0 is built in two writing styles from the same sources: `samples/issue0_copy_house.json` and `samples/issue0_copy_brevity.json` (Axios Smart Brevity).
+A weekly internal email on US-China relations, sent Friday mornings to CSIS staff. Around 900 to 1,200 words, a four to five minute read. The top follows the CSIS comms email template (the "Released This Week" send): a "For internal use only" band, a grey preheader strip with Read online and Past issues, then a 600 x 200 banner. A navy band in the same color closes the issue with the contact line for questions (Nina Prieur, nprieur@csis.org). Inside, it borrows the [China Daily Brief](https://github.com/andysaulim/Daily-China-Digest)'s section bars and item cards so the two read as one family.
 
-The brief has two halves. **The Week That Was** looks back seven days. **The Week Ahead** looks forward.
+| # | Section | Half | Drafted by | Items | Comes from |
+|---|---------|------|------------|-------|------------|
+| 0 | Editor's Note | top | Agent, rewritten by the coordinator | 1 | The week's sources |
+| 1 | Week at a Glance | ahead | Agent, rewritten by the coordinator | 3 | Tracker dates and forward-looking daily-brief items |
+| 2 | Heard on the Hill | back | Agent, rewritten by the coordinator | 3-6 | Congress items in the daily brief |
+| 3 | In the News | back | Agent | 5 | Top five China stories in priority outlets, under the outlet's own headline |
+| 4 | Research Roundup | back | Agent | 2-6 | Think-tank and CRS feeds; institution in its own column |
+| 5 | In the Works @ CSIS | ahead | Tracker | up to 5 | `CSIS Activities` tab |
+| 6 | On the Horizon | ahead | Tracker | up to 6 | `Global Events` and `Policy Developments` tabs |
 
-| # | Section | Half | Written by | Items | Words | Comes from |
-|---|---------|------|------------|-------|-------|------------|
-| 0 | Editor's Note | lede | Comms coordinator | 1 | 60-80 | |
-| 1 | Week at a Glance | ahead | Comms coordinator | 3 | ~150 | Candidates pulled from the tracker and from forward-looking daily headlines |
-| 2 | Heard on the Hill | back | Comms coordinator | 3-5 | ~180 | Congress-related daily headlines, pulled as candidates |
-| 3 | In the News | back | Agent | 8-12 | ~150 | The week's top China stories in priority outlets: headline, outlet and date, no summary |
-| 4 | Research Roundup | back | Agent | 2-5 | ~150 | Think-tank and CRS publications (needs the daily change below) |
-| 5 | In the Works @ CSIS | ahead | Sheet | 2-4 | ~110 | `CSIS Activities` tab of the ER tracker |
-| 6 | On the Horizon | ahead | Sheet | 4-6 | ~80 | `Global Events` and `Policy Developments` tabs, linked to the full calendar |
-
-An In this issue row under the date line links to each section, and the look-back half runs on black bars, the look-ahead half on navy. The issue closes with a contact line for questions (Nina Prieur, nprieur@csis.org). The outlet list and its ranking live in `brief/config.py`.
+The back half runs on black section bars, the ahead half on navy, and an In this issue row under the date line links to each section.
 
 ## Weekly schedule (ET)
 
 | When | What | Who |
 |------|------|-----|
-| Fri 5 pm | Tracker updated and frozen for Tuesday's issue | Comms coordinator and interns |
-| Mon 10 am | Agent reads the past Monday through Sunday of daily briefs and the tracker, then drafts In the News, Research Roundup and the calendar sections, plus candidate lists for the human sections | GitHub Actions |
-| Mon noon | Draft lands with Nina | Agent |
-| Mon afternoon | Editor's Note, Week at a Glance and Heard on the Hill written into the draft | Comms coordinator |
-| Tue 8 am | Final review | Comms director |
-| Tue 9 am | Send | Agent |
+| Wed 5 pm | Tracker updated for Friday's issue | Comms coordinator and interns |
+| Thu 12 pm | `weekly.py draft`: reads the past Friday through Thursday, drafts the copy, saves `issues/YYYY-MM-DD.json`, emails the draft | GitHub Actions |
+| Thu afternoon | Rewrites Editor's Note, Week at a Glance and Heard on the Hill in `issues/YYYY-MM-DD.json` (GitHub's web editor works) | Comms coordinator |
+| Fri 8 am | Final review | Nina Prieur |
+| Fri 9 am | `weekly.py send`, run from the Actions tab | Coordinator |
 
-A Monday federal holiday moves the whole cycle one day later. The first one is Oct 12 (Columbus Day), the second issue's draft day.
-
-## What is here
+## How a run works
 
 ```
-brief/config.py       priority outlets (ranked), section budgets, source URLs
-brief/tracker.py      reads the ER tracker workbook; audits it for problems
-brief/daily_feed.py   reads the China Daily Brief ledger and archive
-brief/render.py       issue -> table-based HTML email, draft and final modes
-brief/archive.py      web copy, index.html, archive.html, archive.json
-samples/              Issue 0 copy, every line traced to a source
-build_sample.py       builds the Issue 0 sample from real inputs
+Thursday draft
+  collect   China Daily Brief archive (7 issues) + outlets' own headlines (og:title)
+            + think-tank and CRS feeds + the ER tracker
+  compose   one Claude call; the model cites source ids, never URLs, so every
+            link in the brief is one the collector found (claude-opus-5-5,
+            server-side fallback on a policy decline)
+  render    draft email with the coordinator's notes  ->  DRAFT_TO
+Friday send
+  render    final email from the edited copy + a fresh tracker pull  ->  BRIEF_TO
+  archive   site/: YYYY-MM-DD.html, index.html, archive.html, archive.json
 ```
 
-Run the sample:
-
-```bash
-pip install -r requirements.txt
-python build_sample.py --tracker data/CSIS_US_China_Tracker.xlsx \
-  --ledger path/to/Daily-China-Digest/published_ledger.json --out out/
+```
+weekly.py             draft and send
+brief/collect.py      daily archive, outlet headlines, research feeds, tracker download
+brief/compose.py      Claude drafting with source ids and a JSON schema
+brief/issue.py        assembles the issue for the template
+brief/render.py       the email template, draft and final modes
+brief/archive.py      web copy and archive page
+brief/mailer.py       Gmail SMTP, recipients in BCC
+brief/tracker.py      reads and audits the tracker workbook
+brief/config.py       priority outlets, ranked
+build_sample.py       Issue 0 from saved copy (samples/), house and Smart Brevity versions
 ```
 
-This writes `out/draft_2026-10-06.html` (the Monday-noon copy with the coordinator's notes and candidate lists), `out/email_2026-10-06.html` (what readers get), `out/site/` (web copy and archive) and `out/tracker_audit.txt`. The written sections come from `samples/issue0_copy.json`.
+## Setup for the first run
 
-**This repository is public.** The tracker lists CSIS reports and events that have not been announced, so `data/` and `out/` are git-ignored. Do not commit the workbook or a rendered issue. Moving the repository to private would remove the risk outright.
+Repository secrets (Settings > Secrets and variables > Actions):
 
-## Build steps
+| Secret | Value |
+|--------|-------|
+| `ANTHROPIC_API_KEY` | API key |
+| `GMAIL_USER`, `GMAIL_APP_PASS`, `GMAIL_FROM` | Same sending account as the daily brief |
+| `DRAFT_TO` | Nina, the coordinator, Andy |
+| `BRIEF_TO` | During test runs, the same people as `DRAFT_TO` |
+| `TRACKER_URL` | Direct download link to the tracker, e.g. `https://drive.google.com/uc?export=download&id=<file id>` |
+| `CHINA_ROOM_CALENDAR_URL` | Optional: the link Full calendar should open |
 
-1. **Fix the tracker.** Convert the Drive file from .xlsx to a native Google Sheet; the Master View formula is frozen in the .xlsx copy. `tracker_audit.txt` lists 47 problems, most of them dates typed as text and empty link columns. A proposed one-tab layout is below.
-2. **Change the daily brief** (in `Daily-China-Digest`):
-   - Write each day's validated digest to `public/data/YYYY-MM-DD.json`. Today `digest.json` is overwritten every morning and the ledger keeps only 14 days of headline and URL.
-   - Keep the Tier 2 and Tier 3 items (81 think-tank feeds, 18 journals) in that daily file. The daily stopped publishing them, so Research Roundup has nothing to read until this lands.
-   - Add a CRS feed. The Congress.gov API (`/crsreport`) is free with a key.
-3. **Write `compose.py`**: one Claude call over the week's daily files that clusters stories, picks In the News and Research Roundup, and returns the issue JSON `render.py` takes. It carries the daily's rules forward: every item traces to a collected article, no claim from memory.
-4. **Add the workflow**: Monday 10 am draft, Tuesday 9 am send, Gmail SMTP as in the daily.
-5. **First full dummy issue** by Friday, Oct 9.
+`CHINA_ROOM_WEB_BASE` (a repository variable) turns on Read online and Past issues once the archive has a home. Until then those links are left out rather than broken, and each run's web copy is kept as an Actions artifact for 90 days.
 
-## Read online and past issues
+Test runs: draft Thu Oct 8 for Fri Oct 9, then Oct 15/16 and Oct 22/23, sent only to the test list. Go live Oct 30 if those hold up.
 
-`brief/archive.py` writes each issue to `site/` the way the daily does: `YYYY-MM-DD.html`, `index.html` for the latest, `archive.html` and `archive.json`. Set `CHINA_ROOM_WEB_BASE` to wherever `site/` is served and the email's Read online and Past issues links point there. Serving it on GitHub Pages from this repository would make In the Works public, so either host the archive somewhere access-controlled (csis.org, an intranet page) or drop unannounced items from the web copy.
+## Writing style
 
-## Paywalled outlets
+`--style house` (the default) is plain prose held to Smart Brevity's length rules: headlines under 60 characters, one or two sentences an item, no bold labels. `--style brevity` adds the Axios signposts and bullets. Issue 0 is built both ways in `samples/`.
 
-NYT, WSJ and The Atlantic block article text. The daily already handles this: it reads the RSS headline and the page's meta description, and writes only from those. That is enough to choose a story and link it. Item copy for those outlets stays inside what the headline and description say.
+## Privacy
 
-## Proposed tracker layout
+This repository is public. The tracker lists unannounced CSIS work, so `data/` and `out/` are git-ignored, the tracker link lives in a secret, and In the Works is rendered only into the email and the Actions artifact. `issues/*.json` holds only the drafted news copy. Making the repository private removes the remaining exposure. Do not publish `site/` to a public host while In the Works carries unannounced titles.
 
-One tab, one row per item, filtered views in place of separate tabs:
+## Before the first live run
 
-| Column | Example | Note |
-|--------|---------|------|
-| Start date | 2026-11-16 | A real date cell, never text |
-| End date | 2026-11-18 | Blank for single-day items |
-| Date firm? | Confirmed / Month TBC | Replaces "11/2026 TBC" typed in the date cell |
-| Section | In the Works / On the Horizon | Drives where it appears |
-| Type | Report, Event, Summit, Deadline, Hearing, Data release | Required |
-| Title | Report or event title | |
-| Program / scholars | Program; lead scholar | In the Works only |
-| One line for the brief | Up to 25 words | Written by a person, so the brief never runs a pasted paragraph |
-| Link | csis.org or the event page | Required before an item runs |
-| Public yet? | Yes / Embargoed | Embargoed items never render |
-| Owner | Initials | |
-| Last updated | Date | |
+- Convert the tracker from .xlsx to a native Google Sheet; the tracker audit lists 47 problems (dates typed as text, empty link columns, a broken Master View formula).
+- Sheet facts to correct: Shangri-La Dialogue is listed Mar 1 (normally late May or June); Munich Security Conference Mar 12 (normally mid-February); the NPC row says "20th CCP National Congress cycle" (the next congress is the 21st); "Competittion" in the biotech row.
+- The sheet says the US-China truce was extended to Jan 10; the daily brief's calendar still says its suspensions lapse Nov 10. One of them is wrong.
+- The banner is a stand-in until External Relations supplies one in the house banner set.

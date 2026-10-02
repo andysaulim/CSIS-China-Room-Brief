@@ -133,19 +133,35 @@ def slot(spec: str, candidates: list[dict] | None = None, note: str = "") -> str
             f'{note_html}{lst}</div>')
 
 
-def calendar_row(month: str, day: str, headline: str, detail: str, url: str = "") -> str:
-    chip = (f'<table cellpadding="0" cellspacing="0" border="0" style="background:{NAVY};">'
-            f'<tr><td align="center" style="padding:4px 0 5px;width:52px;">'
-            f'<div style="font-family:{SANS};font-size:10px;font-weight:700;letter-spacing:1.5px;'
-            f'color:#FFFFFF;">{esc(month)}</div>'
-            f'<div style="font-family:{SERIF};font-size:15px;font-weight:700;color:#FFFFFF;'
-            f'line-height:1.1;">{esc(day)}</div></td></tr></table>')
+def calendar_row(month: str, day: str, headline: str, detail: str, url: str = "", kind: str = "") -> str:
+    """A date set in type, not a filled chip: month small caps over the day."""
+    day_size = "22px" if day and day[0].isdigit() and len(day) <= 2 else "15px"
+    kind_html = (f'<div style="font-family:{SANS};font-size:10px;font-weight:700;letter-spacing:1px;'
+                 f'text-transform:uppercase;color:{MUTE};margin-bottom:2px;">{esc(kind)}</div>') if kind else ""
+    detail_html = (f'<div style="font-family:{SERIF};font-size:13px;line-height:1.5;color:{BODY};margin-top:3px;">'
+                   f'{esc(detail)}</div>') if detail else ""
     return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
-            f'style="border-bottom:1px solid {RULE};"><tr>'
-            f'<td width="64" style="padding:9px 12px 9px 0;vertical-align:top;">{chip}</td>'
-            f'<td style="padding:9px 0;vertical-align:top;">'
-            f'<div style="font-family:{SERIF};font-size:14px;font-weight:700;color:{INK};">{link(esc(headline), url)}</div>'
-            f'<div style="font-family:{SERIF};font-size:13px;line-height:1.45;color:{BODY};margin-top:3px;">{esc(detail)}</div>'
+            f'style="border-top:1px solid {RULE};"><tr>'
+            f'<td width="76" style="padding:12px 14px 12px 0;vertical-align:top;border-right:2px solid {NAVY};">'
+            f'<div style="font-family:{SANS};font-size:10px;font-weight:700;letter-spacing:1.5px;color:{MUTE};">{esc(month)}</div>'
+            f'<div style="font-family:{SERIF};font-size:{day_size};font-weight:700;line-height:1.15;color:{NAVY};'
+            f'white-space:nowrap;">{esc(day)}</div></td>'
+            f'<td style="padding:12px 0 12px 14px;vertical-align:top;">{kind_html}'
+            f'<div style="font-family:{SERIF};font-size:15px;font-weight:700;line-height:1.35;color:{INK};">{link(esc(headline), url)}</div>'
+            f'{detail_html}</td></tr></table>')
+
+
+def research_row(i: dict) -> str:
+    """Institution in its own column, so a reader sees who wrote what at a glance."""
+    return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid {RULE};"><tr>'
+            f'<td width="128" class="r-inst" style="padding:12px 14px 12px 0;vertical-align:top;">'
+            f'<div style="font-family:{SANS};font-size:11px;font-weight:700;letter-spacing:0.5px;'
+            f'text-transform:uppercase;line-height:1.35;color:{NAVY};">{esc(i["institution"])}</div>'
+            f'<div style="font-family:{SANS};font-size:11px;color:{MUTE};margin-top:3px;">{esc(i.get("date", ""))}</div></td>'
+            f'<td style="padding:12px 0;vertical-align:top;">'
+            f'<div style="font-family:{SERIF};font-size:15px;font-weight:700;line-height:1.35;color:{INK};">'
+            f'{link(esc(i["headline"]), i.get("url", ""))}</div>'
+            f'<div style="font-family:{SERIF};font-size:13px;line-height:1.5;color:{BODY};margin-top:3px;">{esc(i.get("body", ""))}</div>'
             f'</td></tr></table>')
 
 
@@ -166,10 +182,11 @@ def render(issue: dict, mode: str = "final") -> str:
     web_url, archive_url = issue.get("web_url", ""), issue.get("archive_url", "")
     out = []
 
+    label = "For internal use only"
     if draft:
-        out.append(f'<div class="sec" style="background:#2E3644;padding:7px 32px;font-family:{SANS};font-size:10px;'
-                   f'font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C4C8CE;">'
-                   f'Draft for review &middot; {esc(issue.get("draft_for", ""))}</div>')
+        label += f' &nbsp;&middot;&nbsp; <span style="color:#FFB4A8;">Draft for review &middot; {esc(issue.get("draft_for", ""))}</span>'
+    out.append(f'<div class="sec" style="background:{BANNER_NAVY};padding:8px 20px;font-family:{SANS};font-size:10px;'
+               f'font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C9D6E3;">{label}</div>')
 
     # Preheader strip, as in the CSIS comms template, with Read online / Past issues
     pill = (f'color:#4B4B4B;font-family:{SANS};font-size:10px;font-weight:700;text-decoration:underline;'
@@ -220,8 +237,10 @@ def render(issue: dict, mode: str = "final") -> str:
         _, title, half = next(x for x in SECTIONS if x[0] == key)
         s = issue.get(key, {})
         if key in ("in_the_works", "on_the_horizon"):
-            body = "".join(calendar_row(i["month"], i["day"], i["headline"], i.get("detail", ""), i.get("url", ""))
-                           for i in s.get("items", []))
+            body = "".join(calendar_row(i["month"], i["day"], i["headline"], i.get("detail", ""), i.get("url", ""),
+                                        i.get("kind", "")) for i in s.get("items", []))
+        elif key == "research_roundup" and s.get("items") and "institution" in s["items"][0]:
+            body = "".join(research_row(i) for i in s["items"])
         else:
             rule = NAVY if half == "ahead" else BACK_BAR
             body = "".join(item(i, rule) for i in s.get("items", []))
@@ -241,23 +260,26 @@ def render(issue: dict, mode: str = "final") -> str:
     for k in ("in_the_works", "on_the_horizon"):
         section(k)
 
+    # Bottom banner, in the top banner's navy: contact, links, provenance.
     c = issue.get("contact") or {}
+    contact = ""
     if c.get("email"):
         title = f', {esc(c["title"])},' if c.get("title") else ""
-        out.append(f'<div class="sec" style="padding:20px 32px;border-bottom:1px solid {RULE};">'
-                   f'<div style="font-family:{SANS};font-size:11px;font-weight:700;letter-spacing:1.5px;'
-                   f'text-transform:uppercase;color:{INK};">Questions?</div>'
-                   f'<div style="font-family:{SERIF};font-size:14px;line-height:1.6;color:{BODY};margin-top:4px;">'
+        contact = (f'<div style="font-family:{SERIF};font-size:18px;font-weight:700;color:#FFFFFF;">Questions?</div>'
+                   f'<div style="font-family:{SERIF};font-size:14px;line-height:1.6;color:#DCE4EC;margin-top:4px;">'
                    f'Reach out to {esc(c.get("name", ""))}{title} at '
-                   f'{link(esc(c["email"]), "mailto:" + c["email"], NAVY_BRIGHT)}.</div></div>')
-
+                   f'<a href="mailto:{esc(c["email"])}" style="color:#FFFFFF;text-decoration:underline;">{esc(c["email"])}</a>.</div>')
     foot_links = " &nbsp;&middot;&nbsp; ".join(
-        f'<a href="{esc(u)}" style="color:{MUTE};">{lbl}</a>'
+        f'<a href="{esc(u)}" style="color:#FFFFFF;">{lbl}</a>'
         for lbl, u in (("Read online", web_url), ("Past issues", archive_url),
                        ("Full calendar", issue.get("calendar_url", ""))) if u)
-    foot_links_html = f'<div style="margin-top:6px;">{foot_links}</div>' if foot_links else ""
-    out.append(f'<div class="sec" style="padding:18px 32px 26px;font-family:{SANS};font-size:11px;'
-               f'line-height:1.6;color:{MUTE};">{issue.get("footer", "")}{foot_links_html}</div>')
+    out.append(f'<div class="sec bottom-band" style="background:{BANNER_NAVY};padding:26px 32px 28px;">{contact}'
+               f'<div style="height:1px;background:rgba(255,255,255,0.22);margin:18px 0 12px;"></div>'
+               f'<div style="font-family:{SANS};font-size:11px;line-height:1.7;color:#9FB2C8;">'
+               f'<strong style="color:#FFFFFF;letter-spacing:1.5px;">CSIS</strong> &nbsp;Center for Strategic and International Studies'
+               f'{"<br>" + issue.get("footer", "") if issue.get("footer") else ""}'
+               f'{"<br>" + foot_links if foot_links else ""}'
+               f'<br>For internal use only.</div></div>')
 
     body = "\n".join(out)
     return f"""<!DOCTYPE html>
@@ -273,6 +295,7 @@ body {{ margin:0; padding:0; background:#EEF0F3; font-family:{SANS}; color:{INK}
   .util-row .util-cell {{ display:block !important; text-align:left !important; padding:6px 16px !important; }}
   .mast-main, .mast-meta {{ display:block !important; width:100% !important; text-align:left !important; }}
   .mast-meta {{ padding-top:4px !important; }}
+  .r-inst {{ width:96px !important; }}
 }}
 @media (prefers-color-scheme: dark) {{
   body {{ background:#121212 !important; }}

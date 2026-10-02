@@ -1,4 +1,4 @@
-"""Build Issue 0 (Tuesday, Oct 6, 2026) from real inputs.
+"""Build Issue 0 (Friday, Oct 2, 2026) from real inputs.
 
     python build_sample.py --tracker data/CSIS_US_China_Tracker.xlsx \
         --ledger path/to/Daily-China-Digest/published_ledger.json
@@ -25,11 +25,10 @@ from datetime import date
 from pathlib import Path
 
 from brief import archive, daily_feed, render, tracker
+from brief.issue import assemble
 
-ISSUE = date(2026, 10, 6)
-BACK = (date(2026, 9, 28), date(2026, 10, 4))
-# The tracker's share link is not kept in this public repository.
-CALENDAR_URL = os.environ.get("CHINA_ROOM_CALENDAR_URL", "")
+ISSUE = date(2026, 10, 2)
+BACK = (date(2026, 9, 26), date(2026, 10, 2))
 WEB_BASE = os.environ.get("CHINA_ROOM_WEB_BASE", "").rstrip("/")
 
 
@@ -53,62 +52,20 @@ def main():
         return {"text": x["headline"], "url": x["url"], "source": x["outlet"],
                 "date_label": f'{d.strftime("%b")} {d.day}'}
 
-    def chip(i):
-        if i.precision == "month":
-            return i.start.strftime("%b").upper(), "TBC" if i.tentative else ""
-        day = str(i.start.day) if i.start == i.end else f"{i.start.day}–{i.end.day}"
-        return i.start.strftime("%b").upper(), day
-
-    def where(desc):
-        cuts = [desc.find(sep) for sep in (" — ", " - ", " (") if sep in desc]
-        return desc[:min(cuts)].strip() if cuts else desc[:90]
-
-    works = [{"month": chip(i)[0], "day": chip(i)[1], "headline": i.name,
-              "detail": i.description, "url": i.link}
-             for i in tracker.in_the_works(items, ISSUE, limit=5)]
-    horizon = [{"month": chip(i)[0], "day": chip(i)[1], "headline": i.name,
-                "detail": where(i.description), "url": i.link}
-               for i in tracker.on_the_horizon(items, ISSUE)]
-
     iso = ISSUE.isoformat()
-    issue = {
-        "date_line": "Tuesday, October 6, 2026",
-        "issue_label": "Issue 0 · sample",
-        "draft_for": "Nina Prieur · Monday noon",
-        "calendar_url": CALENDAR_URL,
-        "web_url": f"{WEB_BASE}/{iso}.html" if WEB_BASE else f"site/{iso}.html",
-        "archive_url": f"{WEB_BASE}/archive.html" if WEB_BASE else "site/archive.html",
-        "re_line": copy["re_line"],
-        "editors_note": copy["editors_note"],
-        "back_window": "Sep 28 to Oct 4",
-        "ahead_window": "Oct 6 onward",
-        "week_at_a_glance": {
-            "items": copy["week_at_a_glance"],
-            "spec": "Draft above. Rewrite or swap from the tracker and daily-brief candidates below.",
-            "candidates": [{"text": i.name, "url": i.link, "date_label": i.date_label,
-                            "source": "tracker"} for i in tracker.week_ahead(items, ISSUE)]
-                          + [cand(x) for x in daily_feed.forward_candidates(ledger)[:4]],
+    issue = assemble(
+        copy, items, ISSUE, BACK, issue_label="Issue 0 \u00b7 sample", banner_src=a.banner,
+        web_base=WEB_BASE,
+        candidates={
+            "glance": [{"text": i.name, "url": i.link, "date_label": i.date_label, "source": "tracker"}
+                       for i in tracker.week_ahead(items, ISSUE)]
+                      + [cand(x) for x in daily_feed.forward_candidates(ledger)[:4]],
+            "hill": [cand(x) for x in daily_feed.hill_candidates(ledger)],
         },
-        "heard_on_the_hill": {
-            "items": copy["heard_on_the_hill"],
-            "spec": "Draft above, from the daily brief's Congress items. Add hearings and floor action it missed.",
-            "candidates": [cand(x) for x in daily_feed.hill_candidates(ledger)],
-        },
-        "in_the_news": {"items": copy["in_the_news"],
-                        "dek": "The week's top China stories in priority outlets"},
-        "banner_src": a.banner,
-        "research_roundup": {
-            "items": copy["research_roundup"],
-            "spec": "Verify each item on its page before send.",
-            "gap": "Found by search; the publication pages could not be opened from the build "
-                   "machine. No CRS China product was found dated Sep 28 to Oct 2.",
-        },
-        "in_the_works": {"items": works},
-        "on_the_horizon": {"items": horizon},
-        "contact": copy["contact"],
-        "footer": ("The China Room Brief is compiled by CSIS External Relations. Look-back items draw on the "
-                   "CSIS China Daily Brief; calendar items come from the China Room editorial calendar."),
-    }
+        research_note="Found by search; the publication pages could not be opened from the build "
+                      "machine. No CRS China product was found dated Sep 26 to Oct 2.")
+    if not WEB_BASE:   # local preview: point the links at out/site/
+        issue["web_url"], issue["archive_url"] = f"site/{iso}.html", "site/archive.html"
 
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)

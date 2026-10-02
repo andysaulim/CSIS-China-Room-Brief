@@ -1,0 +1,68 @@
+name: China Room Brief
+
+# Thursday 12:00 ET: draft to DRAFT_TO (Nina and the coordinator).
+# Friday send is manual during the test runs: Actions > China Room Brief >
+# Run workflow > mode "send". Schedule it once the test runs hold up.
+on:
+  schedule:
+    - cron: "0 16 * * 4"   # 12:00 EDT; becomes 11:00 EST after Nov 1
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "draft or send"
+        required: true
+        default: "draft"
+        type: choice
+        options: [draft, send]
+      issue_date:
+        description: "Friday issue date, YYYY-MM-DD (blank = next Friday)"
+        required: false
+      style:
+        description: "house or brevity"
+        required: false
+        default: "house"
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Run
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          GMAIL_FROM: ${{ secrets.GMAIL_FROM }}
+          DRAFT_TO: ${{ secrets.DRAFT_TO }}
+          BRIEF_TO: ${{ secrets.BRIEF_TO }}
+          TRACKER_URL: ${{ secrets.TRACKER_URL }}
+          CHINA_ROOM_CALENDAR_URL: ${{ secrets.CHINA_ROOM_CALENDAR_URL }}
+          CHINA_ROOM_WEB_BASE: ${{ vars.CHINA_ROOM_WEB_BASE }}
+        run: |
+          MODE="${{ github.event.inputs.mode || 'draft' }}"
+          ARGS=""
+          if [ -n "${{ github.event.inputs.issue_date }}" ]; then ARGS="--issue-date ${{ github.event.inputs.issue_date }}"; fi
+          if [ "$MODE" = "draft" ]; then ARGS="$ARGS --style ${{ github.event.inputs.style || 'house' }}"; fi
+          python weekly.py "$MODE" $ARGS
+      - name: Save the issue copy
+        run: |
+          git config user.name "china-room-brief-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add issues/*.json || true
+          git diff --cached --quiet || (git commit -m "Issue copy $(date +%F)" && git push)
+      - name: Keep the rendered issue and web copy
+        uses: actions/upload-artifact@v4
+        with:
+          name: china-room-brief
+          path: |
+            out/
+            site/
+          retention-days: 90
