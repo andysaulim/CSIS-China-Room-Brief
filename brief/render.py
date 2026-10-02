@@ -84,15 +84,32 @@ def part_head(label: str, dek: str, half: str) -> str:
             f'color:{MUTE};margin-top:4px;padding-bottom:9px;border-bottom:2px solid {color};">{esc(dek)}</div></div>')
 
 
-def item(tag: str, headline: str, url: str = "", body: str = "", rule: str = NAVY) -> str:
+def axiom(label: str, text: str) -> str:
+    """A Smart Brevity signpost: bold label, then one plain sentence."""
+    return (f'<div style="font-family:{SERIF};font-size:15px;line-height:1.6;color:{INK};margin-top:6px;">'
+            f'<strong style="font-family:{SANS};font-size:14px;">{esc(label)}:</strong> {esc(text)}</div>')
+
+
+def bullets(points: list[str]) -> str:
+    if not points:
+        return ""
+    lis = "".join(f'<li style="margin:0 0 5px;">{esc(p)}</li>' for p in points)
+    return (f'<ul style="margin:6px 0 0 18px;padding:0;font-family:{SERIF};font-size:15px;'
+            f'line-height:1.55;color:{INK};">{lis}</ul>')
+
+
+def item(i: dict, rule: str = NAVY) -> str:
+    """Headline, a one-sentence lede, Why it matters, then bullets."""
     tag_html = (f'<div style="font-family:{SANS};font-size:10px;color:{MUTE};'
                 f'text-transform:uppercase;letter-spacing:1px;font-weight:600;'
-                f'margin-bottom:2px;">{tag}</div>') if tag else ""
-    body_html = (f'<div style="font-family:{SERIF};font-size:14px;line-height:1.6;'
-                 f'color:{BODY};margin-top:4px;">{body}</div>') if body else ""
-    return (f'<div style="margin-bottom:16px;padding-left:12px;border-left:3px solid {rule};">'
-            f'{tag_html}<div style="font-family:{SERIF};font-size:15px;font-weight:700;'
-            f'color:{INK};line-height:1.4;">{link(esc(headline), url)}</div>{body_html}</div>')
+                f'margin-bottom:2px;">{i["tag"]}</div>') if i.get("tag") else ""
+    lede = (f'<div style="font-family:{SERIF};font-size:15px;line-height:1.6;color:{INK};margin-top:4px;">'
+            f'{esc(i["body"])}</div>') if i.get("body") else ""
+    why = axiom("Why it matters", i["why"]) if i.get("why") else ""
+    return (f'<div style="margin-bottom:18px;padding-left:12px;border-left:3px solid {rule};">'
+            f'{tag_html}<div style="font-family:{SERIF};font-size:17px;font-weight:700;'
+            f'color:{INK};line-height:1.35;">{link(esc(i["headline"]), i.get("url", ""))}</div>'
+            f'{lede}{why}{bullets(i.get("bullets", []))}</div>')
 
 
 def prose(text: str, size: int = 15) -> str:
@@ -154,9 +171,17 @@ def lead_story(lead: dict) -> str:
     kicker = (f'<div style="font-family:{SANS};font-size:10px;font-weight:700;letter-spacing:1.5px;'
               f'text-transform:uppercase;color:{MUTE};margin-bottom:6px;">{esc(lead.get("kicker", ""))}</div>'
               ) if lead.get("kicker") else ""
+    parts = prose(lead.get("body", ""))
+    if lead.get("why"):
+        parts += axiom("Why it matters", lead["why"])
+    if lead.get("driving"):
+        parts += (f'<div style="font-family:{SANS};font-size:14px;font-weight:700;color:{INK};margin-top:12px;">'
+                  f'Driving the news:</div>' + bullets(lead["driving"]))
+    if lead.get("between"):
+        parts += axiom("Between the lines", lead["between"])
     return (f'{kicker}<div style="font-family:{SERIF};font-size:22px;font-weight:700;line-height:1.3;'
             f'color:{INK};margin-bottom:10px;">{esc(lead["headline"])}</div>'
-            f'{prose(lead.get("body", ""))}{cov_html}')
+            f'{parts}{cov_html}')
 
 
 def also_list(items: list[dict]) -> str:
@@ -174,13 +199,16 @@ def also_list(items: list[dict]) -> str:
 
 def word_count(issue: dict) -> int:
     """Reader-facing words: section copy, not slots or chrome."""
-    parts = [issue.get("editors_note", "")]
+    parts = [issue.get("editors_note", ""), issue.get("bottom_line", "")]
     for key, *_ in SECTIONS:
         s = issue.get(key, {})
+        parts.append(s.get("big_picture", ""))
         for it in s.get("items", []) + s.get("also", []):
-            parts += [it.get("headline", ""), it.get("body", ""), it.get("detail", "")]
+            parts += [it.get("headline", ""), it.get("body", ""), it.get("detail", ""), it.get("why", "")]
+            parts += it.get("bullets", [])
         lead = s.get("lead") or {}
-        parts += [lead.get("headline", ""), lead.get("body", "")]
+        parts += [lead.get("headline", ""), lead.get("body", ""), lead.get("why", ""), lead.get("between", "")]
+        parts += lead.get("driving", [])
         parts += [c.get("headline", "") for c in lead.get("coverage", [])]
     return len(re.findall(r"[\w'’$%.,-]+", " ".join(parts)))
 
@@ -254,8 +282,9 @@ def render(issue: dict, mode: str = "final") -> str:
                            for i in s.get("items", []))
         else:
             rule = NAVY if half != "back" else BACK_BAR
-            body = "".join(item(i.get("tag", ""), i["headline"], i.get("url", ""), esc(i.get("body", "")), rule)
-                           for i in s.get("items", []))
+            body = "".join(item(i, rule) for i in s.get("items", []))
+        if s.get("big_picture") and body:
+            body = (f'<div style="margin:0 0 16px;">{axiom("The big picture", s["big_picture"])}</div>') + body
         if draft and (not body or s.get("candidates") or s.get("gap")):
             body += slot(s.get("spec", ""), s.get("candidates"), s.get("gap", ""))
         if body:
@@ -268,6 +297,9 @@ def render(issue: dict, mode: str = "final") -> str:
     out.append(part_head("The Week Ahead", issue.get("ahead_window", ""), "ahead"))
     for k in ("in_the_works", "on_the_horizon"):
         section(k)
+
+    if issue.get("bottom_line"):
+        out.append(f'<div {_SEC}>{axiom("The bottom line", issue["bottom_line"])}</div>')
 
     # Contact
     c = issue.get("contact") or {}
