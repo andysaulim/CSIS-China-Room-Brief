@@ -1,147 +1,133 @@
 {
- "re_line": "Xi state visit in Washington, $30 billion tariff relief, Taiwan arms package on hold, Perdue arms-sale remark, China aid to Iran",
- "editors_note": "Xi's Washington visit produced $30 billion in reciprocal tariff relief, a November AI dialogue and a coal pledge, but left export controls, AI governance and Taiwan unresolved. A $14 billion Taiwan arms package remains on hold.",
+ "re_line": "Xi state visit, $30 billion tariff cuts, Taiwan arms package, China and Iran, Congress on Chinese tech",
+ "editors_note": "Xi's Washington visit produced a two-month truce extension, $30 billion in reciprocal tariff cuts and a November AI dialogue. Export controls, AI governance and Taiwan were left unresolved.",
  "warnings": [],
  "week_at_a_glance": [
   {
    "tag": "Energy, Oct 7",
-   "headline": "Fuel export approvals unclear as Golden Week ends Oct. 7",
-   "body": "Chinese refiners suspended October fuel exports beyond Hong Kong and Macau, and PetroChina cancelled a small number of planned gasoline and jet-fuel cargoes on Sept. 30, Reuters reported.",
-   "why": "Lianhe Zaobao said it is unclear whether Beijing will resume approvals after the holiday ends Oct. 7.",
-   "bullets": [],
+   "headline": "Golden Week ends Oct. 7 with fuel exports suspended",
+   "body": "Chinese refiners suspended October fuel exports beyond Hong Kong and Macau, and PetroChina cancelled some gasoline and jet-fuel cargoes on Sept. 30, Reuters reported. Lianhe Zaobao reported it is unclear whether Beijing will resume approvals after the holiday ends Oct. 7.",
    "url": "https://www.reuters.com/business/energy/chinese-refiners-suspend-oct-fuel-exports-petrochina-cancels-cargoes-sources-say-2026-10-01/"
   },
   {
-   "tag": "PBOC, Oct 8",
-   "headline": "PBOC reverse repo of 1.2 trillion yuan set for Oct. 8",
-   "body": "The PBOC will run a 1.2 trillion yuan three-month buyout reverse repo operation on Oct. 8, part of a package that includes a nationwide mortgage-interest subsidy effective Oct. 1, Reuters reported.",
-   "why": "Bloomberg cited analysts saying the package is likely to secure Beijing's GDP target for the year but deliver little additional lift.",
-   "bullets": [],
-   "url": "https://www.reuters.com/world/asia-pacific/china-unveils-rate-cut-mortgage-subsidies-spur-growth-2026-09-29/"
+   "tag": "Trade, Nov 10",
+   "headline": "Busan-deal suspensions set to expire around Nov. 10",
+   "body": "Rare-earth and yttrium export controls remain a live flashpoint ahead of the roughly Nov. 10 expiration of last year's Busan-deal suspensions, the Wall Street Journal reported. The Journal charted U.S. countermeasures including tariffs, stockpiling and domestic-production subsidies.",
+   "url": "https://www.wsj.com/politics/national-security/china-critical-minerals-supply-chain-charts-fbe4eb85"
   },
   {
-   "tag": "Golden Week, Oct 1-7",
-   "headline": "Golden Week travel heads to Southeast Asia, not Japan",
-   "body": "China's seven-day holiday began Oct. 1 with over 2 billion passenger trips expected, many headed to Southeast Asia rather than Japan, Nikkei Asia reported.",
-   "why": "Japan's tourism agency data showed Chinese visitors fell roughly 60 percent year-on-year in August amid bilateral tensions.",
-   "bullets": [],
-   "url": "https://asia.nikkei.com/business/travel-leisure/chinese-tourists-shun-japan-for-southeast-asia-during-long-holiday"
+   "tag": "Diplomacy, November",
+   "headline": "Trump to meet Xi in China during APEC Shenzhen",
+   "body": "Trump said he will travel to China in November to meet Xi again, Reuters reported. The trip would coincide with the APEC summit in Shenzhen.",
+   "url": "https://www.reuters.com/world/china/trump-says-he-will-meet-xi-china-november-2026-09-25/"
   }
  ],
  "heard_on_the_hill": [
   {
    "tag": "Senate, Oct 1",
-   "headline": "Wicker says U.S. must honor Taiwan commitments",
-   "body": "Senate Armed Services Committee Chairman Roger Wicker said Washington's security commitments to Taiwan must be upheld after meeting Taiwan's Representative to the U.S. Alexander Yui, the Taipei Times reported.",
-   "why": "Four other Republican senators separately called on the Trump administration to release more than $14 billion in stalled Taiwan security assistance.",
-   "bullets": [],
-   "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/10/01/2003865191"
-  },
-  {
-   "tag": "House, Sept 30",
-   "headline": "Johnson rejects arms package as trade leverage",
-   "body": "House Speaker Mike Johnson said Taiwan's stability is important to U.S. national security and dismissed suggestions that a delayed $14 billion arms package is being used as leverage in trade talks, the Taipei Times reported.",
-   "why": "He said Trump will have completed roughly $40 billion in Taiwan arms sales across two terms.",
-   "bullets": [],
-   "url": "https://www.taipeitimes.com/News/front/archives/2026/09/30/2003865114"
+   "headline": "Senate delays Chinese car ban until after midterms",
+   "body": "The Senate punted a bill that would permanently ban Chinese-made cars from the U.S. market until after the Nov. 3 midterm elections, AP reported. Reuters reported senators plan to bring the measure up again for a vote in November.",
+   "url": "https://apnews.com/article/senate-chinese-ev-ban-elections-mercedesbenz-220c9c816ed0f73eb867775c666b0b9e"
   },
   {
    "tag": "Senate, Sept 28",
    "headline": "Senate bill would bar Chinese optical modules",
-   "body": "A bipartisan Senate group proposed legislation banning Chinese-made optical modules from federal national-security systems, with a five-year grace period, Jiemian reported.",
-   "why": "Chinese optical and communications stocks sold off Sept. 28, with ChiNext down 4.53 percent and the SSE Composite down 3.2 percent to a one-year low.",
-   "bullets": [],
+   "body": "A bipartisan Senate group proposed legislation banning Chinese-made optical modules from federal national-security systems, with a five-year grace period, Jiemian reported. Chinese optical and communications stocks sold off sharply on Monday, with the ChiNext index down 4.53 percent.",
    "url": "https://www.jiemian.com/article/15146108.html"
   },
   {
-   "tag": "Senate, Oct 1",
-   "headline": "Senate delays Chinese car ban until after midterms",
-   "body": "The Senate punted a bill that would permanently ban Chinese-made cars from the U.S. market until after the Nov. 3 midterm elections, AP reported.",
-   "why": "Reuters reported senators plan to bring the measure up again for a vote in November.",
-   "bullets": [],
-   "url": "https://apnews.com/article/senate-chinese-ev-ban-elections-mercedesbenz-220c9c816ed0f73eb867775c666b0b9e"
+   "tag": "Congress, Sept 26",
+   "headline": "Lawmakers move to bar Chinese datacenter technology",
+   "body": "Members of Congress are moving to keep Chinese-origin datacenter hardware and software out of sensitive U.S. government systems, Reuters reported. The push follows warnings that Chinese AI models and cloud infrastructure could pose data-security risks to federal networks.",
+   "url": "https://www.reuters.com/legal/litigation/us-lawmakers-aim-keep-chinas-datacenter-tech-out-sensitive-government-systems-2026-09-25/"
   },
   {
-   "tag": "Senate, Sept 30",
-   "headline": "Moreno says his vehicle bill spares Mercedes-Benz",
-   "body": "Sen. Moreno said a bill he is sponsoring to bar companies with more than 15 percent Chinese ownership from selling vehicles in the U.S. would not affect Mercedes-Benz, CNBC reported.",
-   "why": "The bill targets Chinese-linked automakers amid a broader congressional push on connected-vehicle restrictions.",
-   "bullets": [],
-   "url": "https://www.cnbc.com/2026/09/29/sen-moreno-chinese-vehicle-bill-will-not-ban-mercedes-benz-in-us.html"
+   "tag": "Senate, Oct 1",
+   "headline": "Wicker says U.S. must honor Taiwan commitments",
+   "body": "Senate Armed Services Committee Chairman Roger Wicker said Washington's security commitments to Taiwan must be upheld after meeting Taiwan's representative to the U.S., Alexander Yui, the Taipei Times reported. Four other Republican senators called on the administration to release more than $14 billion in stalled Taiwan security assistance.",
+   "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/10/01/2003865191"
+  },
+  {
+   "tag": "House, Sept 30",
+   "headline": "Johnson rejects claims arms package is trade leverage",
+   "body": "House Speaker Mike Johnson said Taiwan's stability is important to U.S. national security and the economy, and dismissed suggestions that a delayed $14 billion arms package is being used as leverage in trade talks, the Taipei Times reported. He said Trump will have completed roughly $40 billion in Taiwan arms sales across two terms.",
+   "url": "https://www.taipeitimes.com/News/front/archives/2026/09/30/2003865114"
   }
  ],
  "in_the_news": [
   {
    "tag": "Reuters, September 26",
-   "headline": "China, US agree $30 billion reciprocal tariff cut, new AI dialogue after Xi's Washington visit",
-   "body": "Reuters reported China's foreign ministry said the Sept. 23-25 Xi-Trump summit produced an eight-point consensus, including $30 billion in reciprocal tariff relief and a new AI dialogue with the next round set for November, while Treasury Secretary Scott Bessent said the tariff truce was extended by two months, per the Financial Times. The tariff lists published Sept. 28 cover roughly $60 billion of two-way trade but leave off soybeans, Reuters reported, and CNN, citing Nikkei, said rare earths stayed off both lists.",
-   "why": "",
+   "headline": "China, U.S. agree $30 billion reciprocal tariff cut, new AI dialogue after Xi's Washington visit",
+   "body": "China's foreign ministry said the Sept. 23-25 summit produced an eight-point consensus, including $30 billion in reciprocal tariff relief and an AI dialogue due in November, Reuters reported. AP reported the sides agreed to an AI-incident channel, and Bloomberg reported China committed to importing at least 10 million metric tons of U.S. coal annually in 2027 and 2028.",
    "url": "https://www.reuters.com/world/china/china-us-agree-30-billion-tariff-cut-ai-dialogue-during-xi-visit-2026-09-26/"
   },
   {
    "tag": "Bloomberg, September 25",
    "headline": "Xi presses Trump to 'oppose' Taiwan independence",
-   "body": "Xi Jinping pressed Donald Trump to 'oppose' Taiwan independence at their Sept. 24 White House meeting, Bloomberg reported, and Taiwan's government accused Xi of 'distorting facts,' per Reuters. A $14 billion Taiwan arms package remains stalled, AP reported, while Trump said only that Xi 'knows how I feel' on the issue.",
-   "why": "",
+   "body": "Xi pressed Trump to \"oppose\" Taiwan independence at their Sept. 24 White House meeting, Bloomberg reported, and Reuters reported Taiwan's government accused Xi of \"distorting facts.\" AP reported a $14 billion arms package remains stalled, while Trump said only that Xi \"knows how I feel\" on Taiwan.",
    "url": "https://www.bloomberg.com/news/articles/2026-09-24/xi-presses-trump-to-oppose-taiwan-independence-during-summit"
   },
   {
    "tag": "CNN, September 25",
-   "headline": "Chinese intelligence aids Iran's improved targeting of US forces",
-   "body": "Satellite imagery and intelligence support from Chinese groups has helped Iran strike U.S. military bases with improved precision, according to U.S. intelligence assessments described to CNN by four sources. Reuters reported that Ambassador David Perdue said Trump warned Xi at the summit that Chinese assistance to Iran was \"totally unacceptable\" and received assurances.",
-   "why": "",
+   "headline": "Chinese intelligence aids Iran's improved targeting of U.S. forces",
+   "body": "U.S. intelligence assessments described to CNN by four sources found that satellite imagery and intelligence support from Chinese groups helped Iran strike U.S. military bases with improved precision. Reuters reported Ambassador David Perdue said Trump told Xi that Chinese assistance to Iran was \"totally unacceptable\" and received assurances.",
    "url": "https://www.cnn.com/2026/09/25/politics/china-intelligence-iran-targeting-hormuz"
   },
   {
-   "tag": "Associated Press, September 29",
-   "headline": "Trump denies offering to sell US arms to Xi after ambassador says he did",
-   "body": "Trump said he had \"never heard of\" offering to sell weapons to Xi, contradicting Ambassador David Perdue's claim on Fox News that Trump made the offer at the summit, AP reported. The State Department said the U.S. has no plans to sell weapons to China, the Wall Street Journal reported, and the Guardian cited PBS reporting that Trump later said Perdue 'was probably talking about Taiwan.'",
-   "why": "",
-   "url": "https://apnews.com/article/trump-xi-china-arms-sales-weapons-b5df7c498d2165c646a559799116786b"
+   "tag": "Reuters, October 1",
+   "headline": "U.S. officials see Chinese invasion of Taiwan unlikely before 2028",
+   "body": "U.S. officials believe Beijing is unlikely to use force against Taiwan before 2028, even though Xi has ordered the PLA to be ready to do so by 2027, Reuters reported. Officials pointed to an anti-corruption purge that has slowed PLA readiness and said Beijing may wait for the outcome of Taiwan's 2028 election.",
+   "url": "https://www.reuters.com/world/china/us-sees-chinese-invasion-taiwan-unlikely-next-year-despite-2027-timeline-sources-2026-10-01/"
   },
   {
-   "tag": "Reuters, October 1",
-   "headline": "US Officials See Chinese Invasion of Taiwan Unlikely Before 2028",
-   "body": "U.S. officials believe Beijing is unlikely to use force against Taiwan before 2028, even though Xi has ordered the PLA to be ready by 2027, Reuters reported, citing two current U.S. officials, a former official and another source. Officials pointed to an anti-corruption purge that leaves only two of seven Central Military Commission members in active service, including Xi.",
-   "why": "",
-   "url": "https://www.reuters.com/world/china/us-sees-chinese-invasion-taiwan-unlikely-next-year-despite-2027-timeline-sources-2026-10-01/"
+   "tag": "Reuters, September 28",
+   "headline": "China cuts tariffs on U.S. farm goods but excludes soybeans from relief list",
+   "body": "China published its tariff-cut list under the $30-billion-per-side framework, lowering levies on U.S. farm goods, cosmetics and medical devices but leaving soybeans off, Reuters reported. Nikkei reported rare earths stayed off both countries' lists, and Reuters reported China's soybean purchases remain weak despite a pledge to buy at least $17 billion a year of U.S. farm goods.",
+   "url": "https://www.reuters.com/world/china/china-says-cut-tariffs-us-farm-goods-soybeans-excluded-2026-09-28/"
   }
  ],
  "research_roundup": [
   {
-   "institution": "Lowy Institute",
-   "date": "October 1",
-   "headline": "Trump rolled out the red carpet – and handed Xi a narrative win",
-   "body": "A Lowy Institute piece argues Trump handed Xi a narrative win, with China's deference to history and protocol masking \"a calculated bid for narrative dominance.\"",
-   "url": "https://www.lowyinstitute.org/the-interpreter/trump-rolled-out-the-red-carpet-and-handed-xi-a-narrative-win"
+   "institution": "Brookings",
+   "date": "September 29",
+   "headline": "What did the Trump-Xi summit actually accomplish?",
+   "body": "Brookings asks \"What did the Trump-Xi summit actually accomplish?\" in a review of the Washington visit.",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNay1EUHRSMmlRbzdIbDRTZW5qUzNiZDRuV2hQT3hBb09Hcm5yVVhLQXlwZVNlNm01MUZtUkFWT1dYeE9pclMxQ1cyZW1wVVBra0ptWENMSXdnS3pyLU5zN2pZQXBBSVJhQnVseENySGxfcjhYbW5UY0M2cm1IOEx5VUxTZHo5dkZhcW5Cdw?oc=5"
   },
   {
-   "institution": "Lowy Institute",
-   "date": "October 1",
-   "headline": "How Beijing could throttle Taiwan without firing a shot",
-   "body": "A Lowy Institute piece on how Beijing could throttle Taiwan without firing a shot argues that administrative quarantine \"sounds anodyne\" but for Taiwan \"is war by other means.\"",
-   "url": "https://www.lowyinstitute.org/the-interpreter/how-beijing-could-throttle-taiwan-without-firing-a-shot"
+   "institution": "Carnegie Endowment",
+   "date": "September 30",
+   "headline": "Trump Had the Chance to Address U.S.-China AI Safety. He Threw Xi a Party Instead.",
+   "body": "Carnegie argues that \"Trump had the chance to address U.S.-China AI safety\" at the summit and \"threw Xi a party instead.\"",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9WTjZ0NTNTNmtlVFQtaVA4czZnLUtuVDVMTEF6eGNndjJXTzc4ZDROU0Q5UUpBLXUxX253bmNETWhZbVVkNG1PUk95d0RWNGxCUzFxWWxLdmZQSFZsWmZCUjFXaFRTemw4Z2hmZVhaWWJYX2R4NEZWSnlGdU9Hdw?oc=5"
   },
   {
-   "institution": "ASPI",
-   "date": "October 1",
-   "headline": "A paradoxical purge: Xi shows his power, and his trouble in controlling the PLA",
-   "body": "ASPI argues Xi's continuing purge of senior PLA leadership reveals both the reach of the Chinese Communist Party's disciplinary apparatus and the persistence of disloyalty.",
-   "url": "https://www.aspistrategist.org.au/a-paradoxical-purge-xi-shows-his-power-and-his-trouble-in-controlling-the-pla/"
-  },
-  {
-   "institution": "Jamestown Foundation",
-   "date": "October 1",
-   "headline": "The PRC’s Compute Push Goes Global",
-   "body": "The Jamestown Foundation finds Chinese firms \"languishing under a compute crunch\" from U.S. export controls on high-end GPUs, with Huawei, Cambricon and Biren Technologies yet to fill the gap, and argues the PRC's compute push has gone global anyway.",
-   "url": "https://jamestown.org/the-prcs-compute-push-goes-global/"
-  },
-  {
-   "institution": "ASPI",
+   "institution": "Council on Foreign Relations",
    "date": "September 27",
-   "headline": "Revolting for the CCP: seizing Taiwan could drive Japan to nuclear weapons",
-   "body": "ASPI argues potential Japanese acquisition of nuclear weapons is an under-appreciated deterrent to a Chinese attempt to seize Taiwan.",
-   "url": "https://www.aspistrategist.org.au/revolting-for-the-ccp-seizing-taiwan-could-drive-japan-to-nuclear-weapons/"
+   "headline": "The Limits of Trump and Xi’s Photo-Op Summit",
+   "body": "CFR examines \"the limits of Trump and Xi's photo-op summit.\"",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE1XVTlsVFJ3dDAyMWM2ZzFVdjhiQVFyak13Qkt5enkxR0x2NW1sN2VFRWpYNm1nZXFCSmRGajhzNVkzZndycXVGWGc0eUd0WEZJVFVpQWF0SU9kTzJJRTI3d19Rd1JMUkFTWEFSckJSRkdLZ2cxUnZFbjNmS2Q?oc=5"
+  },
+  {
+   "institution": "CNAS",
+   "date": "September 29",
+   "headline": "The Trump-Xi Summit Leaves Taiwan in Limbo",
+   "body": "CNAS argues that \"the Trump-Xi summit leaves Taiwan in limbo.\"",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPeWtNakxUMEpiaFl3SUNObTlfZE14N25LSzIwSHJkaTFCY2NxRzE5eVUxc3B1d1JNNDJkN0lCQ21UYk5NVmJkcXVlREJEaktaVXZzYm9vdnE5ZC0zdnFNczZwVTBPeEtUejBoV0tJZmFoTjZNdndyTHVyQ1FBMFNxbXhlVW5pLTItaGNIc1VQQ3k?oc=5"
+  },
+  {
+   "institution": "PIIE",
+   "date": "September 30",
+   "headline": "How do we deal with Chinese overcapacity?",
+   "body": "PIIE takes up the question of how to deal with Chinese overcapacity.",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5oN1BjemFVZ1gxMlFmSnlGUnpHaHdibXJ3S2xzdVVpNWJBb3JCWWRabDY4bzZHOEZGbGJhTTEwV1ZDc1lVRzNhMXpuREVPb1QyUnBtNWE4ZjNpdklPWWdNRUp2RVJ3OGhQRG45SE0zLXNoQnMxbGRN?oc=5"
+  },
+  {
+   "institution": "AEI",
+   "date": "October 1",
+   "headline": "The Looming Closure of China’s AI Frontier - American Enterprise Institute",
+   "body": "AEI writes on \"the looming closure of China's AI frontier.\"",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPY1QtZ1VvYjFhTUN2LVdMV3ZyUHRmNXdwSlljek0tSWFFR09TWnZ5M0NlMVhjNFBTaE1YOUpwQzZ0bzlXZV9IR2FmS0ZZb1BIUTNYdGgxTmpSZ2tjWWJKQUE2by1KYXJ4MEhKV1JOT3BabmY3Z094MnlxZHEwMk5TS1BXUkN0ZlM5TzUzRXQweW9tTVU?oc=5"
   }
  ],
  "hill_docket": {
