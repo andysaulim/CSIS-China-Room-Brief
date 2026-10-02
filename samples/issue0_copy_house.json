@@ -70,27 +70,32 @@
   {
    "tag": "Associated Press &middot; Sep 27",
    "headline": "China, US agree to AI-incident channel, $30bn tariff cuts in eight-point summit consensus",
-   "url": "https://apnews.com/article/china-us-agreement-xi-trump-visit-e8f858ed9094b99bc8d3d339f9899f31"
+   "url": "https://apnews.com/article/china-us-agreement-xi-trump-visit-e8f858ed9094b99bc8d3d339f9899f31",
+   "body": "The two sides agreed to a channel for AI incidents and lower tariffs on $30 billion of goods each way, according to an eight-point readout Beijing published after Xi Jinping's Sep 23–25 state visit. The readout also lists a November AI dialogue and a pledge that Iran should not develop nuclear weapons, and the two militaries agreed to sign a crisis-communication memorandum."
   },
   {
    "tag": "New York Times &middot; Sep 27",
    "headline": "Trump asked Xi if China wanted to buy US weapons, ambassador says",
-   "url": "https://www.nytimes.com/2026/09/27/us/politics/trump-weapons-sale-china.html"
+   "url": "https://www.nytimes.com/2026/09/27/us/politics/trump-weapons-sale-china.html",
+   "body": "Ambassador David Perdue told Fox News that Trump asked Xi at the summit whether China wanted to buy American weapons. The State Department said the US has no plans to sell weapons to China, and Trump told reporters he had \"never heard of\" the offer."
   },
   {
    "tag": "CNBC &middot; Oct 1",
    "headline": "Xi marks 77th PRC anniversary with hardened Taiwan message",
-   "url": "https://www.cnbc.com/2026/10/01/china-golden-week-holiday-taiwan-consumption-travel.html"
+   "url": "https://www.cnbc.com/2026/10/01/china-golden-week-holiday-taiwan-consumption-travel.html",
+   "body": "Xi used his National Day address to sharpen Beijing's message on Taiwan, CNBC reported. At the Sep 30 reception he said China will \"resolutely fight secessionist forces seeking 'Taiwanese independence,'\" per Reuters; Taiwan's Mainland Affairs Council said the phrasing is not new."
   },
   {
    "tag": "Reuters &middot; Oct 1",
    "headline": "US officials see Chinese invasion of Taiwan unlikely before 2028",
-   "url": "https://www.reuters.com/world/china/us-sees-chinese-invasion-taiwan-unlikely-next-year-despite-2027-timeline-sources-2026-10-01/"
+   "url": "https://www.reuters.com/world/china/us-sees-chinese-invasion-taiwan-unlikely-next-year-despite-2027-timeline-sources-2026-10-01/",
+   "body": "Two current US officials, a former official and a fourth source told Reuters that Beijing is unlikely to use force against Taiwan before 2028, despite Xi's order that the PLA be ready by 2027. They point to the anti-corruption purge: two of seven Central Military Commission members, Xi among them, remain in active service."
   },
   {
    "tag": "Reuters &middot; Sep 29",
    "headline": "Beijing unveils mortgage subsidy, rate cut and 1.2 trillion yuan liquidity injection",
-   "url": "https://www.reuters.com/world/asia-pacific/china-unveils-rate-cut-mortgage-subsidies-spur-growth-2026-09-29/"
+   "url": "https://www.reuters.com/world/asia-pacific/china-unveils-rate-cut-mortgage-subsidies-spur-growth-2026-09-29/",
+   "body": "The PBOC, the finance ministry and the financial regulator rolled out a nationwide mortgage-interest subsidy effective Oct 1, a cut to the Pledged Supplementary Lending rate and a 1.2 trillion yuan reverse repo set for Oct 8. September manufacturing PMIs returned to expansion at 50.1, CNBC reported."
   }
  ],
  "research_roundup": [

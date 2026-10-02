@@ -39,10 +39,11 @@ def _program(i) -> str:
 
 def calendars(items, issue_date: date):
     works = [{"month": _chip(i)[0], "day": _chip(i)[1], "headline": i.name, "kind": _program(i),
-              "detail": i.description, "url": i.link}
+              "group": i.start.strftime("%B %Y"),
+              "detail": re.sub(r"^[A-Z][A-Z/]{1,15}\s+", "", i.description or ""), "url": i.link}
              for i in tracker.in_the_works(items, issue_date, limit=5)]
     horizon = [{"month": _chip(i)[0], "day": _chip(i)[1], "headline": i.name,
-                "kind": _where(i.description), "detail": "", "url": i.link}
+                "kind": _where(i.description), "group": i.start.strftime("%B %Y"), "detail": "", "url": i.link}
                for i in tracker.on_the_horizon(items, issue_date)]
     return works, horizon
 

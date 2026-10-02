@@ -151,6 +151,48 @@ def calendar_row(month: str, day: str, headline: str, detail: str, url: str = ""
             f'{detail_html}</td></tr></table>')
 
 
+def news_row(n: int, i: dict) -> str:
+    """In the News: ranked, larger type, a summary under each headline."""
+    why = axiom("Why it matters", i["why"]) if i.get("why") else ""
+    body = (f'<div style="font-family:{SERIF};font-size:15px;line-height:1.6;color:{BODY};margin-top:6px;">'
+            f'{esc(i["body"])}</div>') if i.get("body") else ""
+    return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid {RULE};"><tr>'
+            f'<td width="44" style="padding:16px 0 16px;vertical-align:top;font-family:{SERIF};font-size:30px;'
+            f'font-weight:700;line-height:1;color:{NAVY};">{n}</td>'
+            f'<td style="padding:16px 0;vertical-align:top;">'
+            f'<div style="font-family:{SANS};font-size:10px;color:{MUTE};text-transform:uppercase;letter-spacing:1px;'
+            f'font-weight:700;margin-bottom:4px;">{i.get("tag", "")}</div>'
+            f'<div style="font-family:{SERIF};font-size:19px;font-weight:700;line-height:1.3;color:{INK};">'
+            f'{link(esc(i["headline"]), i.get("url", ""))}</div>{body}{why}</td></tr></table>')
+
+
+def agenda(items: list[dict], meta_first: bool = False) -> str:
+    """A printed-agenda calendar: month headings, then one row per date with
+    the day, the item, and its place or program set right."""
+    html, current = "", None
+    for i in items:
+        g = i.get("group", "")
+        if g != current:
+            current = g
+            html += (f'<div style="font-family:{SANS};font-size:11px;font-weight:700;letter-spacing:2px;'
+                     f'text-transform:uppercase;color:{NAVY_BRIGHT};margin:{"0" if not html else "18px"} 0 0;'
+                     f'padding-bottom:6px;border-bottom:2px solid {NAVY};">{esc(g)}</div>')
+        day = i.get("day") or ""
+        size = "17px" if day[:1].isdigit() else "12px"
+        detail = (f'<div style="font-family:{SERIF};font-size:13px;line-height:1.5;color:{BODY};margin-top:3px;">'
+                  f'{esc(i["detail"])}</div>') if i.get("detail") else ""
+        meta = (f'<div class="cal-meta" style="font-family:{SANS};font-size:10px;font-weight:700;letter-spacing:1px;'
+                f'text-transform:uppercase;color:{MUTE};margin-top:4px;">{esc(i.get("kind", ""))}</div>') if i.get("kind") else ""
+        html += (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
+                 f'style="border-bottom:1px solid {RULE};"><tr>'
+                 f'<td width="60" style="padding:11px 10px 11px 0;vertical-align:top;font-family:{SERIF};'
+                 f'font-size:{size};font-weight:700;line-height:1.2;color:{NAVY};white-space:nowrap;">{esc(day)}</td>'
+                 f'<td style="padding:11px 0;vertical-align:top;">'
+                 f'<div style="font-family:{SERIF};font-size:15px;font-weight:700;line-height:1.35;color:{INK};">'
+                 f'{link(esc(i["headline"]), i.get("url", ""))}</div>{meta}{detail}</td></tr></table>')
+    return html
+
+
 def research_row(i: dict) -> str:
     """Institution in its own column, so a reader sees who wrote what at a glance."""
     return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid {RULE};"><tr>'
@@ -237,8 +279,9 @@ def render(issue: dict, mode: str = "final") -> str:
         _, title, half = next(x for x in SECTIONS if x[0] == key)
         s = issue.get(key, {})
         if key in ("in_the_works", "on_the_horizon"):
-            body = "".join(calendar_row(i["month"], i["day"], i["headline"], i.get("detail", ""), i.get("url", ""),
-                                        i.get("kind", "")) for i in s.get("items", []))
+            body = agenda(s.get("items", []))
+        elif key == "in_the_news":
+            body = "".join(news_row(n, i) for n, i in enumerate(s.get("items", []), 1))
         elif key == "research_roundup" and s.get("items") and "institution" in s["items"][0]:
             body = "".join(research_row(i) for i in s["items"])
         else:

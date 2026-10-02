@@ -42,7 +42,7 @@ Sections:
 - editors_note: two short paragraphs, 50 to 90 words in all, plain and direct.
 - week_at_a_glance: exactly three things scheduled or expected in the coming week, from the sources only.
 - heard_on_the_hill: three to six items on Congress (members, bills, hearings, letters) from the past week.
-- in_the_news: the five most important China stories of the past week from the priority-outlet sources (marked [priority]), ranked; when several outlets covered the same story, pick the best-ranked outlet's item and count the story once.
+- in_the_news: the five most important China stories of the past week from the priority-outlet sources (marked [priority]), ranked; when several outlets covered the same story, pick the best-ranked outlet's item and count the story once. Give each a two-sentence summary (body) of what happened, drawing on every source that covered the story and naming outlets for claims; leave why empty unless the style asks for it.
 - research_roundup: two to six publications from the R sources; for each, one sentence on the argument or finding, naming the authors when the source does."""
 
 ITEM = {
@@ -66,8 +66,10 @@ SCHEMA = {
         "week_at_a_glance": {"type": "array", "items": ITEM},
         "heard_on_the_hill": {"type": "array", "items": ITEM},
         "in_the_news": {"type": "array", "items": {
-            "type": "object", "properties": {"source_id": {"type": "string"}},
-            "required": ["source_id"], "additionalProperties": False}},
+            "type": "object",
+            "properties": {"source_id": {"type": "string"}, "body": {"type": "string"},
+                           "why": {"type": "string"}},
+            "required": ["source_id", "body", "why"], "additionalProperties": False}},
         "research_roundup": {"type": "array", "items": {
             "type": "object",
             "properties": {"source_id": {"type": "string"}, "body": {"type": "string"}},
@@ -154,6 +156,7 @@ def resolve(out: dict, index: dict) -> dict:
         copy["in_the_news"].append({
             "tag": f"{src['outlet']} &middot; {_md(d)}",
             "headline": src.get("original_headline") or src["headline"],
+            "body": _clean(it.get("body", "")), "why": _clean(it.get("why", "")),
             "url": src["url"]})
     copy["research_roundup"] = []
     for it in out["research_roundup"]:
