@@ -37,7 +37,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--tracker", required=True)
     ap.add_argument("--ledger", required=True)
-    ap.add_argument("--copy", default="samples/issue0_copy.json")
+    ap.add_argument("--copy", default="samples/issue0_copy_house.json")
+    ap.add_argument("--suffix", default="", help="added to output file names, e.g. _brevity")
     ap.add_argument("--out", default="out")
     a = ap.parse_args()
 
@@ -77,6 +78,7 @@ def main():
         "archive_url": f"{WEB_BASE}/archive.html" if WEB_BASE else "site/archive.html",
         "re_line": copy["re_line"],
         "editors_note": copy["editors_note"],
+        "bottom_line": copy.get("bottom_line", ""),
         "back_window": "Sep 28 to Oct 4",
         "ahead_window": "Oct 6 onward",
         "week_at_a_glance": {
@@ -88,12 +90,14 @@ def main():
         },
         "heard_on_the_hill": {
             "items": copy["heard_on_the_hill"],
+            "big_picture": copy.get("heard_on_the_hill_big_picture", ""),
             "spec": "Draft above, from the daily brief's Congress items. Add hearings and floor action it missed.",
             "candidates": [cand(x) for x in daily_feed.hill_candidates(ledger)],
         },
         "in_the_news": copy["in_the_news"],
         "research_roundup": {
             "items": copy["research_roundup"],
+            "big_picture": copy.get("research_roundup_big_picture", ""),
             "spec": "Verify each item on its page before send.",
             "gap": "Found by search; the publication pages could not be opened from the build "
                    "machine. No CRS China product was found dated Sep 28 to Oct 2.",
@@ -107,9 +111,10 @@ def main():
 
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    (out / f"draft_{iso}.html").write_text(render.render(issue, "draft"), encoding="utf-8")
+    sfx = a.suffix
+    (out / f"draft_{iso}{sfx}.html").write_text(render.render(issue, "draft"), encoding="utf-8")
     final = render.render(issue, "final")
-    (out / f"email_{iso}.html").write_text(final, encoding="utf-8")
+    (out / f"email_{iso}{sfx}.html").write_text(final, encoding="utf-8")
     archive.publish(out / "site", iso, final.replace('href="site/', 'href="'),
                     {"date_line": issue["date_line"], "label": "Issue 0", "re_line": issue["re_line"]})
 
