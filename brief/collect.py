@@ -183,11 +183,41 @@ def research_items(start: date, end: date) -> list[dict]:
             if not _CHINA.search(title + " " + summary):
                 continue
             # Google News titles end in " - Publisher"
-            title = re.sub(r"\s+-\s+[^-]{2,60}$", "", title) if "news.google.com" in url else title
+            if "news.google.com" in url:   # one or two " - Publisher" tails
+                for _ in range(2):
+                    title = re.sub(r"\s+[-|–]\s+[^-|–]{2,60}$", "", title)
             out.append({"institution": inst, "title": title, "url": e.get("link", ""),
                         "date": when.date().isoformat(),
                         "summary": _html.unescape(re.sub(r"\s+", " ", summary)).strip()[:500]})
     return out
+
+
+def publisher_url(url: str) -> str:
+    """Resolve a news.google.com/rss/articles/<id> link to the publisher's URL.
+
+    Google encodes the target and only hands it back through its batchexecute
+    endpoint, given the signature and timestamp printed on the article page.
+    Undocumented, so any failure returns the Google link unchanged.
+    """
+    import json
+    from urllib.parse import quote, urlparse
+
+    if "news.google.com" not in url:
+        return url
+    gid = urlparse(url).path.rstrip("/").split("/")[-1]
+    try:
+        page = requests.get(f"https://news.google.com/articles/{gid}", headers=BROWSER_UA, timeout=15).text
+        sg = re.search(r'data-n-a-sg="([^"]+)"', page).group(1)
+        ts = re.search(r'data-n-a-ts="([^"]+)"', page).group(1)
+        req = ["Fbv4je", '["garturlreq",[["X","X",["X","X"],null,null,1,1,"US:en",null,1,null,null,null,null,null,0,1],'
+                         f'"X","X",1,[1,1,1],1,1,null,0,0,null,0],"{gid}",{ts},"{sg}"]']
+        r = requests.post("https://news.google.com/_/DotsSplashUi/data/batchexecute",
+                          headers={**BROWSER_UA, "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"},
+                          data=f"f.req={quote(json.dumps([[req]]))}", timeout=15)
+        target = json.loads(json.loads(r.text.split("\n\n")[1])[0][2])[1]
+        return target if target.startswith("http") else url
+    except Exception:
+        return url
 
 
 # ---------- the tracker ----------

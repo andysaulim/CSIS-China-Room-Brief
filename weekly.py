@@ -82,6 +82,10 @@ def cmd_draft(issue_date: date, style: str) -> None:
 
     copy = compose.draft(news, research, cal, f"{label(start)} to {label(end)}", style)
     copy["hill_docket"] = dk
+    for it in copy.get("research_roundup", []):
+        it["url"] = collect.publisher_url(it["url"])
+    gn = sum("news.google.com" in it["url"] for it in copy.get("research_roundup", []))
+    print(f"research links still on news.google.com: {gn}")
     ISSUES.mkdir(exist_ok=True)
     f = ISSUES / f"{issue_date.isoformat()}.json"
     f.write_text(json.dumps(copy, ensure_ascii=False, indent=1), encoding="utf-8")
