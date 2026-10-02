@@ -89,7 +89,7 @@ def cmd_draft(issue_date: date, style: str) -> None:
     html = render.render(issue, "draft", os.environ.get("BRIEF_THEME", "briefing"))
     (ROOT / "out").mkdir(exist_ok=True)
     (ROOT / "out" / f"draft_{issue_date.isoformat()}.html").write_text(html, encoding="utf-8")
-    sent = mailer.send(html, f"[DRAFT] China Room Brief, {label(issue_date)}: {copy['re_line']}", "DRAFT_TO")
+    sent = mailer.send(html, f"[DRAFT] China Room Brief, {label(issue_date)}: {copy['re_line']}", "DRAFT_TO", BANNER)
     print(f"draft for {issue_date}: {len(news)} news, {len(research)} research, "
           f"{len(audit)} tracker findings, sent to {len(sent)}")
 
@@ -105,7 +105,7 @@ def cmd_send(issue_date: date) -> None:
     html = render.render(issue, "final", os.environ.get("BRIEF_THEME", "briefing"))
     archive.publish(ROOT / "site", issue_date.isoformat(), html,
                     {"date_line": issue["date_line"], "label": f"No. {n}", "re_line": issue["re_line"]})
-    sent = mailer.send(html, f"China Room Brief, {label(issue_date)}: {copy['re_line']}", "BRIEF_TO")
+    sent = mailer.send(html, f"China Room Brief, {label(issue_date)}: {copy['re_line']}", "BRIEF_TO", BANNER)
     print(f"sent {issue_date} to {len(sent)}")
 
 
