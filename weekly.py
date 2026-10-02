@@ -98,6 +98,16 @@ def cmd_draft(issue_date: date, style: str) -> None:
     print("checks:\n  " + "\n  ".join(copy["qa"] or ["none"]))
     ISSUES.mkdir(exist_ok=True)
     f = ISSUES / f"{issue_date.isoformat()}.json"
+    # Fields an editor fixed by hand and listed under "keep" survive a re-run.
+    if f.exists():
+        prior = json.loads(f.read_text(encoding="utf-8"))
+        for k in prior.get("keep", []):
+            if k in prior:
+                copy[k] = prior[k]
+        if prior.get("keep"):
+            copy["keep"] = prior["keep"]
+            copy["qa"] = [q for q in copy.get("qa", []) if not (q.startswith("Editor's note") and "editors_note" in prior["keep"])]
+            print("kept from the edited copy: " + ", ".join(prior["keep"]))
     f.write_text(json.dumps(copy, ensure_ascii=False, indent=1), encoding="utf-8")
 
     notes = []

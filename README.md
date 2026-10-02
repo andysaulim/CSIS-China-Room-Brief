@@ -21,6 +21,7 @@ The back half runs on black section bars, the ahead half on navy, and an In this
 | Wed 5 pm | Tracker updated for Friday's issue | Comms coordinator and interns |
 | Thu 12 pm | `weekly.py draft`: reads the past Friday through Thursday, drafts the copy, saves `issues/YYYY-MM-DD.json`, emails the draft | GitHub Actions |
 | Thu noon | Reads the "Checks before send" box at the top of the draft: outlet mix, repeated events, Google redirect links, Hill sourcing, research summaries that restate titles, prose tells | Comms coordinator |
+| Any time | To keep a hand edit through a re-run, add its field name to the "keep" list in the issue JSON, e.g. `"keep": ["editors_note"]` | Editor |
 | Thu afternoon | Rewrites Editor's Note, Week at a Glance and Heard on the Hill in `issues/YYYY-MM-DD.json` (GitHub's web editor works) | Comms coordinator |
 | Fri 8 am | Final review | Nina Prieur |
 | Fri 9 am | `weekly.py send`, run from the Actions tab | Coordinator |

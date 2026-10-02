@@ -194,5 +194,8 @@
   "In the News outlets: New York Times, Reuters, New York Times, CNN, Bloomberg. 3 of 5 from NYT, WSJ, Washington Post, Bloomberg or FT.",
   "Heard on the Hill cites taipeitimes.com, not a primary record or priority outlet: \"Wicker says U.S. must honor Taiwan commitments\".",
   "\"Reported\" two or more times in 1 item(s), first: \"Senate puts off Chinese car ban until after midterms\"."
+ ],
+ "keep": [
+  "editors_note"
  ]
 }
