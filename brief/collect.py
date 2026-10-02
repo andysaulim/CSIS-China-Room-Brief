@@ -253,10 +253,15 @@ def hill_releases(start: date, end: date) -> list[dict]:
             entries = feedparser.parse(r.content).entries if r else []
             if entries:
                 break
-        log.append(f"{body}: {len(entries)} in feed" + (" (Google News)" if "news.google.com" in url else ""))
+        gn = "news.google.com" in url
+        undated = old = kept = 0
         for e in entries[:60]:
             t = e.get("published_parsed") or e.get("updated_parsed")
-            if not t or not (lo <= datetime(*t[:6], tzinfo=timezone.utc) < hi):
+            if not t:
+                undated += 1
+                continue
+            if not (lo <= datetime(*t[:6], tzinfo=timezone.utc) < hi):
+                old += 1
                 continue
             title = _html.unescape(e.get("title", "")).strip()
             summary = _html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", e.get("summary", "")))).strip()
@@ -264,11 +269,15 @@ def hill_releases(start: date, end: date) -> list[dict]:
                 for _ in range(2):
                     title = re.sub(r"\s+[-|–]\s+[^-|–]{2,60}$", "", title)
                 summary = ""
-            if not _CHINA.search(title + " " + summary) and "ccp" not in body.lower() and "China" not in body:
+            # a Google News search already asked for China; a title alone may not say it
+            if not gn and not _CHINA.search(title + " " + summary) and "ccp" not in body.lower() and "China" not in body:
                 continue
+            kept += 1
             out.append({"date": datetime(*t[:6]).date().isoformat(), "section": "Committee release",
                         "tag": body, "headline": title, "body": summary[:600],
                         "url": e.get("link", ""), "primary": body})
+        log.append(f"{body}: {len(entries)} in feed{' (Google News)' if gn else ''}, {kept} kept"
+                   + (f", {old} outside the week" if old else "") + (f", {undated} undated" if undated else ""))
     print("committee feeds: " + "; ".join(log))
     return out
 
