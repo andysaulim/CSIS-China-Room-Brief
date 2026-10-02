@@ -55,13 +55,46 @@ def _program(i) -> str:
     return " ".join(x for x in ((m.group(1) if m else ""), i.type.lower() if m else i.type) if x)
 
 
+def _short(desc: str) -> str:
+    """One line from the tracker's notes: the first clause, program code removed."""
+    d = re.sub(r"^[A-Z][A-Z/]{1,15}\s+", "", desc or "").strip()
+    d = re.split(r";\s|\.\s+(?=\d|[A-Z])", d, maxsplit=1)[0].rstrip(".")
+    return d
+
+
+def _group(i) -> str:
+    g = i.start.strftime("%B %Y")
+    return g + ", date to come" if i.precision == "month" else g
+
+
+_SMALL = {"a", "an", "and", "as", "at", "but", "by", "for", "from", "in", "into", "nor", "of", "on", "or",
+          "the", "to", "vs", "with"}
+
+
+def headline_case(t: str) -> str:
+    """Chicago headline case for titles that arrive in sentence case."""
+    words = t.split(" ")
+    if sum(w[:1].isupper() for w in words if w[:1].isalpha()) > len(words) / 2:
+        return t                      # already in headline case
+    out = []
+    for n, w in enumerate(words):
+        bare = w.strip("\"'(“‘")
+        if n and n < len(words) - 1 and bare.lower() in _SMALL:
+            out.append(w.lower())
+        elif bare[:1].islower():
+            k = len(w) - len(w.lstrip("\"'(“‘"))
+            out.append(w[:k] + w[k:k + 1].upper() + w[k + 1:])
+        else:
+            out.append(w)
+    return " ".join(out)
+
+
 def calendars(items, issue_date: date):
-    works = [{"month": _chip(i)[0], "day": _chip(i)[1], "headline": i.name, "kind": _program(i),
-              "group": i.start.strftime("%B %Y"),
-              "detail": re.sub(r"^[A-Z][A-Z/]{1,15}\s+", "", i.description or ""), "url": i.link}
+    works = [{"month": _chip(i)[0], "day": "" if i.precision == "month" else _chip(i)[1], "headline": i.name,
+              "kind": _program(i), "group": _group(i), "detail": _short(i.description), "url": i.link}
              for i in tracker.in_the_works(items, issue_date, limit=5)]
     horizon = [{"month": _chip(i)[0], "day": _chip(i)[1], "headline": i.name,
-                "kind": _where(i.description), "group": i.start.strftime("%B %Y"), "detail": "", "url": i.link}
+                "kind": _where(i.description), "group": _group(i), "detail": "", "url": i.link}
                for i in tracker.on_the_horizon(items, issue_date)]
     return works, horizon
 
@@ -71,6 +104,8 @@ def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date
              research_note: str = "", web_base: str | None = None) -> dict:
     candidates = candidates or {}
     copy = csis_style(copy)
+    for r in copy.get("research_roundup", []):
+        r["headline"] = headline_case(r["headline"])
     web_base = (os.environ.get("CHINA_ROOM_WEB_BASE", "") if web_base is None else web_base).rstrip("/")
     iso = issue_date.isoformat()
     works, horizon = csis_style(list(calendars(tracker_items, issue_date)))
