@@ -1,6 +1,6 @@
 # CSIS China Room Brief
 
-A weekly email on US-China relations, sent Tuesday mornings. About 1,000 words, a four to five minute read, built to the length of Axios AM or POLITICO Playbook. It borrows its masthead, section bars and item cards from the [China Daily Brief](https://github.com/andysaulim/Daily-China-Digest) so the two read as one family; the navy band tells a reader which one is in front of them.
+A weekly email on US-China relations, sent Tuesday mornings. About 1,000 to 1,500 words, a five to seven minute read, built to the length of Axios AM or POLITICO Playbook. It borrows its section bars, item cards and date chips from the [China Daily Brief](https://github.com/andysaulim/Daily-China-Digest) so the two read as one family, under a newspaper nameplate set in live type.
 
 The brief has two halves. **The Week That Was** looks back seven days. **The Week Ahead** looks forward.
 
@@ -9,12 +9,12 @@ The brief has two halves. **The Week That Was** looks back seven days. **The Wee
 | 0 | Editor's Note | lede | Comms coordinator | 1 | 60-80 | |
 | 1 | Week at a Glance | ahead | Comms coordinator | 3 | ~150 | Candidates pulled from the tracker and from forward-looking daily headlines |
 | 2 | Heard on the Hill | back | Comms coordinator | 3-5 | ~180 | Congress-related daily headlines, pulled as candidates |
-| 3 | In the News | back | Agent | 4-6 | ~250 | China Daily Brief, filtered to the priority outlet list |
+| 3 | In the News | back | Agent | 1 lead + 5 | ~300 | The China story the most priority outlets carried, with how each covered it, then five one-line runners-up |
 | 4 | Research Roundup | back | Agent | 2-5 | ~150 | Think-tank and CRS publications (needs the daily change below) |
 | 5 | In the Works @ CSIS | ahead | Sheet | 2-4 | ~110 | `CSIS Activities` tab of the ER tracker |
 | 6 | On the Horizon | ahead | Sheet | 4-6 | ~80 | `Global Events` and `Policy Developments` tabs, linked to the full calendar |
 
-In the News leads with the story the most priority outlets carried that week. The outlet list and its ranking live in `brief/config.py`.
+Sections are easy to find three ways: an In this issue row under the nameplate links to each one; every section bar carries a one-line description; and the look-back half runs on black bars, the look-ahead half on navy. The issue closes with a contact line for questions (Nina Prieur, nprieur@csis.org). The outlet list and its ranking live in `brief/config.py`.
 
 ## Weekly schedule (ET)
 
@@ -36,6 +36,8 @@ brief/config.py       priority outlets (ranked), section budgets, source URLs
 brief/tracker.py      reads the ER tracker workbook; audits it for problems
 brief/daily_feed.py   reads the China Daily Brief ledger and archive
 brief/render.py       issue -> table-based HTML email, draft and final modes
+brief/archive.py      web copy, index.html, archive.html, archive.json
+samples/              Issue 0 copy, every line traced to a source
 build_sample.py       builds the Issue 0 sample from real inputs
 ```
 
@@ -47,7 +49,7 @@ python build_sample.py --tracker data/CSIS_US_China_Tracker.xlsx \
   --ledger path/to/Daily-China-Digest/published_ledger.json --out out/
 ```
 
-This writes `out/sample_draft_2026-10-06.html` (the Monday-noon copy with the coordinator's slots and candidate lists), `out/sample_final_2026-10-06.html` (what readers would get), and `out/tracker_audit.txt`.
+This writes `out/draft_2026-10-06.html` (the Monday-noon copy with the coordinator's notes and candidate lists), `out/email_2026-10-06.html` (what readers get), `out/site/` (web copy and archive) and `out/tracker_audit.txt`. The written sections come from `samples/issue0_copy.json`.
 
 **This repository is public.** The tracker lists CSIS reports and events that have not been announced, so `data/` and `out/` are git-ignored. Do not commit the workbook or a rendered issue. Moving the repository to private would remove the risk outright.
 
@@ -62,9 +64,9 @@ This writes `out/sample_draft_2026-10-06.html` (the Monday-noon copy with the co
 4. **Add the workflow**: Monday 10 am draft, Tuesday 9 am send, Gmail SMTP as in the daily.
 5. **First full dummy issue** by Friday, Oct 9.
 
-## Banner
+## Read online and past issues
 
-The sent copy follows the CSIS comms email template (the Pardot "Released This Week" layout): a grey preheader strip, a 600 x 200 banner, then the issue. `assets/banner_china_room.png` is a stand-in built from `assets/banner.html` until External Relations supplies a China Room banner in the house banner family. Email clients load the banner from a public URL, so for a live send it goes on the Pardot file host. With images blocked, the cell shows "CSIS China Room Brief" in white on navy. Pass `--banner ''` for the text masthead instead.
+`brief/archive.py` writes each issue to `site/` the way the daily does: `YYYY-MM-DD.html`, `index.html` for the latest, `archive.html` and `archive.json`. Set `CHINA_ROOM_WEB_BASE` to wherever `site/` is served and the email's Read online and Past issues links point there. Serving it on GitHub Pages from this repository would make In the Works public, so either host the archive somewhere access-controlled (csis.org, an intranet page) or drop unannounced items from the web copy.
 
 ## Paywalled outlets
 
