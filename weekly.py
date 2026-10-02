@@ -86,7 +86,7 @@ def cmd_draft(issue_date: date, style: str) -> None:
     issue = assemble(copy, items, issue_date, (start, end), issue_label="Draft", banner_src=BANNER,
                      research_note=" ".join(notes) or "Check each item on its page before send.",
                      candidates={"hill": [], "glance": []})
-    html = render.render(issue, "draft", os.environ.get("BRIEF_THEME", "newsroom"))
+    html = render.render(issue, "draft", os.environ.get("BRIEF_THEME", "briefing"))
     (ROOT / "out").mkdir(exist_ok=True)
     (ROOT / "out" / f"draft_{issue_date.isoformat()}.html").write_text(html, encoding="utf-8")
     sent = mailer.send(html, f"[DRAFT] China Room Brief, {label(issue_date)}: {copy['re_line']}", "DRAFT_TO")
@@ -102,7 +102,7 @@ def cmd_send(issue_date: date) -> None:
     items, _ = load_tracker()
     n = len(sorted(ISSUES.glob("*.json")))
     issue = assemble(copy, items, issue_date, window(issue_date), issue_label=f"No. {n}", banner_src=BANNER)
-    html = render.render(issue, "final", os.environ.get("BRIEF_THEME", "newsroom"))
+    html = render.render(issue, "final", os.environ.get("BRIEF_THEME", "briefing"))
     archive.publish(ROOT / "site", issue_date.isoformat(), html,
                     {"date_line": issue["date_line"], "label": f"No. {n}", "re_line": issue["re_line"]})
     sent = mailer.send(html, f"China Room Brief, {label(issue_date)}: {copy['re_line']}", "BRIEF_TO")

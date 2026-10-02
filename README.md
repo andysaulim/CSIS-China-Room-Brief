@@ -71,6 +71,10 @@ Repository secrets (Settings > Secrets and variables > Actions):
 
 Test runs: draft Thu Oct 8 for Fri Oct 9, then Oct 15/16 and Oct 22/23, sent only to the test list. Go live Oct 30 if those hold up.
 
+## Design
+
+The default design is `briefing`: each section a white card on a grey ground under a navy header with a count, a By the numbers strip under the masthead, Source Sans 3 with an Arial fallback (benchmark: Semafor and Bloomberg newsletters). Two alternates stay selectable with `BRIEF_THEME` (or `build_sample.py --theme`): `newsroom` (Axios AM / Playbook) and `pubs` (CSIS publications, Libre Baskerville on parchment).
+
 ## Writing style
 
 `--style house` (the default) is plain prose held to Smart Brevity's length rules: headlines under 60 characters, one or two sentences an item, no bold labels. `--style brevity` adds the Axios signposts and bullets. Issue 0 is built both ways in `samples/`.

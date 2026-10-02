@@ -209,7 +209,7 @@ class R:
                 f'<div style="font-family:{t["label"]};font-size:14px;font-weight:700;line-height:1.3;color:{t["navy"]};">'
                 f'{esc(i["institution"])}</div>'
                 f'<div style="font-family:{t["label"]};font-size:12px;color:{t["mute"]};margin-top:3px;">{esc(i.get("date", ""))}</div></td>'
-                f'<td style="padding:14px 0;vertical-align:top;">{self.headline(i["headline"], i.get("url", ""))}'
+                f'<td class="r-main" style="padding:14px 0;vertical-align:top;">{self.headline(i["headline"], i.get("url", ""))}'
                 f'{self.body(i.get("body", ""))}</td></tr></table>')
         return "".join(out)
 
@@ -226,13 +226,17 @@ class R:
             day = i.get("day") or ""
             meta = (f'<div style="font-family:{t["label"]};font-size:13px;color:{t["mute"]};margin-top:2px;">'
                     f'{esc(i.get("kind", ""))}</div>') if i.get("kind") else ""
+            day_td = (f'<td width="64" style="padding:12px 10px 12px 0;vertical-align:top;font-family:{t["head"]};'
+                      f'font-size:20px;font-weight:700;line-height:1.1;color:{t["navy"]};white-space:nowrap;">{esc(day)}</td>'
+                      ) if day else ""
             html += (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
-                     f'style="border-bottom:1px solid {t["rule"]};"><tr>'
-                     f'<td width="64" style="padding:12px 10px 12px 0;vertical-align:top;font-family:{t["head"]};'
-                     f'font-size:20px;font-weight:700;line-height:1.1;color:{t["navy"]};white-space:nowrap;">{esc(day)}</td>'
+                     f'style="border-bottom:1px solid {t["rule"]};"><tr>{day_td}'
                      f'<td style="padding:12px 0;vertical-align:top;">{self.headline(i["headline"], i.get("url", ""), t["hl"] - 1)}'
                      f'{meta}{self.body(i.get("detail", ""), 3)}</td></tr></table>')
             first = False
+        cut = html.rfind(f'style="border-bottom:1px solid {t["rule"]};"')
+        if cut >= 0:
+            html = html[:cut] + 'style=""' + html[cut + len(f'style="border-bottom:1px solid {t["rule"]};"'):]
         return html
 
     def docket(self, dk, issue_iso):
@@ -318,7 +322,7 @@ COUNT = {"in_the_news": "{n} stories", "research_roundup": "{n} reports", "heard
          "week_at_a_glance": "{n} to watch", "in_the_works": "{n} coming", "on_the_horizon": "{n} dates"}
 
 
-def render(issue: dict, mode: str = "final", theme: str = "newsroom") -> str:
+def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
     r = R(theme)
     t = r.t
     draft = mode == "draft"
@@ -421,7 +425,9 @@ body {{ margin:0; padding:0; background:{t["page"]}; -webkit-text-size-adjust:10
   .util-row .util-cell {{ display:block !important; text-align:left !important; padding:6px 16px !important; }}
   .util-row a {{ margin:0 14px 0 0 !important; }}
   .mast-main, .mast-meta {{ display:block !important; width:100% !important; text-align:left !important; }}
-  .r-inst {{ width:96px !important; }}
+  .r-inst, .r-main {{ display:block !important; width:100% !important; }}
+  .r-inst {{ padding:14px 0 4px !important; }}
+  .r-main {{ padding:0 0 14px !important; }}
   .num-row .num-cell {{ display:inline-block !important; width:46% !important; border-left:0 !important;
                         padding:8px 2% !important; vertical-align:top !important; }}
 }}
