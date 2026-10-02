@@ -16,8 +16,26 @@ CONTACT = {"name": "Nina Prieur", "title": "Director of Strategic Communications
            "email": "nprieur@csis.org"}
 
 
+_US = re.compile(r"\bUS\b(?![$])")
+_MONTHS = {"Jan": "January", "Feb": "February", "Mar": "March", "Apr": "April", "Jun": "June",
+           "Jul": "July", "Aug": "August", "Sep": "September", "Sept": "September", "Oct": "October",
+           "Nov": "November", "Dec": "December"}
+_MON = re.compile(r"\b(Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)\.?(?=\s+\d)")
+
+
+def csis_style(obj):
+    """CSIS style: "U.S.", never "US"; months written out. Every copy string, not URLs."""
+    if isinstance(obj, dict):
+        return {k: (v if k in ("url",) else csis_style(v)) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [csis_style(x) for x in obj]
+    if isinstance(obj, str):
+        return _MON.sub(lambda m: _MONTHS[m.group(1)], _US.sub("U.S.", obj))
+    return obj
+
+
 def label(d: date) -> str:
-    return f"{d.strftime('%b')} {d.day}"
+    return f"{d.strftime('%B')} {d.day}"
 
 
 def _chip(i):
@@ -34,7 +52,7 @@ def _where(desc: str) -> str:
 
 def _program(i) -> str:
     m = re.match(r"^([A-Z][A-Z/]{1,15})\b", i.description or "")
-    return " · ".join(x for x in ((m.group(1) if m else ""), i.type) if x)
+    return " ".join(x for x in ((m.group(1) if m else ""), i.type.lower() if m else i.type) if x)
 
 
 def calendars(items, issue_date: date):
@@ -52,14 +70,16 @@ def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date
              issue_label: str, banner_src: str = "", candidates: dict | None = None,
              research_note: str = "", web_base: str | None = None) -> dict:
     candidates = candidates or {}
+    copy = csis_style(copy)
     web_base = (os.environ.get("CHINA_ROOM_WEB_BASE", "") if web_base is None else web_base).rstrip("/")
     iso = issue_date.isoformat()
-    works, horizon = calendars(tracker_items, issue_date)
+    works, horizon = csis_style(list(calendars(tracker_items, issue_date)))
     ahead_start = issue_date + timedelta(days=(7 - issue_date.weekday()) % 7 or 7)
     return {
         "date_line": f"{issue_date.strftime('%A, %B')} {issue_date.day}, {issue_date.year}",
         "issue_label": issue_label,
-        "draft_for": "Nina Prieur · Thursday noon",
+        "iso": iso,
+        "draft_for": "Nina Prieur, Thursday noon",
         "calendar_url": os.environ.get("CHINA_ROOM_CALENDAR_URL", ""),
         "web_url": f"{web_base}/{iso}.html" if web_base else "",
         "archive_url": f"{web_base}/archive.html" if web_base else "",
@@ -77,6 +97,7 @@ def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date
             "items": copy.get("heard_on_the_hill", []),
             "spec": "Draft above, from the daily brief's Congress items. Add hearings and floor action it missed.",
             "candidates": candidates.get("hill", []),
+            "docket": copy.get("hill_docket") or {},
         },
         "in_the_news": {"items": copy.get("in_the_news", []),
                         "dek": "Top five China stories of the week in priority outlets"},

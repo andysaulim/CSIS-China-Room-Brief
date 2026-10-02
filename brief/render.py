@@ -21,6 +21,7 @@ import re
 NAVY = "#004165"
 NAVY_BRIGHT = "#0065A6"
 BANNER_NAVY = "#001F59"   # sampled from the CSIS comms banner
+PART_BLUE = "#007DAD"     # the banner label box outline
 BACK_BAR = "#14181F"      # same black as the daily
 AHEAD_BAR = NAVY
 INK = "#1A222E"
@@ -78,9 +79,12 @@ def sec_bar(title: str, anchor: str, half: str) -> str:
 
 
 def part_head(label: str, dek: str) -> str:
-    return (f'<div style="padding:28px 32px 12px;" class="sec">'
-            f'<span style="font-family:{SERIF};font-size:20px;font-weight:700;color:{INK};">{esc(label)}</span>'
-            f'<span style="font-family:{SANS};font-size:12px;color:{MUTE};"> &nbsp;{esc(dek)}</span></div>')
+    """Half divider: a full-width band in the banner's lighter blue."""
+    return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:{PART_BLUE};'
+            f'margin-top:10px;"><tr><td class="sec" style="padding:16px 32px;">'
+            f'<span style="font-family:{SERIF};font-size:21px;font-weight:700;color:#FFFFFF;">{esc(label)}</span>'
+            f'<span style="font-family:{SANS};font-size:13px;color:#D6ECF5;"> &nbsp;{esc(dek)}</span>'
+            f'</td></tr></table>')
 
 
 def axiom(label: str, text: str) -> str:
@@ -118,7 +122,7 @@ def slot(spec: str, candidates: list[dict] | None = None, note: str = "") -> str
     """Draft-only: what the human writes here, and what the agent found for them."""
     rows = ""
     for c in candidates or []:
-        meta = " &middot; ".join(esc(x) for x in (c.get("date_label"), c.get("source")) if x)
+        meta = ", ".join(esc(x) for x in (c.get("date_label"), c.get("source")) if x)
         rows += (f'<li style="margin:0 0 6px;">{link(esc(c["text"]), c.get("url", ""))}'
                  + (f'<span style="color:{MUTE};font-size:11px;"> &nbsp;{meta}</span>' if meta else "")
                  + '</li>')
@@ -171,6 +175,41 @@ def agenda(items: list[dict], meta_first: bool = False) -> str:
     return html
 
 
+def _full(iso: str) -> str:
+    from datetime import date as _d
+    d = _d.fromisoformat(iso)
+    return f"{d.strftime('%B')} {d.day}"
+
+
+def docket(dk: dict, issue_iso: str) -> str:
+    """Hearings and new bills from Congress.gov, listed under Heard on the Hill."""
+    if not dk or not (dk.get("hearings") or dk.get("bills")):
+        return ""
+    def head(t):
+        return (f'<div style="font-family:{SERIF};font-size:15px;font-weight:700;color:{NAVY};'
+                f'margin:18px 0 0;padding-bottom:6px;border-bottom:2px solid {NAVY};">{t}</div>')
+    def row(left, title, url, meta):
+        return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-bottom:1px solid {RULE};"><tr>'
+                f'<td width="110" style="padding:9px 12px 9px 0;vertical-align:top;font-family:{SANS};font-size:12px;'
+                f'font-weight:700;color:{NAVY};">{left}</td>'
+                f'<td style="padding:9px 0;vertical-align:top;"><div style="font-family:{SERIF};font-size:14px;'
+                f'font-weight:700;line-height:1.4;color:{INK};">{link(esc(title), url)}</div>'
+                f'<div style="font-family:{SANS};font-size:12px;color:{MUTE};margin-top:2px;">{meta}</div></td></tr></table>')
+    html = ""
+    if dk.get("hearings"):
+        html += head("Hearings")
+        for h in dk["hearings"]:
+            when = _full(h["date"]) + ("<br><span style='font-weight:400;color:" + MUTE + ";'>scheduled</span>"
+                                       if h["date"] >= issue_iso else "")
+            html += row(when, h["title"], h.get("url", ""), esc(f'{h["chamber"]}: {h["committee"]}'))
+    if dk.get("bills"):
+        html += head("New legislation")
+        for b in dk["bills"]:
+            html += row(esc(b["number"]), b["title"], b.get("url", ""),
+                        esc(f'{b["sponsor"]}, introduced {_full(b["introduced"])}'))
+    return html
+
+
 def research_row(i: dict) -> str:
     """Institution in its own column, so a reader sees who wrote what at a glance."""
     return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid {RULE};"><tr>'
@@ -203,7 +242,7 @@ def render(issue: dict, mode: str = "final") -> str:
 
     label = "For internal use only"
     if draft:
-        label += f' &nbsp;&middot;&nbsp; <span style="color:#FFB4A8;">Draft for review &middot; {esc(issue.get("draft_for", ""))}</span>'
+        label += f' &nbsp;&nbsp;&nbsp; <span style="color:#FFB4A8;">Draft for review: {esc(issue.get("draft_for", ""))}</span>'
     out.append(f'<div class="sec" style="background:{BANNER_NAVY};padding:8px 20px;font-family:{SANS};font-size:10px;'
                f'font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C9D6E3;">{label}</div>')
 
@@ -231,7 +270,7 @@ def render(issue: dict, mode: str = "final") -> str:
                f'<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
                f'<td class="mast-main" style="font-family:{SERIF};font-size:16px;color:{INK};">{esc(issue["date_line"])}</td>'
                f'<td class="mast-meta" align="right" style="font-family:{SANS};font-size:11px;color:{MUTE};white-space:nowrap;">'
-               f'{esc(issue.get("issue_label", ""))} &middot; {wc:,} words &middot; {mins} min read</td>'
+               f'{wc:,} words, {mins} min read</td>'
                f'</tr></table></div>')
 
     # In this issue: one row per section, name and what it holds
@@ -262,6 +301,8 @@ def render(issue: dict, mode: str = "final") -> str:
         else:
             rule = NAVY if half == "ahead" else BACK_BAR
             body = "".join(item(i, rule) for i in s.get("items", []))
+            if key == "heard_on_the_hill":
+                body += docket(s.get("docket") or {}, issue.get("iso", "9999"))
         # no rule between the section banner and its first item
         body = body.replace(f"border-top:1px solid {RULE};", "", 1)
         if draft and (not body or s.get("candidates") or s.get("gap")):
@@ -280,26 +321,18 @@ def render(issue: dict, mode: str = "final") -> str:
     for k in ("in_the_works", "on_the_horizon"):
         section(k)
 
-    # Bottom banner, in the top banner's navy: contact, links, provenance.
+    # Bottom banner, in the top banner's navy: who to ask, who compiles it.
     c = issue.get("contact") or {}
     contact = ""
     if c.get("email"):
         title = f', {esc(c["title"])},' if c.get("title") else ""
-        contact = (f'<div style="font-family:{SERIF};font-size:18px;font-weight:700;color:#FFFFFF;">Questions?</div>'
+        contact = (f'<div style="font-family:{SERIF};font-size:16px;font-weight:700;color:#FFFFFF;">Questions?</div>'
                    f'<div style="font-family:{SERIF};font-size:14px;line-height:1.6;color:#DCE4EC;margin-top:4px;">'
                    f'Reach out to {esc(c.get("name", ""))}{title} at '
-                   f'<a href="mailto:{esc(c["email"])}" style="color:#FFFFFF;text-decoration:underline;">{esc(c["email"])}</a>.</div>')
-    foot_links = " &nbsp;&middot;&nbsp; ".join(
-        f'<a href="{esc(u)}" style="color:#FFFFFF;">{lbl}</a>'
-        for lbl, u in (("Read online", web_url), ("Past issues", archive_url),
-                       ("Full calendar", issue.get("calendar_url", ""))) if u)
-    out.append(f'<div class="sec bottom-band" style="background:{BANNER_NAVY};padding:26px 32px 28px;">{contact}'
-               f'<div style="height:1px;background:rgba(255,255,255,0.22);margin:18px 0 12px;"></div>'
-               f'<div style="font-family:{SANS};font-size:11px;line-height:1.7;color:#9FB2C8;">'
-               f'<strong style="color:#FFFFFF;letter-spacing:1.5px;">CSIS</strong> &nbsp;Center for Strategic and International Studies'
-               f'{"<br>" + issue.get("footer", "") if issue.get("footer") else ""}'
-               f'{"<br>" + foot_links if foot_links else ""}'
-               f'<br>For internal use only.</div></div>')
+                   f'<a href="mailto:{esc(c["email"])}" style="color:#FFFFFF;">{esc(c["email"])}</a>.</div>')
+    out.append(f'<div class="sec bottom-band" style="background:{BANNER_NAVY};padding:24px 32px 26px;">{contact}'
+               f'<div style="font-family:{SANS};font-size:12px;color:#9FB2C8;margin-top:16px;padding-top:14px;'
+               f'border-top:1px solid #2E4677;">The China Room Brief is compiled by CSIS External Relations.</div></div>')
 
     body = "\n".join(out)
     return f"""<!DOCTYPE html>

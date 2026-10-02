@@ -18,7 +18,7 @@ MODEL = "claude-opus-5-5"
 
 STYLE = {
     "house": (
-        "Write in the house style of a CSIS internal brief: plain declarative sentences, numbers over "
+        "Write in the house style of a CSIS internal brief: write \"U.S.\" never \"US\"; plain declarative sentences, numbers over "
         "adjectives, named actors, dated events. Headlines under 60 characters, in sentence case. Each item "
         "is one or two sentences. Lead with what happened, not with background. No bold labels, no bullets, "
         "no rhetorical questions, no em-dashes. Vary sentence length. Headlines say what happened in plain "
@@ -41,10 +41,10 @@ Rules that are never broken:
 - Prefer US-China relations over China's domestic news when choosing what leads.
 
 Sections:
-- re_line: four or five short phrases separated by " · ", the week's main threads.
+- re_line: four or five short phrases separated by commas, the week's main threads.
 - editors_note: one or two sentences, under 40 words, plain and direct.
 - week_at_a_glance: exactly three things scheduled or expected in the coming week, from the sources only.
-- heard_on_the_hill: three to six items on Congress (members, bills, hearings, letters) from the past week.
+- heard_on_the_hill: three to six items on Congress (members, bills, hearings, letters) from the past week. Sources marked "Congress.gov" are the official record of hearings and newly introduced bills: flag the most significant ones here, and use scheduled hearings in week_at_a_glance.
 - in_the_news: the five most important China stories of the past week from the priority-outlet sources (marked [priority]), ranked; when several outlets covered the same story, pick the best-ranked outlet's item and count the story once. Give each a two-sentence summary (body) of what happened, drawing on every source that covered the story and naming outlets for claims; leave why empty unless the style asks for it.
 - research_roundup: two to six publications from the R sources; for each, one sentence on the argument or finding, naming the authors when the source does."""
 
@@ -52,7 +52,7 @@ ITEM = {
     "type": "object",
     "properties": {
         "source_id": {"type": "string"},
-        "tag": {"type": "string", "description": "Short label and date, e.g. 'Senate · Oct 1'"},
+        "tag": {"type": "string", "description": "Short label and date, e.g. 'Senate, Oct 1'"},
         "headline": {"type": "string"},
         "body": {"type": "string"},
         "why": {"type": "string"},
@@ -144,7 +144,7 @@ def resolve(out: dict, index: dict) -> dict:
                 continue
             if len(it["headline"]) > 60:
                 copy["warnings"].append(f"{sec}: headline over 60 characters: {it['headline']}")
-            copy[sec].append({"tag": it["tag"].replace(" · ", " &middot; "),
+            copy[sec].append({"tag": it["tag"].replace(" \u00b7 ", ", "),
                               "headline": _clean(it["headline"]), "body": _clean(it["body"]),
                               "why": _clean(it.get("why", "")),
                               "bullets": [_clean(b) for b in it.get("bullets", [])],
@@ -157,7 +157,7 @@ def resolve(out: dict, index: dict) -> dict:
             continue
         d = src["date"]
         copy["in_the_news"].append({
-            "tag": f"{src['outlet']} &middot; {_md(d)}",
+            "tag": f"{src['outlet']}, {_md(d)}",
             "headline": src.get("original_headline") or src["headline"],
             "body": _clean(it.get("body", "")), "why": _clean(it.get("why", "")),
             "url": src["url"]})
@@ -176,4 +176,4 @@ def resolve(out: dict, index: dict) -> dict:
 def _md(iso: str) -> str:
     from datetime import date
     d = date.fromisoformat(iso)
-    return f"{d.strftime('%b')} {d.day}"
+    return f"{d.strftime('%B')} {d.day}"

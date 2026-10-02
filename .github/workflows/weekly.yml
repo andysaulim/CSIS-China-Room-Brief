@@ -44,6 +44,7 @@ jobs:
           DRAFT_TO: ${{ secrets.DRAFT_TO }}
           BRIEF_TO: ${{ secrets.BRIEF_TO }}
           TRACKER_URL: ${{ secrets.TRACKER_URL }}
+          CONGRESS_API_KEY: ${{ secrets.CONGRESS_API_KEY }}
           CHINA_ROOM_CALENDAR_URL: ${{ secrets.CHINA_ROOM_CALENDAR_URL }}
           CHINA_ROOM_WEB_BASE: ${{ vars.CHINA_ROOM_WEB_BASE }}
         run: |

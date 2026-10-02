@@ -6,7 +6,7 @@ A weekly internal email on US-China relations, sent Friday mornings to CSIS staf
 |---|---------|------|------------|-------|------------|
 | 0 | Editor's Note | top | Agent, rewritten by the coordinator | 1 | The week's sources |
 | 1 | Week at a Glance | ahead | Agent, rewritten by the coordinator | 3 | Tracker dates and forward-looking daily-brief items |
-| 2 | Heard on the Hill | back | Agent, rewritten by the coordinator | 3-6 | Congress items in the daily brief |
+| 2 | Heard on the Hill | back | Agent, rewritten by the coordinator | 3-6, plus lists | Congress items in the daily brief; China-related hearings (held and scheduled) and new bills from Congress.gov |
 | 3 | In the News | back | Agent | 5 | Top five China stories in priority outlets, under the outlet's own headline |
 | 4 | Research Roundup | back | Agent | 2-6 | Think-tank and CRS feeds; institution in its own column |
 | 5 | In the Works @ CSIS | ahead | Tracker | up to 5 | `CSIS Activities` tab |
@@ -42,6 +42,7 @@ Friday send
 ```
 weekly.py             draft and send
 brief/collect.py      daily archive, outlet headlines, research feeds, tracker download
+brief/congress.py     China-related hearings and new bills from the Congress.gov API
 brief/compose.py      Claude drafting with source ids and a JSON schema
 brief/issue.py        assembles the issue for the template
 brief/render.py       the email template, draft and final modes
@@ -63,6 +64,7 @@ Repository secrets (Settings > Secrets and variables > Actions):
 | `DRAFT_TO` | Nina, the coordinator, Andy |
 | `BRIEF_TO` | During test runs, the same people as `DRAFT_TO` |
 | `TRACKER_URL` | Direct download link to the tracker, e.g. `https://drive.google.com/uc?export=download&id=<file id>` |
+| `CONGRESS_API_KEY` | Free key from api.data.gov; feeds the Hearings and New legislation lists in Heard on the Hill |
 | `CHINA_ROOM_CALENDAR_URL` | Optional: the link Full calendar should open |
 
 `CHINA_ROOM_WEB_BASE` (a repository variable) turns on Read online and Past issues once the archive has a home. Until then those links are left out rather than broken, and each run's web copy is kept as an Actions artifact for 90 days.

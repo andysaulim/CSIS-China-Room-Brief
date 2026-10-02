@@ -1,10 +1,10 @@
 {
  "_note": "Issue 0 copy. Every sentence traces to a China Daily Brief item (Sep 28 to Oct 2, 2026) or the tracker. Editor's Note, Week at a Glance and Heard on the Hill are drafts for the comms coordinator to rewrite.",
- "re_line": "Trump-Xi summit's $30B tariff deal · Perdue's arms-offer disclosure · Senators press on Taiwan arms · Xi's National Day Taiwan line",
+ "re_line": "Trump-Xi summit's $30B tariff deal, Perdue's arms-offer disclosure, Senators press on Taiwan arms, Xi's National Day Taiwan line",
  "editors_note": "Good morning, and welcome to the first China Room Brief. It lands every Friday.",
  "week_at_a_glance": [
   {
-   "tag": "Energy &middot; Oct 7",
+   "tag": "Energy, Oct 7",
    "headline": "Beijing's fuel-export pause meets Golden Week's end",
    "body": "China's holiday ends Oct 7, and Lianhe Zaobao reports it is unclear whether Beijing resumes fuel-export approvals after it.",
    "why": "Reuters expects the suspension to tighten diesel and jet fuel across Asia.",
@@ -16,7 +16,7 @@
    "url": "https://www.reuters.com/business/energy/chinese-refiners-suspend-oct-fuel-exports-petrochina-cancels-cargoes-sources-say-2026-10-01/"
   },
   {
-   "tag": "Trade &middot; This week",
+   "tag": "Trade, This week",
    "headline": "Greer's overcapacity move is due \"within weeks\"",
    "body": "USTR Jamieson Greer told Nikkei the US will unveil countermeasures against overproduction from China, Japan and others \"within weeks.\"",
    "why": "The summit's tariff relief still has no start date. Greer said no timeline is set for cuts under the Board of Trade mechanism.",
@@ -27,7 +27,7 @@
    "url": "https://asia.nikkei.com/editor-s-picks/interview/us-won-t-sit-there-and-take-overproduction-from-china-ustr-greer"
   },
   {
-   "tag": "Economy &middot; Oct 8",
+   "tag": "Economy, Oct 8",
    "headline": "Beijing's 1.2 trillion yuan injection lands Oct 8",
    "body": "The PBOC's three-month reverse repo follows the mortgage-interest subsidy that took effect Oct 1.",
    "why": "It is the first test of whether Beijing's \"practical additional policies\" reach the economy.",
@@ -39,7 +39,7 @@
  ],
  "heard_on_the_hill": [
   {
-   "tag": "Senate &middot; Oct 1&ndash;2",
+   "tag": "Senate, Oct 1–2",
    "headline": "Senators press Trump on $14B Taiwan package",
    "body": "Twenty-one Democrats led by Jeanne Shaheen urged Trump to \"immediately deliver congressionally approved defense assistance to Taiwan.\"",
    "bullets": [
@@ -50,7 +50,7 @@
    "url": "https://www.taipeitimes.com/News/front/archives/2026/10/02/2003865245"
   },
   {
-   "tag": "House &middot; Sep 30",
+   "tag": "House, Sep 30",
    "headline": "Johnson: Taiwan arms aren't trade leverage",
    "body": "Speaker Mike Johnson dismissed suggestions the delayed package is a bargaining chip in trade talks.",
    "bullets": [
@@ -59,7 +59,7 @@
    "url": "https://www.taipeitimes.com/News/front/archives/2026/09/30/2003865114"
   },
   {
-   "tag": "Senate &middot; Oct 1",
+   "tag": "Senate, Oct 1",
    "headline": "Chinese car ban slips past the midterms",
    "body": "The Senate put off a bill permanently barring Chinese-made cars until after Nov 3, AP reported.",
    "bullets": [
@@ -69,20 +69,20 @@
    "url": "https://apnews.com/article/senate-chinese-ev-ban-elections-mercedesbenz-220c9c816ed0f73eb867775c666b0b9e"
   },
   {
-   "tag": "Senate &middot; Sep 28",
+   "tag": "Senate, Sep 28",
    "headline": "Bipartisan bill targets Chinese optical modules",
    "body": "Senators from both parties proposed barring Chinese-made optical modules from federal national-security systems, with a five-year grace period.",
    "why": "Markets noticed. Shenzhen's ChiNext index fell 4.53% the next trading day.",
    "url": "https://www.jiemian.com/article/15146108.html"
   },
   {
-   "tag": "House &middot; Oct 2",
+   "tag": "House, Oct 2",
    "headline": "Starbucks pressed to close Xinjiang stores",
    "body": "A US congressman demanded Starbucks shut its first stores in Xinjiang, citing forced labor, Reuters reported.",
    "url": "https://www.reuters.com/world/us/us-congressman-demands-starbucks-close-its-first-stores-chinas-xinjiang-2026-10-02/"
   },
   {
-   "tag": "Congress &middot; Sep 25",
+   "tag": "Congress, Sep 25",
    "headline": "Lawmakers move to bar Chinese datacenter tech",
    "url": "https://www.reuters.com/legal/litigation/us-lawmakers-aim-keep-chinas-datacenter-tech-out-sensitive-government-systems-2026-09-25/",
    "body": "Members of Congress are moving to keep Chinese-origin datacenter hardware and software out of sensitive US government systems, Reuters reported."
@@ -90,35 +90,35 @@
  ],
  "in_the_news": [
   {
-   "tag": "Associated Press &middot; Sep 27",
+   "tag": "Associated Press, Sep 27",
    "headline": "China, US agree to AI-incident channel, $30bn tariff cuts in eight-point summit consensus",
    "url": "https://apnews.com/article/china-us-agreement-xi-trump-visit-e8f858ed9094b99bc8d3d339f9899f31",
    "body": "Washington and Beijing agreed to an AI-incident channel and lower tariffs on $30 billion of goods each way.",
    "why": "It is the summit's main deliverable, set out in an eight-point readout that also promises a November AI dialogue."
   },
   {
-   "tag": "New York Times &middot; Sep 27",
+   "tag": "New York Times, Sep 27",
    "headline": "Trump asked Xi if China wanted to buy US weapons, ambassador says",
    "url": "https://www.nytimes.com/2026/09/27/us/politics/trump-weapons-sale-china.html",
    "body": "Ambassador David Perdue says Trump asked Xi whether China wanted to buy American weapons. Trump says he \"never heard of\" it.",
    "why": "The State Department says the US has no plans to sell weapons to China."
   },
   {
-   "tag": "CNBC &middot; Oct 1",
+   "tag": "CNBC, Oct 1",
    "headline": "Xi marks 77th PRC anniversary with hardened Taiwan message",
    "url": "https://www.cnbc.com/2026/10/01/china-golden-week-holiday-taiwan-consumption-travel.html",
    "body": "Xi said China will \"resolutely fight secessionist forces seeking 'Taiwanese independence,'\" Reuters reported.",
    "why": "Taiwan's Mainland Affairs Council says the phrasing is not new."
   },
   {
-   "tag": "Reuters &middot; Oct 1",
+   "tag": "Reuters, Oct 1",
    "headline": "US officials see Chinese invasion of Taiwan unlikely before 2028",
    "url": "https://www.reuters.com/world/china/us-sees-chinese-invasion-taiwan-unlikely-next-year-despite-2027-timeline-sources-2026-10-01/",
    "body": "US officials told Reuters Beijing is unlikely to use force against Taiwan before 2028, despite Xi's 2027 readiness order.",
    "why": "The PLA purge has left two of seven Central Military Commission members in active service."
   },
   {
-   "tag": "Reuters &middot; Sep 29",
+   "tag": "Reuters, Sep 29",
    "headline": "Beijing unveils mortgage subsidy, rate cut and 1.2 trillion yuan liquidity injection",
    "url": "https://www.reuters.com/world/asia-pacific/china-unveils-rate-cut-mortgage-subsidies-spur-growth-2026-09-29/",
    "body": "Beijing rolled out a mortgage-interest subsidy, a PSL rate cut and a 1.2 trillion yuan reverse repo set for Oct 8.",

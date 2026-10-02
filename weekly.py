@@ -12,7 +12,7 @@ send (Friday morning): renders the edited copy against a fresh pull of the
 tracker, emails it to BRIEF_TO, and writes the web copy and archive to site/.
 
 Environment: ANTHROPIC_API_KEY, GMAIL_USER, GMAIL_APP_PASS, GMAIL_FROM,
-DRAFT_TO, BRIEF_TO, TRACKER_URL, BANNER_URL, and optionally
+DRAFT_TO, BRIEF_TO, TRACKER_URL, CONGRESS_API_KEY, BANNER_URL, and optionally
 CHINA_ROOM_WEB_BASE and CHINA_ROOM_CALENDAR_URL.
 """
 
@@ -26,7 +26,7 @@ import tempfile
 from datetime import date, timedelta
 from pathlib import Path
 
-from brief import archive, collect, compose, mailer, render, tracker
+from brief import archive, collect, compose, congress, mailer, render, tracker
 from brief.issue import assemble, label
 
 ROOT = Path(__file__).parent
@@ -61,10 +61,20 @@ def cmd_draft(issue_date: date, style: str) -> None:
     news, missing = collect.daily_items(start, end)
     collect.tag_outlets(news)
     research = collect.research_items(start, end)
+    dk = congress.docket((start, end))
+    for h in dk.get("hearings", []):
+        news.append({"date": h["date"], "section": "Congress.gov hearing", "tag": h["committee"],
+                     "headline": h["title"], "body": f'{h["type"]} ({h["status"]}), {h["chamber"]}',
+                     "url": h["url"]})
+    for b in dk.get("bills", []):
+        news.append({"date": b["introduced"], "section": "Congress.gov new bill",
+                     "tag": f'{b["number"]}, {b["sponsor"]}', "headline": b["title"],
+                     "body": f'Introduced {b["introduced"]}', "url": b["url"]})
     items, audit = load_tracker()
     cal = [f"{i.date_label}: {i.name}" for i in tracker.week_ahead(items, issue_date + timedelta(days=1))]
 
     copy = compose.draft(news, research, cal, f"{label(start)} to {label(end)}", style)
+    copy["hill_docket"] = dk
     ISSUES.mkdir(exist_ok=True)
     f = ISSUES / f"{issue_date.isoformat()}.json"
     f.write_text(json.dumps(copy, ensure_ascii=False, indent=1), encoding="utf-8")

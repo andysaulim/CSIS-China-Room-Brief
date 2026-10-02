@@ -1,22 +1,22 @@
 {
  "_note": "Issue 0 copy. Every sentence traces to a China Daily Brief item (Sep 28 to Oct 2, 2026) or the tracker. Editor's Note, Week at a Glance and Heard on the Hill are drafts for the comms coordinator to rewrite.",
- "re_line": "Trump-Xi summit's $30B tariff deal · Perdue's arms-offer disclosure · Senators press on Taiwan arms · Xi's National Day Taiwan line",
+ "re_line": "Trump-Xi summit's $30B tariff deal, Perdue's arms-offer disclosure, Senators press on Taiwan arms, Xi's National Day Taiwan line",
  "editors_note": "This is the first China Room Brief. It arrives every Friday with the week in US-China relations and what CSIS scholars have coming.",
  "week_at_a_glance": [
   {
-   "tag": "Energy &middot; Oct 7",
+   "tag": "Energy, Oct 7",
    "headline": "Beijing's fuel-export decision comes as Golden Week ends",
    "body": "Chinese refiners suspended October fuel exports beyond Hong Kong and Macau, and PetroChina cancelled cargoes on Sep 30. Lianhe Zaobao reports it is unclear whether Beijing resumes export approvals when the holiday ends Oct 7. Reuters expects the suspension to tighten diesel and jet fuel across Asia.",
    "url": "https://www.reuters.com/business/energy/chinese-refiners-suspend-oct-fuel-exports-petrochina-cancels-cargoes-sources-say-2026-10-01/"
   },
   {
-   "tag": "Trade &middot; This week",
+   "tag": "Trade, This week",
    "headline": "No start date yet for the summit's tariff cuts",
    "body": "USTR Jamieson Greer said no date is set for tariff cuts under the Board of Trade mechanism, and told Nikkei the US will unveil countermeasures against overproduction from China, Japan and others \"within weeks.\" Reuters reported the US has slowed aircraft-part exports to China to build leverage.",
    "url": "https://asia.nikkei.com/editor-s-picks/interview/us-won-t-sit-there-and-take-overproduction-from-china-ustr-greer"
   },
   {
-   "tag": "Economy &middot; Oct 8",
+   "tag": "Economy, Oct 8",
    "headline": "Beijing's 1.2 trillion yuan liquidity injection lands Oct 8",
    "body": "The PBOC's three-month reverse repo follows a nationwide mortgage-interest subsidy that took effect Oct 1. September manufacturing PMIs came in at 50.1, the first expansion after two months of contraction.",
    "url": "https://www.reuters.com/world/asia-pacific/china-unveils-rate-cut-mortgage-subsidies-spur-growth-2026-09-29/"
@@ -24,43 +24,43 @@
  ],
  "heard_on_the_hill": [
   {
-   "tag": "Senate &middot; Oct 1&ndash;2",
+   "tag": "Senate, Oct 1–2",
    "headline": "Twenty-one Democrats and four Republicans press for Taiwan arms",
    "body": "Twenty-one Democratic senators led by Jeanne Shaheen urged Trump to \"immediately deliver congressionally approved defense assistance to Taiwan,\" citing $1.3 billion in appropriated funds and a $14 billion package approved nine months ago. Four Republican senators separately called for the assistance to be released.",
    "url": "https://www.taipeitimes.com/News/front/archives/2026/10/02/2003865245"
   },
   {
-   "tag": "Senate Armed Services &middot; Oct 1",
+   "tag": "Senate Armed Services, Oct 1",
    "headline": "Wicker: commitments to Taiwan must be upheld",
    "body": "Senate Armed Services Chair Roger Wicker made the point after meeting Alexander Yui, Taiwan's representative in Washington.",
    "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/10/01/2003865191"
   },
   {
-   "tag": "House &middot; Sep 30",
+   "tag": "House, Sep 30",
    "headline": "Johnson says the Taiwan arms delay is not trade leverage",
    "body": "Mike Johnson said Taiwan's stability matters to US security and the economy, dismissed suggestions that the delayed package is leverage in trade talks, and said Trump will have completed roughly $40 billion in Taiwan arms sales across his two terms.",
    "url": "https://www.taipeitimes.com/News/front/archives/2026/09/30/2003865114"
   },
   {
-   "tag": "Senate &middot; Oct 1",
+   "tag": "Senate, Oct 1",
    "headline": "Chinese car ban pushed past the midterms",
    "body": "The Senate put off a bill that would permanently bar Chinese-made cars until after the Nov 3 elections, AP reported; Reuters says senators plan a vote in November. Sen. Bernie Moreno said his separate bill, covering automakers with more than 15% Chinese ownership, would not touch Mercedes-Benz.",
    "url": "https://apnews.com/article/senate-chinese-ev-ban-elections-mercedesbenz-220c9c816ed0f73eb867775c666b0b9e"
   },
   {
-   "tag": "Senate &middot; Sep 28",
+   "tag": "Senate, Sep 28",
    "headline": "Bipartisan bill targets Chinese optical modules",
    "body": "A bipartisan group of senators proposed barring Chinese-made optical modules from federal national-security systems, with a five-year grace period. Shenzhen's ChiNext index fell 4.53% the next trading day.",
    "url": "https://www.jiemian.com/article/15146108.html"
   },
   {
-   "tag": "House &middot; Oct 2",
+   "tag": "House, Oct 2",
    "headline": "Starbucks told to close its first Xinjiang stores",
    "body": "A US congressman demanded the closures, citing forced labor in the region, Reuters reported.",
    "url": "https://www.reuters.com/world/us/us-congressman-demands-starbucks-close-its-first-stores-chinas-xinjiang-2026-10-02/"
   },
   {
-   "tag": "Congress &middot; Sep 25",
+   "tag": "Congress, Sep 25",
    "headline": "Lawmakers move to bar Chinese datacenter tech",
    "url": "https://www.reuters.com/legal/litigation/us-lawmakers-aim-keep-chinas-datacenter-tech-out-sensitive-government-systems-2026-09-25/",
    "body": "Members of Congress are moving to keep Chinese-origin datacenter hardware and software out of sensitive US government systems, Reuters reported, after warnings about data-security risks to federal networks."
@@ -68,31 +68,31 @@
  ],
  "in_the_news": [
   {
-   "tag": "Associated Press &middot; Sep 27",
+   "tag": "Associated Press, Sep 27",
    "headline": "China, US agree to AI-incident channel, $30bn tariff cuts in eight-point summit consensus",
    "url": "https://apnews.com/article/china-us-agreement-xi-trump-visit-e8f858ed9094b99bc8d3d339f9899f31",
    "body": "The two sides agreed to a channel for AI incidents and lower tariffs on $30 billion of goods each way, according to an eight-point readout Beijing published after Xi Jinping's Sep 23–25 state visit. The readout also lists a November AI dialogue and a pledge that Iran should not develop nuclear weapons, and the two militaries agreed to sign a crisis-communication memorandum."
   },
   {
-   "tag": "New York Times &middot; Sep 27",
+   "tag": "New York Times, Sep 27",
    "headline": "Trump asked Xi if China wanted to buy US weapons, ambassador says",
    "url": "https://www.nytimes.com/2026/09/27/us/politics/trump-weapons-sale-china.html",
    "body": "Ambassador David Perdue told Fox News that Trump asked Xi at the summit whether China wanted to buy American weapons. The State Department said the US has no plans to sell weapons to China, and Trump told reporters he had \"never heard of\" the offer."
   },
   {
-   "tag": "CNBC &middot; Oct 1",
+   "tag": "CNBC, Oct 1",
    "headline": "Xi marks 77th PRC anniversary with hardened Taiwan message",
    "url": "https://www.cnbc.com/2026/10/01/china-golden-week-holiday-taiwan-consumption-travel.html",
    "body": "Xi used his National Day address to sharpen Beijing's message on Taiwan, CNBC reported. At the Sep 30 reception he said China will \"resolutely fight secessionist forces seeking 'Taiwanese independence,'\" per Reuters; Taiwan's Mainland Affairs Council said the phrasing is not new."
   },
   {
-   "tag": "Reuters &middot; Oct 1",
+   "tag": "Reuters, Oct 1",
    "headline": "US officials see Chinese invasion of Taiwan unlikely before 2028",
    "url": "https://www.reuters.com/world/china/us-sees-chinese-invasion-taiwan-unlikely-next-year-despite-2027-timeline-sources-2026-10-01/",
    "body": "Two current US officials, a former official and a fourth source told Reuters that Beijing is unlikely to use force against Taiwan before 2028, despite Xi's order that the PLA be ready by 2027. They point to the anti-corruption purge: two of seven Central Military Commission members, Xi among them, remain in active service."
   },
   {
-   "tag": "Reuters &middot; Sep 29",
+   "tag": "Reuters, Sep 29",
    "headline": "Beijing unveils mortgage subsidy, rate cut and 1.2 trillion yuan liquidity injection",
    "url": "https://www.reuters.com/world/asia-pacific/china-unveils-rate-cut-mortgage-subsidies-spur-growth-2026-09-29/",
    "body": "The PBOC, the finance ministry and the financial regulator rolled out a nationwide mortgage-interest subsidy effective Oct 1, a cut to the Pledged Supplementary Lending rate and a 1.2 trillion yuan reverse repo set for Oct 8. September manufacturing PMIs returned to expansion at 50.1, CNBC reported."

@@ -13,7 +13,7 @@ def plain_text(html: str) -> str:
     t = re.sub(r"(?is)<(style|head).*?</\1>", "", html)
     t = re.sub(r"(?i)<br\s*/?>|</(p|div|li|tr|h\d)>", "\n", t)
     t = re.sub(r"<[^>]+>", "", t)
-    t = re.sub(r"&nbsp;", " ", t).replace("&middot;", "·").replace("&amp;", "&")
+    t = re.sub(r"&nbsp;", " ", t).replace("&middot;", ",").replace("&amp;", "&")
     return re.sub(r"\n\s*\n+", "\n\n", t).strip()
 
 

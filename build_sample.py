@@ -54,7 +54,7 @@ def main():
 
     iso = ISSUE.isoformat()
     issue = assemble(
-        copy, items, ISSUE, BACK, issue_label="Issue 0 \u00b7 sample", banner_src=a.banner,
+        copy, items, ISSUE, BACK, issue_label="Issue 0 (sample)", banner_src=a.banner,
         web_base=WEB_BASE,
         candidates={
             "glance": [{"text": i.name, "url": i.link, "date_label": i.date_label, "source": "tracker"}
