@@ -62,14 +62,15 @@ def link(text: str, url: str, color: str = INK) -> str:
 
 
 def sec_bar(title: str, anchor: str, half: str) -> str:
+    """Edge-to-edge section banner; the label lines up with the text column."""
     bg = AHEAD_BAR if half == "ahead" else BACK_BAR
     return (f'<a name="{anchor}" id="{anchor}"></a>'
             f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
-            f'class="sec-bar" style="background:{bg};margin-bottom:14px;">'
-            f'<tr><td style="padding:9px 14px;">'
+            f'class="sec-bar" style="background:{bg};">'
+            f'<tr><td class="sec" style="padding:11px 32px;">'
             f'<span style="font-family:{SANS};font-size:12px;color:{RING};line-height:1;'
             f'vertical-align:middle;margin-right:9px;">&#9679;</span>'
-            f'<span style="font-family:{SANS};font-size:11px;font-weight:700;'
+            f'<span style="font-family:{SANS};font-size:12px;font-weight:700;'
             f'text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;'
             f'vertical-align:middle;">{esc(title)}</span></td></tr></table>')
 
@@ -79,7 +80,7 @@ def part_head(label: str, dek: str) -> str:
             f'<div style="font-family:{MONO};font-size:11px;font-weight:700;letter-spacing:2px;'
             f'text-transform:uppercase;color:{NAVY_BRIGHT};">{esc(label)}</div>'
             f'<div style="font-family:{SERIF};font-size:13px;color:{MUTE};margin-top:3px;'
-            f'padding-bottom:8px;border-bottom:2px solid {NAVY};">{esc(dek)}</div></div>')
+            f'padding-bottom:12px;">{esc(dek)}</div></div>')
 
 
 def axiom(label: str, text: str) -> str:
@@ -292,8 +293,9 @@ def render(issue: dict, mode: str = "final") -> str:
         if not body:
             return
         dek = (f'<div style="font-family:{SANS};font-size:10px;color:{MUTE};text-transform:uppercase;'
-               f'letter-spacing:1px;margin:-6px 0 12px;">{esc(s["dek"])}</div>') if s.get("dek") else ""
-        out.append(f'<div {_SEC}>{sec_bar(title, key, half)}{dek}{body}</div>')
+               f'letter-spacing:1px;margin:0 0 12px;">{esc(s["dek"])}</div>') if s.get("dek") else ""
+        out.append(f'{sec_bar(title, key, half)}'
+                   f'<div class="sec" style="padding:16px 32px 22px;border-bottom:1px solid #EBEBEB;">{dek}{body}</div>')
 
     section("week_at_a_glance")
     out.append(part_head("The Week That Was", issue.get("back_window", "")))
