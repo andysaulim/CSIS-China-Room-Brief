@@ -1,12 +1,12 @@
 {
- "re_line": "Trump-Xi summit outcomes, Taiwan arms package on hold, Second Thomas Shoal standoff, AI rivalry, China's stimulus push",
+ "re_line": "Xi's Washington visit, $30 billion tariff swap, Taiwan arms package on hold, Second Thomas Shoal standoff, Senate punts Chinese car ban",
  "editors_note": "This is the first China Room Brief. It arrives every Friday with the week in U.S.-China relations and what CSIS scholars have coming.",
  "warnings": [],
  "week_at_a_glance": [
   {
    "tag": "Event, October 7",
-   "headline": "Golden Week ends as refiners await export approvals",
-   "body": "China's seven-day National Day holiday concludes on October 7. Traders are watching whether Beijing resumes approvals for refiners' fuel exports suspended for the break, after Reuters reported PetroChina cancelled a small number of planned gasoline and jet-fuel cargoes on September 30.",
+   "headline": "China's Golden Week holiday ends",
+   "body": "China's seven-day National Day holiday concludes on October 7. Traders are watching whether Beijing resumes approvals for refiners' fuel exports. Reuters reported those exports were suspended for October beyond Hong Kong and Macau, and PetroChina cancelled some gasoline and jet-fuel cargoes on September 30.",
    "url": "https://www.reuters.com/business/energy/chinese-refiners-suspend-oct-fuel-exports-petrochina-cancels-cargoes-sources-say-2026-10-01/",
    "iso": "2026-10-07",
    "event": "Golden Week fuel export pause",
@@ -15,7 +15,7 @@
   {
    "tag": "Economy, October 8",
    "headline": "PBOC runs 1.2 trillion yuan reverse repo",
-   "body": "A 1.2 trillion yuan three-month buyout reverse repo operation is set for October 8, Reuters reported, part of a package with a nationwide mortgage-interest subsidy effective October 1. Analysts told Bloomberg the measures will likely secure Beijing's GDP target but deliver little additional lift.",
+   "body": "A 1.2 trillion yuan three-month buyout reverse repo operation is set for October 8, part of a package Reuters reported alongside a nationwide mortgage-interest subsidy and a cut to the Pledged Supplementary Lending rate. Analysts told Bloomberg the \"mini stimulus\" will likely secure the year's GDP target but deliver little additional lift.",
    "url": "https://www.reuters.com/world/asia-pacific/china-unveils-rate-cut-mortgage-subsidies-spur-growth-2026-09-29/",
    "iso": "",
    "event": "China stimulus package",
@@ -24,16 +24,16 @@
   {
    "tag": "Meeting, October 12–18",
    "headline": "IMF and World Bank meet in Bangkok",
-   "body": "The IMF/World Bank Annual Meetings run October 12 to 18 in Bangkok. China's growth trajectory and debt-related concerns typically feature prominently.",
-   "url": "https://www.bloomberg.com/news/articles/2026-09-30/china-s-mini-stimulus-seen-securing-gdp-target-not-much-more",
+   "body": "The IMF and World Bank Annual Meetings run October 12 to 18 in Bangkok, Thailand, where China's growth trajectory and debt-related concerns typically feature prominently. China's official manufacturing PMI returned to expansion at 50.1 in September, CNBC reported.",
+   "url": "https://www.cnbc.com/2026/09/30/china-manufacturing-exports-capacity-economy-.html",
    "iso": "2026-10-12",
-   "event": "IMF/World Bank annual meetings",
+   "event": "IMF/World Bank Annual Meetings",
    "calendar_title": "IMF/World Bank Annual Meetings"
   },
   {
    "tag": "Meeting, October 13–15",
    "headline": "Bloomberg New Economy Forum opens in New Delhi",
-   "body": "From October 13 to 15, the New Delhi forum carries an explicit \"levers of power\" framing amid U.S.-China-India triangulation.",
+   "body": "Watch for an explicit \"levers of power\" framing amid U.S.-China-India triangulation at the October 13 to 15 forum.",
    "url": "",
    "iso": "2026-10-13",
    "event": "Bloomberg New Economy Forum",
@@ -43,8 +43,8 @@
  "heard_on_the_hill": [
   {
    "tag": "Senate, October 1",
-   "headline": "Senate puts off Chinese car ban until after midterms",
-   "body": "The Senate punted a bill that would permanently ban Chinese-made cars from the U.S. market until after the November 3 midterm elections, AP reported. Reuters reported senators plan to bring the measure up again for a vote in November. Separately, Sen. Moreno told CNBC a bill he sponsors to bar companies with more than 15 percent Chinese ownership from selling vehicles in the U.S. would not affect Mercedes-Benz.",
+   "headline": "Senate puts off permanent Chinese car ban",
+   "body": "The Senate punted a bill to permanently ban Chinese-made cars from the U.S. market until after the November 3 midterm elections, AP reported; Reuters said senators plan to bring it up for a vote in November. Sen. Moreno, who sponsors a bill to bar companies with more than 15 percent Chinese ownership from selling vehicles in the U.S., told CNBC it would not affect Mercedes-Benz.",
    "url": "https://apnews.com/article/senate-chinese-ev-ban-elections-mercedesbenz-220c9c816ed0f73eb867775c666b0b9e",
    "iso": "2026-10-01",
    "event": "Chinese car ban bill"
@@ -52,76 +52,76 @@
   {
    "tag": "Senate, October 1",
    "headline": "Wicker says U.S. must honor Taiwan commitments",
-   "body": "Senate Armed Services Committee Chairman Roger Wicker said U.S. security commitments to Taiwan must be upheld after meeting Taiwan's representative Alexander Yui, the Taipei Times reported. Four other Republican senators called on the administration to release more than $14 billion in stalled Taiwan security assistance. House Speaker Mike Johnson dismissed suggestions the delayed package is being used as leverage in trade talks.",
+   "body": "Senate Armed Services Committee Chairman Roger Wicker said U.S. security commitments to Taiwan must be upheld after meeting Taiwan's representative Alexander Yui, the Taipei Times reported. Four other Republican senators called on the administration to release more than $14 billion in stalled Taiwan security assistance. House Speaker Mike Johnson dismissed suggestions that the delayed package is being used as leverage in trade talks.",
    "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/10/01/2003865191",
    "iso": "2026-10-01",
-   "event": "Taiwan arms package"
+   "event": "Taiwan $14 billion arms package"
   },
   {
    "tag": "Senate, September 28",
-   "headline": "Senate bill would bar Chinese optical modules",
-   "body": "A bipartisan Senate group proposed banning Chinese-made optical modules from federal national-security systems, with a five-year grace period. Chinese chip and optical stocks slid to a one-year low on the news, Bloomberg reported, with ChiNext down 4.53 percent.",
+   "headline": "Senators propose ban on Chinese optical modules",
+   "body": "A bipartisan Senate group proposed banning Chinese-made optical modules from federal national-security systems, with a five-year grace period, Jiemian reported. ChiNext fell 4.53 percent on September 28 as the proposal weighed on sentiment, per Bloomberg. Reuters reported members of Congress are also moving to keep Chinese-origin datacenter hardware and software out of sensitive government systems.",
    "url": "https://www.bloomberg.com/news/articles/2026-09-28/chinese-stocks-hit-one-year-low-as-chip-optical-firms-slide",
    "iso": "2026-09-28",
-   "event": "Chinese optical module ban bill"
+   "event": "Chinese tech in government systems"
   },
   {
    "tag": "Congress, September 26",
-   "headline": "Lawmakers move to keep Chinese datacenter gear out",
-   "body": "Members of Congress are moving to keep Chinese-origin datacenter hardware and software out of sensitive U.S. government systems, Reuters reported, following warnings that Chinese AI models and cloud infrastructure could pose data-security risks to federal networks.",
-   "url": "https://www.reuters.com/legal/litigation/us-lawmakers-aim-keep-chinas-datacenter-tech-out-sensitive-government-systems-2026-09-25/",
+   "headline": "Lawmakers scrutinize F-35 parts sent to Hong Kong",
+   "body": "F-35 parts diverted to Hong Kong traveled a UPS route that regularly passes through China, Bloomberg reported, prompting U.S. lawmaker scrutiny. The Taipei Times said the Chinese government has taken possession of the stealth-coated components and not returned them.",
+   "url": "https://www.bloomberg.com/news/articles/2026-09-25/f-35-parts-seized-on-ups-path-to-us-that-often-stops-in-china",
    "iso": "2026-09-26",
-   "event": "Chinese datacenter technology curbs"
+   "event": "F-35 parts diverted to Hong Kong"
   },
   {
    "tag": "Congress, October 1",
    "headline": "Republican chair seeks scrutiny of Seoul's China ties",
-   "body": "A Republican committee chair called for greater scrutiny of South Korea's ties with China, according to a brief Reuters dispatch that gave no specific findings or proposed actions.",
+   "body": "A Republican committee chair called for greater scrutiny of South Korea's ties with China, Reuters reported, without detailing findings or proposed actions.",
    "url": "https://www.reuters.com/world/china/republican-committee-chair-calls-scrutiny-seouls-china-ties-2026-09-30/",
    "iso": "2026-10-01",
-   "event": "Scrutiny of Seoul's China ties"
+   "event": "Scrutiny of South Korea's China ties"
   }
  ],
  "in_the_news": [
   {
-   "iso": "2026-09-29",
+   "iso": "2026-09-26",
    "event": "Trump-Xi Washington summit",
-   "tag": "New York Times, September 29",
-   "headline": "Divisions between US and China 'simmer beneath the surface' after Xi's Washington visit",
-   "body": "Xi Jinping's September 23-25 state visit yielded tariff relief on $30 billion of goods each way, a November AI dialogue, a two-month truce extension and a Chinese pledge to buy at least 10 million metric tons of U.S. coal in each of 2027 and 2028. Xi pressed Trump to \"oppose\" Taiwan independence. Export controls, AI and Taiwan arms sales went unaddressed in public readouts, the New York Times reported.",
-   "url": "https://www.nytimes.com/2026/09/25/us/politics/trump-xi-state-visit.html"
+   "tag": "New York Times, September 26",
+   "headline": "Flyovers, pandas masked deep U.S.-China divides",
+   "body": "Xi Jinping's September 23-25 state visit yielded tariff relief on $30 billion of goods each way, a two-month truce extension, a November AI dialogue and a Chinese pledge to buy U.S. coal, Reuters and the Financial Times reported. The New York Times said the flyovers and pandas masked deep divides on trade, AI and Taiwan. Trump said he will see Xi again in November.",
+   "url": "https://www.nytimes.com/2026/09/24/us/politics/trump-xi-summit-china.html"
+  },
+  {
+   "iso": "2026-09-28",
+   "event": "Taiwan $14 billion arms package",
+   "tag": "Bloomberg, September 28",
+   "headline": "U.S. Taiwan policy unchanged after Xi's visit, Perdue says",
+   "body": "A $14 billion Taiwan arms package remains stalled after the summit, AP reported, though Taiwan officials said Taipei is in \"continuous talks\" with Washington. Ambassador David Perdue said U.S. Taiwan policy has not shifted; Bloomberg noted Trump has not mentioned the package since the visit, saying only that Xi \"knows how I feel.\"",
+   "url": "https://www.bloomberg.com/news/articles/2026-09-27/us-policy-stance-on-taiwan-unchanged-after-xi-visit-perdue-says"
+  },
+  {
+   "iso": "2026-09-30",
+   "event": "Chinese support for Iran",
+   "tag": "Wall Street Journal, September 30",
+   "headline": "WSJ traces Houthi battlefield gains to arms supplied by Iran and China",
+   "body": "U.S. intelligence assessments described to CNN say satellite imagery and intelligence support from Chinese groups helped Iran strike U.S. bases and threaten Hormuz shipping, a \"dramatic improvement\" in Iranian targeting. The Wall Street Journal traced Houthi gains in Yemen to weapons supplied by Iran and China. Ambassador David Perdue said Trump told Xi such assistance was \"totally unacceptable\" and received assurances.",
+   "url": "https://www.wsj.com/world/middle-east/see-how-the-houthi-advance-was-powered-by-arms-from-iran-and-china-3637f097"
   },
   {
    "iso": "2026-09-25",
-   "event": "Second Thomas Shoal resupply standoff",
+   "event": "China-Philippines South China Sea clashes",
    "tag": "Reuters, September 25",
    "headline": "Philippines accuses China of obstructing resupply mission",
-   "body": "Manila said China blocked a September 24 resupply mission to its grounded vessel at Second Thomas Shoal, the first such incident since 2024, per Bloomberg reporting cited by HKEJ. The U.S. embassy in Manila accused Beijing of \"dangerous blocking and irresponsible manoeuvres,\" while China Coast Guard spokesperson Jiang Lüe said Manila \"broke its promise.\"",
+   "body": "The Philippines accused China of blocking a September 24 resupply mission to its grounded vessel at Second Thomas Shoal, the first such incident since 2024, Reuters and HKEJ reported. The U.S. embassy in Manila accused Beijing of \"dangerous blocking and irresponsible manoeuvres,\" while China's coast guard said Manila \"broke its promise.\" Joint PLA and coast guard drills followed at Scarborough Shoal on September 27.",
    "url": "https://www.reuters.com/world/china/philippines-accuses-china-obstructing-resupply-mission-south-china-sea-2026-09-25/"
   },
   {
-   "iso": "2026-09-30",
-   "event": "DeepSeek-Huawei AI chip tools",
-   "tag": "New York Times, September 30",
-   "headline": "DeepSeek and Huawei unveil AI chip tools to rival Nvidia's software stack",
-   "body": "DeepSeek and Huawei jointly developed software tools for advanced AI chips, aiming to give Chinese developers an alternative to Nvidia's dominant chip-software ecosystem, the New York Times reported. The push is part of Beijing's AI self-reliance drive following U.S. restrictions on Nvidia's most advanced chips.",
-   "url": "https://www.nytimes.com/2026/09/30/business/china-ai-deepseek-huawei.html"
-  },
-  {
    "iso": "2026-10-01",
-   "event": "Chinese hackers impersonate U.S. AI insiders",
-   "tag": "CNN, October 1",
-   "headline": "Suspected Chinese hackers impersonated US AI insiders",
-   "body": "Suspected Chinese hackers impersonated an Anthropic employee and former U.S. officials to extract insights on American AI development, a U.S. cybersecurity firm told CNN. Reuters separately reported they posed as a former official to steal emails from AI experts.",
-   "url": "https://www.cnn.com/2026/10/01/politics/china-linked-hackers-impersonated-us-ai-insiders"
-  },
-  {
-   "iso": "2026-09-30",
-   "event": "China stimulus package",
-   "tag": "Bloomberg, September 30",
-   "headline": "Analysts: China's 'mini stimulus' secures growth target, not much more",
-   "body": "The PBOC, Ministry of Finance and financial regulator rolled out a nationwide mortgage-interest subsidy effective October 1, a cut to the Pledged Supplementary Lending rate and a 1.2 trillion yuan reverse repo set for October 8. A State Council meeting showed leaders \"worried about economic performance for the rest of the year,\" per Sinocism. Analysts told Bloomberg the package secures the growth target and little more.",
-   "url": "https://www.bloomberg.com/news/articles/2026-09-30/china-s-mini-stimulus-seen-securing-gdp-target-not-much-more"
+   "event": "U.S. assessment of Taiwan invasion timeline",
+   "tag": "Reuters, October 1",
+   "headline": "U.S. officials see Chinese invasion of Taiwan unlikely before 2028",
+   "body": "Beijing is unlikely to use force against Taiwan before 2028, U.S. officials told Reuters, even though Xi has ordered the PLA to be ready by 2027. They cited an anti-corruption purge that leaves only two of seven Central Military Commission members in active service, and said Beijing may wait for Taiwan's 2028 election.",
+   "url": "https://www.reuters.com/world/china/us-sees-chinese-invasion-taiwan-unlikely-next-year-despite-2027-timeline-sources-2026-10-01/"
   }
  ],
  "research_roundup": [
@@ -134,7 +134,7 @@
    ],
    "event": "Trump-Xi Washington summit",
    "headline": "The Limits of Trump and Xi’s Photo-Op Summit",
-   "body": "David Sacks of CFR finds Trump and Xi reached no consensus on major geopolitical issues, made no headway on regulating AI and did not put economic ties on a more sustainable trajectory, calling the visit \"a new high-water mark for symbolism and a new low for substance.\" He adds that it was not \"a complete failure.\"",
+   "body": "CFR's David Sacks writes that Xi's visit \"may have set a new high-water mark for symbolism and a new low for substance,\" with no consensus on major geopolitical issues, AI or a more sustainable economic relationship. The only clear winner, he argues, was Zoo Atlanta, though he says the meeting was not a complete failure.",
    "url": "https://www.cfr.org/articles/the-limits-of-trump-and-xis-photo-op-summit"
   },
   {
@@ -144,7 +144,7 @@
    "authors": [],
    "event": "Trump-Xi Washington summit",
    "headline": "The Trump-Xi Summit Leaves Taiwan in Limbo",
-   "body": "CNAS argues public accounts of the summit show no U.S. agreement to Xi's push to move Washington closer to Beijing's position on Taiwan. Whether Trump can keep negotiating with Xi \"while making Taiwan harder to conquer\" is now the measure of his cross-Strait policy.",
+   "body": "CNAS argues Xi used the summit to press Washington toward Beijing's position on Taiwan, but public accounts so far show no U.S. agreement to his request. Whether Trump can keep negotiating with Xi while making Taiwan harder to conquer \"is now the measure of his cross-Strait policy.\"",
    "url": "https://www.cnas.org/publications/commentary/the-trump-xi-summit-leaves-taiwan-in-limbo"
   },
   {
@@ -159,29 +159,17 @@
    ],
    "event": "Chinese industrial overcapacity",
    "headline": "How do we deal with Chinese overcapacity?",
-   "body": "Cecilia Malmström, Yeling Tan, Alicia García-Herrero and Nicolas Lamp take up Chinese overcapacity after a summit that reached no agreement on it, noting that an EU-China working group on \"macroeconomic imbalances\" set up in May has failed to produce results so far.",
+   "body": "Cecilia Malmström, Yeling Tan, Alicia García-Herrero and Nicolas Lamp note the summit reached no agreement on overcapacity and that an EU-China working group on \"macroeconomic imbalances\" formed in May has failed to produce results. They weigh whether managed trade or U.S.-EU coordination offers a way forward.",
    "url": "https://www.piie.com/events/2026/how-do-we-deal-chinese-overcapacity"
-  },
-  {
-   "institution": "Jamestown Foundation",
-   "date": "October 1",
-   "iso": "2026-10-01",
-   "authors": [
-    "Dennis Yang"
-   ],
-   "event": "China compute exports",
-   "headline": "The PRC’s Compute Push Goes Global",
-   "body": "Dennis Yang finds Beijing pushing its domestic computing ecosystem overseas before the compute crunch caused by U.S. export controls on high-end GPUs is resolved, citing calls for \"compute going global\" and a Shenzhen AI action plan released in early September.",
-   "url": "https://jamestown.org/the-prcs-compute-push-goes-global/"
   },
   {
    "institution": "Asia Society Policy Institute",
    "date": "September 29",
    "iso": "2026-09-29",
    "authors": [],
-   "event": "South China Sea clashes",
+   "event": "China-Philippines South China Sea clashes",
    "headline": "Return of Tensions in the South China Sea Was a Matter of Time",
-   "body": "Andrew Chubb of the Asia Society Policy Institute's Center for China Analysis argues that after two years of relative quiet, China-Philippines clashes were all but inevitable. The most serious came on July 20, when Chinese Coast Guard personnel and Philippine marines fought with batons and paddles near Second Thomas Shoal.",
+   "body": "Andrew Chubb of the Asia Society Policy Institute argues clashes between China and the Philippines were all but inevitable after two years of relative quiet. Confrontations have grown sharper and more frequent since July, he finds, from a July 20 fight near Second Thomas Shoal to a September 18 collision near Sabina Shoal.",
    "url": "https://asiasociety.org/policy-institute/return-tensions-south-china-sea-was-matter-time"
   }
  ],
@@ -191,9 +179,9 @@
  },
  "qa": [
   "Week at a Glance items dated from news reports, not the calendar (confirm the date): \"PBOC runs 1.2 trillion yuan reverse repo\".",
-  "In the News outlets: New York Times, Reuters, New York Times, CNN, Bloomberg. 3 of 5 from NYT, WSJ, Washington Post, Bloomberg or FT.",
+  "In the News outlets: New York Times, Bloomberg, Wall Street Journal, Reuters, Reuters. 3 of 5 from NYT, WSJ, Washington Post, Bloomberg or FT.",
   "Heard on the Hill cites taipeitimes.com, not a primary record or priority outlet: \"Wicker says U.S. must honor Taiwan commitments\".",
-  "\"Reported\" two or more times in 1 item(s), first: \"Senate puts off Chinese car ban until after midterms\"."
+  "\"Reported\" two or more times in 1 item(s), first: \"Senators propose ban on Chinese optical modules\"."
  ],
  "keep": [
   "editors_note"
