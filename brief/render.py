@@ -20,17 +20,15 @@ import re
 
 NAVY = "#004165"
 NAVY_BRIGHT = "#0065A6"
-BANNER_NAVY = "#0A2458"   # the comms template's navy
+BANNER_NAVY = "#001F59"   # sampled from the CSIS comms banner
 BACK_BAR = "#14181F"      # same black as the daily
 AHEAD_BAR = NAVY
-RING = "#EF4027"          # the daily's accent ring
 INK = "#1A222E"
 BODY = "#4A5260"
 MUTE = "#6B7280"
 RULE = "#E4E7EB"
 SLOT_BG = "#F7F8FA"
 SLOT_RULE = "#B8B0A3"
-MONO = "'IBM Plex Mono',Consolas,'Courier New',monospace"
 SERIF = "Georgia,'Times New Roman',serif"
 SANS = "Arial,Helvetica,sans-serif"
 
@@ -47,6 +45,16 @@ SECTIONS = [
 ]
 
 
+TOC = {
+    "week_at_a_glance": "Three things to watch next week",
+    "heard_on_the_hill": "What Congress said and did on China",
+    "in_the_news": "The week's top five China stories",
+    "research_roundup": "New work from other think tanks and CRS",
+    "in_the_works": "What CSIS scholars have coming",
+    "on_the_horizon": "Key dates ahead",
+}
+
+
 def esc(text) -> str:
     if text is None:
         return ""
@@ -57,30 +65,22 @@ def esc(text) -> str:
 def link(text: str, url: str, color: str = INK) -> str:
     if not url:
         return text
-    return (f'<a href="{esc(url)}" style="color:{color};text-decoration:underline;'
-            f'text-decoration-color:{NAVY_BRIGHT};text-underline-offset:3px;">{text}</a>')
+    return f'<a href="{esc(url)}" style="color:{color};text-decoration:none;">{text}</a>'
 
 
 def sec_bar(title: str, anchor: str, half: str) -> str:
-    """Edge-to-edge section banner; the label lines up with the text column."""
-    bg = AHEAD_BAR if half == "ahead" else BACK_BAR
+    """Edge-to-edge section banner in the masthead navy."""
     return (f'<a name="{anchor}" id="{anchor}"></a>'
             f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
-            f'class="sec-bar" style="background:{bg};">'
-            f'<tr><td class="sec" style="padding:11px 32px;">'
-            f'<span style="font-family:{SANS};font-size:12px;color:{RING};line-height:1;'
-            f'vertical-align:middle;margin-right:9px;">&#9679;</span>'
-            f'<span style="font-family:{SANS};font-size:12px;font-weight:700;'
-            f'text-transform:uppercase;letter-spacing:2px;color:#FFFFFF;'
-            f'vertical-align:middle;">{esc(title)}</span></td></tr></table>')
+            f'class="sec-bar" style="background:{BANNER_NAVY};">'
+            f'<tr><td class="sec" style="padding:11px 32px;font-family:{SANS};font-size:13px;font-weight:700;'
+            f'letter-spacing:1px;text-transform:uppercase;color:#FFFFFF;">{esc(title)}</td></tr></table>')
 
 
 def part_head(label: str, dek: str) -> str:
-    return (f'<div style="padding:26px 32px 4px;" class="sec">'
-            f'<div style="font-family:{MONO};font-size:11px;font-weight:700;letter-spacing:2px;'
-            f'text-transform:uppercase;color:{NAVY_BRIGHT};">{esc(label)}</div>'
-            f'<div style="font-family:{SERIF};font-size:13px;color:{MUTE};margin-top:3px;'
-            f'padding-bottom:12px;">{esc(dek)}</div></div>')
+    return (f'<div style="padding:28px 32px 12px;" class="sec">'
+            f'<span style="font-family:{SERIF};font-size:20px;font-weight:700;color:{INK};">{esc(label)}</span>'
+            f'<span style="font-family:{SANS};font-size:12px;color:{MUTE};"> &nbsp;{esc(dek)}</span></div>')
 
 
 def axiom(label: str, text: str) -> str:
@@ -97,15 +97,14 @@ def bullets(points: list[str]) -> str:
 
 
 def item(i: dict, rule: str = NAVY) -> str:
-    tag_html = (f'<div style="font-family:{SANS};font-size:10px;color:{MUTE};'
-                f'text-transform:uppercase;letter-spacing:1px;font-weight:600;'
-                f'margin-bottom:2px;">{i["tag"]}</div>') if i.get("tag") else ""
-    body = (f'<div style="font-family:{SERIF};font-size:13px;line-height:1.55;'
-            f'color:{BODY};margin-top:3px;">{esc(i["body"])}</div>') if i.get("body") else ""
+    tag_html = (f'<div style="font-family:{SANS};font-size:11px;font-weight:700;color:{MUTE};'
+                f'margin-bottom:3px;">{i["tag"]}</div>') if i.get("tag") else ""
+    body = (f'<div style="font-family:{SERIF};font-size:14px;line-height:1.6;'
+            f'color:{BODY};margin-top:4px;">{esc(i["body"])}</div>') if i.get("body") else ""
     why = axiom("Why it matters", i["why"]) if i.get("why") else ""
-    return (f'<div style="margin-bottom:13px;padding-left:12px;border-left:3px solid {rule};">'
-            f'{tag_html}<div style="font-family:{SERIF};font-size:14px;font-weight:700;'
-            f'color:{INK};line-height:1.4;">{link(esc(i["headline"]), i.get("url", ""))}</div>'
+    return (f'<div style="padding:12px 0 14px;border-top:1px solid {RULE};">'
+            f'{tag_html}<div style="font-family:{SERIF};font-size:16px;font-weight:700;'
+            f'color:{INK};line-height:1.35;">{link(esc(i["headline"]), i.get("url", ""))}</div>'
             f'{body}{why}{bullets(i.get("bullets", []))}</div>')
 
 
@@ -128,28 +127,9 @@ def slot(spec: str, candidates: list[dict] | None = None, note: str = "") -> str
     note_html = (f'<div style="font-family:{SERIF};font-size:13px;line-height:1.5;color:{BODY};'
                  f'margin-top:6px;">{note}</div>') if note else ""
     return (f'<div style="background:{SLOT_BG};border:1px dashed {SLOT_RULE};padding:12px 14px;">'
-            f'<div style="font-family:{MONO};font-size:10px;font-weight:700;letter-spacing:1.5px;'
-            f'text-transform:uppercase;color:{NAVY_BRIGHT};">For the coordinator</div>'
+            f'<div style="font-family:{SANS};font-size:12px;font-weight:700;color:{NAVY};">For the coordinator</div>'
             f'<div style="font-family:{SANS};font-size:12px;color:{INK};margin-top:4px;">{esc(spec)}</div>'
             f'{note_html}{lst}</div>')
-
-
-def calendar_row(month: str, day: str, headline: str, detail: str, url: str = "", kind: str = "") -> str:
-    """A date set in type, not a filled chip: month small caps over the day."""
-    day_size = "22px" if day and day[0].isdigit() and len(day) <= 2 else "15px"
-    kind_html = (f'<div style="font-family:{SANS};font-size:10px;font-weight:700;letter-spacing:1px;'
-                 f'text-transform:uppercase;color:{MUTE};margin-bottom:2px;">{esc(kind)}</div>') if kind else ""
-    detail_html = (f'<div style="font-family:{SERIF};font-size:13px;line-height:1.5;color:{BODY};margin-top:3px;">'
-                   f'{esc(detail)}</div>') if detail else ""
-    return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
-            f'style="border-top:1px solid {RULE};"><tr>'
-            f'<td width="76" style="padding:12px 14px 12px 0;vertical-align:top;border-right:2px solid {NAVY};">'
-            f'<div style="font-family:{SANS};font-size:10px;font-weight:700;letter-spacing:1.5px;color:{MUTE};">{esc(month)}</div>'
-            f'<div style="font-family:{SERIF};font-size:{day_size};font-weight:700;line-height:1.15;color:{NAVY};'
-            f'white-space:nowrap;">{esc(day)}</div></td>'
-            f'<td style="padding:12px 0 12px 14px;vertical-align:top;">{kind_html}'
-            f'<div style="font-family:{SERIF};font-size:15px;font-weight:700;line-height:1.35;color:{INK};">{link(esc(headline), url)}</div>'
-            f'{detail_html}</td></tr></table>')
 
 
 def news_row(n: int, i: dict) -> str:
@@ -161,8 +141,7 @@ def news_row(n: int, i: dict) -> str:
             f'<td width="44" style="padding:16px 0 16px;vertical-align:top;font-family:{SERIF};font-size:30px;'
             f'font-weight:700;line-height:1;color:{NAVY};">{n}</td>'
             f'<td style="padding:16px 0;vertical-align:top;">'
-            f'<div style="font-family:{SANS};font-size:10px;color:{MUTE};text-transform:uppercase;letter-spacing:1px;'
-            f'font-weight:700;margin-bottom:4px;">{i.get("tag", "")}</div>'
+            f'<div style="font-family:{SANS};font-size:11px;color:{MUTE};font-weight:700;margin-bottom:4px;">{i.get("tag", "")}</div>'
             f'<div style="font-family:{SERIF};font-size:19px;font-weight:700;line-height:1.3;color:{INK};">'
             f'{link(esc(i["headline"]), i.get("url", ""))}</div>{body}{why}</td></tr></table>')
 
@@ -175,15 +154,13 @@ def agenda(items: list[dict], meta_first: bool = False) -> str:
         g = i.get("group", "")
         if g != current:
             current = g
-            html += (f'<div style="font-family:{SANS};font-size:11px;font-weight:700;letter-spacing:2px;'
-                     f'text-transform:uppercase;color:{NAVY_BRIGHT};margin:{"0" if not html else "18px"} 0 0;'
+            html += (f'<div style="font-family:{SERIF};font-size:15px;font-weight:700;color:{NAVY};margin:{"0" if not html else "18px"} 0 0;'
                      f'padding-bottom:6px;border-bottom:2px solid {NAVY};">{esc(g)}</div>')
         day = i.get("day") or ""
         size = "17px" if day[:1].isdigit() else "12px"
         detail = (f'<div style="font-family:{SERIF};font-size:13px;line-height:1.5;color:{BODY};margin-top:3px;">'
                   f'{esc(i["detail"])}</div>') if i.get("detail") else ""
-        meta = (f'<div class="cal-meta" style="font-family:{SANS};font-size:10px;font-weight:700;letter-spacing:1px;'
-                f'text-transform:uppercase;color:{MUTE};margin-top:4px;">{esc(i.get("kind", ""))}</div>') if i.get("kind") else ""
+        meta = (f'<div class="cal-meta" style="font-family:{SANS};font-size:12px;color:{MUTE};margin-top:3px;">{esc(i.get("kind", ""))}</div>') if i.get("kind") else ""
         html += (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
                  f'style="border-bottom:1px solid {RULE};"><tr>'
                  f'<td width="60" style="padding:11px 10px 11px 0;vertical-align:top;font-family:{SERIF};'
@@ -198,8 +175,7 @@ def research_row(i: dict) -> str:
     """Institution in its own column, so a reader sees who wrote what at a glance."""
     return (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid {RULE};"><tr>'
             f'<td width="128" class="r-inst" style="padding:12px 14px 12px 0;vertical-align:top;">'
-            f'<div style="font-family:{SANS};font-size:11px;font-weight:700;letter-spacing:0.5px;'
-            f'text-transform:uppercase;line-height:1.35;color:{NAVY};">{esc(i["institution"])}</div>'
+            f'<div style="font-family:{SANS};font-size:13px;font-weight:700;line-height:1.35;color:{NAVY};">{esc(i["institution"])}</div>'
             f'<div style="font-family:{SANS};font-size:11px;color:{MUTE};margin-top:3px;">{esc(i.get("date", ""))}</div></td>'
             f'<td style="padding:12px 0;vertical-align:top;">'
             f'<div style="font-family:{SERIF};font-size:15px;font-weight:700;line-height:1.35;color:{INK};">'
@@ -251,25 +227,23 @@ def render(issue: dict, mode: str = "final") -> str:
                    f'font-family:{SERIF};font-size:28px;font-weight:700;line-height:1.2;"></td></tr></table>')
 
     # Date line, length, RE line
-    re_html = (f'<div style="margin-top:10px;padding-top:10px;border-top:1px solid {RULE};font-size:13px;'
-               f'color:{INK};font-family:{SERIF};line-height:1.55;"><strong style="font-size:11px;'
-               f'letter-spacing:1.5px;font-family:{SANS};">RE:</strong>&nbsp; {esc(issue["re_line"])}</div>'
-               ) if issue.get("re_line") else ""
     out.append(f'<div class="sec" style="padding:14px 32px;border-bottom:1px solid {RULE};">'
                f'<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
                f'<td class="mast-main" style="font-family:{SERIF};font-size:16px;color:{INK};">{esc(issue["date_line"])}</td>'
                f'<td class="mast-meta" align="right" style="font-family:{SANS};font-size:11px;color:{MUTE};white-space:nowrap;">'
                f'{esc(issue.get("issue_label", ""))} &middot; {wc:,} words &middot; {mins} min read</td>'
-               f'</tr></table>{re_html}</div>')
+               f'</tr></table></div>')
 
-    # In this issue
-    present = [(k, t) for k, t, _ in SECTIONS
-               if draft or issue.get(k, {}).get("items")]
-    nav = " &nbsp;&middot;&nbsp; ".join(
-        f'<a href="#{k}" style="color:{INK};text-decoration:none;">{esc(t)}</a>' for k, t in present)
-    out.append(f'<div class="sec" style="padding:10px 32px;border-bottom:1px solid {RULE};font-family:{SANS};'
-               f'font-size:11px;line-height:1.9;color:{INK};"><span style="font-size:10px;font-weight:700;'
-               f'letter-spacing:1.5px;text-transform:uppercase;color:{MUTE};">In this issue &nbsp;</span>{nav}</div>')
+    # In this issue: one row per section, name and what it holds
+    present = [(k, t) for k, t, _ in SECTIONS if draft or issue.get(k, {}).get("items")]
+    rows = "".join(
+        f'<tr><td style="padding:5px 16px 5px 0;white-space:nowrap;vertical-align:top;">'
+        f'<a href="#{k}" style="font-family:{SANS};font-size:13px;font-weight:700;color:{INK};text-decoration:none;">{esc(t)}</a></td>'
+        f'<td style="padding:5px 0;vertical-align:top;font-family:{SERIF};font-size:13px;color:{BODY};">{esc(TOC.get(k, ""))}</td></tr>'
+        for k, t in present)
+    out.append(f'<div class="sec" style="padding:16px 32px 14px;border-bottom:1px solid {RULE};">'
+               f'<div style="font-family:{SERIF};font-size:15px;font-weight:700;color:{INK};margin-bottom:6px;">In this issue</div>'
+               f'<table cellpadding="0" cellspacing="0" border="0">{rows}</table></div>')
 
     if issue.get("editors_note"):
         out.append(f'<div {_SEC}>{prose(issue["editors_note"])}</div>')
@@ -288,12 +262,13 @@ def render(issue: dict, mode: str = "final") -> str:
         else:
             rule = NAVY if half == "ahead" else BACK_BAR
             body = "".join(item(i, rule) for i in s.get("items", []))
+        # no rule between the section banner and its first item
+        body = body.replace(f"border-top:1px solid {RULE};", "", 1)
         if draft and (not body or s.get("candidates") or s.get("gap")):
             body += slot(s.get("spec", ""), s.get("candidates"), s.get("gap", ""))
         if not body:
             return
-        dek = (f'<div style="font-family:{SANS};font-size:10px;color:{MUTE};text-transform:uppercase;'
-               f'letter-spacing:1px;margin:0 0 12px;">{esc(s["dek"])}</div>') if s.get("dek") else ""
+        dek = ""
         out.append(f'{sec_bar(title, key, half)}'
                    f'<div class="sec" style="padding:16px 32px 22px;border-bottom:1px solid #EBEBEB;">{dek}{body}</div>')
 

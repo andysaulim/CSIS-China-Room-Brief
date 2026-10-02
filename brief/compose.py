@@ -21,7 +21,10 @@ STYLE = {
         "Write in the house style of a CSIS internal brief: plain declarative sentences, numbers over "
         "adjectives, named actors, dated events. Headlines under 60 characters, in sentence case. Each item "
         "is one or two sentences. Lead with what happened, not with background. No bold labels, no bullets, "
-        "no rhetorical questions, no em-dashes. Vary sentence length."),
+        "no rhetorical questions, no em-dashes. Vary sentence length. Headlines say what happened in plain "
+        "words: no metaphors, wordplay or question headlines. Avoid: underscore, landscape, navigate, robust, "
+        "pivotal, key takeaway, it remains to be seen, it is important to note. Use the sources' own wording "
+        "where you can."),
     "brevity": (
         "Write in Axios Smart Brevity: headline under 60 characters; a one-sentence lede saying what is new; "
         "optionally a one-sentence 'why' and up to three short bullets. Plain words, subject-verb-object. "
@@ -39,7 +42,7 @@ Rules that are never broken:
 
 Sections:
 - re_line: four or five short phrases separated by " · ", the week's main threads.
-- editors_note: two short paragraphs, 50 to 90 words in all, plain and direct.
+- editors_note: one or two sentences, under 40 words, plain and direct.
 - week_at_a_glance: exactly three things scheduled or expected in the coming week, from the sources only.
 - heard_on_the_hill: three to six items on Congress (members, bills, hearings, letters) from the past week.
 - in_the_news: the five most important China stories of the past week from the priority-outlet sources (marked [priority]), ranked; when several outlets covered the same story, pick the best-ranked outlet's item and count the story once. Give each a two-sentence summary (body) of what happened, drawing on every source that covered the story and naming outlets for claims; leave why empty unless the style asks for it.
