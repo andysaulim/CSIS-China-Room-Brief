@@ -46,7 +46,7 @@ Sections:
 - editors_note: one or two sentences, under 40 words, plain and direct.
 - week_at_a_glance: exactly three things scheduled or expected in the coming week that matter for U.S.-China relations (trade, Taiwan, security, technology, diplomacy, Congress), from the sources only; one or two sentences each. Skip domestic Chinese consumer or travel stories.
 - heard_on_the_hill: three to five items on Congress (members, bills, hearings, letters) from the past week. Sources marked "Congress.gov" are the official record of hearings and newly introduced bills: flag the most significant ones here, and use scheduled hearings in week_at_a_glance.
-- in_the_news: the five most important China stories of the past week from the priority-outlet sources (marked [priority]), ranked; when several outlets covered the same story, pick the best-ranked outlet's item and count the story once. Give each a summary (body) of two sentences and under 60 words saying what happened, drawing on every source that covered the story and naming outlets for claims; leave why empty unless the style asks for it.
+- in_the_news: the five most important China stories of the past week from the priority-outlet sources (marked [priority tier N], tier 1 best), ranked by importance to U.S.-China relations; a story many outlets covered outranks one only a single outlet ran. Count each story once. Set source_id to the item from the best-tier outlet that covered it (New York Times, Wall Street Journal and Washington Post are tier 1; Bloomberg and Financial Times tier 2; Reuters and AP tier 3), and list every other source on the same story in also_ids. Give each a summary (body) of two sentences and under 60 words saying what happened, drawing on every source that covered the story and naming outlets for claims; leave why empty unless the style asks for it.
 - research_roundup: three to six publications from the R sources, at most one per institution. Prefer U.S. institutions (Brookings, CFR, Carnegie, RAND, CNAS, AEI, Hudson, Heritage, PIIE, Stimson, Hoover) and the Congressional Research Service; use non-U.S. institutions only to fill. For each, one sentence on the argument or finding, naming the authors when the source does."""
 
 ITEM = {
@@ -73,8 +73,10 @@ SCHEMA = {
             "type": "object",
             "properties": {"source_id": {"type": "string"},
                            "headline": {"type": "string", "description": "The source's headline in sentence case, wording unchanged"},
+                           "also_ids": {"type": "array", "items": {"type": "string"},
+                                        "description": "Other source ids covering the same story"},
                            "body": {"type": "string"}, "why": {"type": "string"}},
-            "required": ["source_id", "headline", "body", "why"], "additionalProperties": False}},
+            "required": ["source_id", "headline", "also_ids", "body", "why"], "additionalProperties": False}},
         "research_roundup": {"type": "array", "items": {
             "type": "object",
             "properties": {"source_id": {"type": "string"}, "body": {"type": "string"}},
@@ -92,7 +94,7 @@ def corpus(news: list[dict], research: list[dict]) -> tuple[str, dict]:
     for n, x in enumerate(news, 1):
         sid = f"N{n}"
         index[sid] = {"kind": "news", **x}
-        pri = f" [priority: {x['outlet']}]" if x.get("outlet") else ""
+        pri = f" [priority tier {x['outlet_rank']}: {x['outlet']}]" if x.get("outlet") else ""
         lines.append(f"{sid} | {x['date']} | {x.get('section') or ''} | {x.get('tag') or ''}{pri}\n"
                      f"   {x['headline']}\n   {x.get('body', '')}")
     for n, x in enumerate(research, 1):
@@ -163,26 +165,46 @@ def resolve(out: dict, index: dict) -> dict:
                               "url": src.get("url", "")})
     copy["in_the_news"] = []
     for it in out["in_the_news"][:5]:
-        src = index.get(it["source_id"])
-        if not src or not src.get("outlet"):
+        # Link the best-ranked priority outlet that ran the story, whatever id the model led with.
+        ids = [it["source_id"]] + list(it.get("also_ids") or [])
+        cands = [index[i] for i in ids if i in index and index[i].get("outlet")]
+        if not cands:
             copy["warnings"].append(f"in_the_news: dropped {it['source_id']} (unknown or not a priority outlet)")
             continue
+        src = min(cands, key=lambda x: x["outlet_rank"])
+        lead = index.get(it["source_id"], {})
+        own = src.get("original_headline", "")
+        if src is lead:
+            headline = own if own and not _title_case(own) else (it.get("headline") or own or src["headline"])
+        else:
+            headline = own if own and not _title_case(own) else src["headline"]
         d = src["date"]
         copy["in_the_news"].append({
             "tag": f"{src['outlet']}, {_md(d)}",
-            "headline": src.get("original_headline") or it.get("headline") or src["headline"],
+            "headline": _clean(headline),
             "body": _clean(it.get("body", "")), "why": _clean(it.get("why", "")),
             "url": src["url"]})
     copy["research_roundup"] = []
+    used = set()
     for it in out["research_roundup"]:
         src = index.get(it["source_id"])
         if not src or src["kind"] != "research":
             copy["warnings"].append(f"research_roundup: dropped {it['source_id']}")
             continue
+        if src["institution"] in used:
+            copy["warnings"].append(f"research_roundup: dropped a second {src['institution']} item")
+            continue
+        used.add(src["institution"])
         copy["research_roundup"].append({"institution": src["institution"], "date": _md(src["date"]),
                                          "headline": src["title"], "body": _clean(it["body"]),
                                          "url": src["url"]})
     return copy
+
+
+def _title_case(h: str) -> bool:
+    """True for Title Case Headlines, which read out of place in a sentence-case brief."""
+    words = [w for w in re.findall(r"[A-Za-z][A-Za-z'’]*", h) if len(w) > 3]
+    return len(words) >= 3 and sum(w[0].isupper() for w in words) / len(words) > 0.75
 
 
 def _md(iso: str) -> str:

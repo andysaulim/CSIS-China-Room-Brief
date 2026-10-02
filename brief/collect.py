@@ -36,15 +36,17 @@ def _gnews(query: str) -> str:
 
 # Research Roundup sources. Direct feeds where the daily found one that works;
 # Google News site searches elsewhere (same choices as the daily's Tier 2).
+# A list is tried in order and the first feed that answers wins, so a direct
+# feed with summaries beats the Google News fallback, which carries none.
 RESEARCH_FEEDS = {
     "RAND": "https://www.rand.org/topics/china.xml",
-    "Brookings": _gnews("China site:brookings.edu"),
+    "Brookings": ["https://www.brookings.edu/feed/", _gnews("China site:brookings.edu")],
     "Carnegie Endowment": _gnews("China site:carnegieendowment.org"),
     "Council on Foreign Relations": _gnews("China site:cfr.org"),
     "Stimson Center": "https://www.stimson.org/feed/?topic=china",
     "German Marshall Fund": _gnews("China site:gmfus.org"),
     "Asia Society Policy Institute": _gnews("China site:asiasociety.org/policy-institute"),
-    "AEI": _gnews("China site:aei.org"),
+    "AEI": ["https://www.aei.org/feed/", _gnews("China site:aei.org")],
     "Hudson Institute": _gnews("China site:hudson.org"),
     "Heritage Foundation": _gnews("China site:heritage.org"),
     "CNAS": _gnews("China site:cnas.org"),
@@ -122,8 +124,17 @@ _OG = re.compile(r'<meta[^>]+property=["\']og:title["\'][^>]+content=["\']([^"\'
 _OG2 = re.compile(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:title', re.I)
 
 
+BROWSER_UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+                            "(KHTML, like Gecko) Chrome/128.0 Safari/537.36",
+              "Accept-Language": "en-US,en;q=0.9"}
+
+
 def original_headline(url: str) -> str:
-    r = _get(url, timeout=12)
+    try:
+        r = requests.get(url, headers=BROWSER_UA, timeout=12)
+        r = r if r.ok else None
+    except requests.RequestException:
+        r = None
     if not r:
         return ""
     m = _OG.search(r.text[:200_000]) or _OG2.search(r.text[:200_000])
@@ -153,11 +164,14 @@ def research_items(start: date, end: date) -> list[dict]:
     lo = datetime.combine(start, datetime.min.time(), tzinfo=timezone.utc)
     hi = datetime.combine(end + timedelta(days=1), datetime.min.time(), tzinfo=timezone.utc)
     out = []
-    for inst, url in RESEARCH_FEEDS.items():
-        r = _get(url)
-        if not r:
-            continue
-        for e in feedparser.parse(r.content).entries[:40]:
+    for inst, urls in RESEARCH_FEEDS.items():
+        entries, url = [], ""
+        for url in ([urls] if isinstance(urls, str) else urls):
+            r = _get(url)
+            entries = feedparser.parse(r.content).entries if r else []
+            if entries:
+                break
+        for e in entries[:60]:
             t = e.get("published_parsed") or e.get("updated_parsed")
             if not t:
                 continue

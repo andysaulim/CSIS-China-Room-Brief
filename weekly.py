@@ -61,6 +61,13 @@ def cmd_draft(issue_date: date, style: str) -> None:
     news, missing = collect.daily_items(start, end)
     collect.tag_outlets(news)
     research = collect.research_items(start, end)
+    by_inst = {}
+    for x in research:
+        by_inst[x["institution"]] = by_inst.get(x["institution"], 0) + 1
+    print("research by institution: " + (", ".join(f"{k} {v}" for k, v in sorted(by_inst.items())) or "none"))
+    pri = [x for x in news if x.get("outlet")]
+    print(f"priority-outlet items: {len(pri)}, with publisher headline: "
+          f"{sum(1 for x in pri if x.get('original_headline'))}")
     dk = congress.docket((start, end))
     for h in dk.get("hearings", []):
         news.append({"date": h["date"], "section": "Congress.gov hearing", "tag": h["committee"],

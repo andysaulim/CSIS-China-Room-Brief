@@ -465,7 +465,7 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
 <title>China Room Brief, {esc(issue["date_line"])}</title>
 <style>
 body {{ margin:0; padding:0; background:{t["page"]}; -webkit-text-size-adjust:100%; }}
-.container {{ width:680px; max-width:100%; margin:0 auto; background:{t["body_bg"]}; }}
+.container {{ width:100% !important; max-width:680px !important; }}
 @media only screen and (max-width:680px) {{
   .sec {{ padding-left:16px !important; padding-right:16px !important; }}
   .card-in {{ padding-left:14px !important; padding-right:14px !important; }}
@@ -479,6 +479,16 @@ body {{ margin:0; padding:0; background:{t["page"]}; -webkit-text-size-adjust:10
                         padding:8px 2% !important; vertical-align:top !important; }}
 }}
 </style></head>
-<body><div class="container">
+<body style="margin:0;padding:0;background:{t["page"]};">
+<!-- Width lives inline and in table attributes, not in the <style> block, so a
+     forward or reply (which strips <style>) keeps the 680px column. -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="{t["page"]}" style="width:100%;background:{t["page"]};">
+<tr><td align="center" style="padding:0;">
+<!--[if mso]><table role="presentation" width="680" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+<table role="presentation" class="container" width="680" align="center" cellpadding="0" cellspacing="0" border="0" bgcolor="{t["body_bg"]}" style="width:100%;max-width:680px;margin:0 auto;background:{t["body_bg"]};">
+<tr><td style="padding:0;text-align:left;">
 {body}
-</div></body></html>"""
+</td></tr></table>
+<!--[if mso]></td></tr></table><![endif]-->
+</td></tr></table>
+</body></html>"""
