@@ -51,7 +51,7 @@ Prose (every section):
 Sections:
 - re_line: four or five short phrases separated by commas, the week's main threads.
 - editors_note: one or two sentences, under 40 words, on what the week's stories add up to for U.S.-China relations. Do not restate the top In the News story. Leave it empty if there is no through-line.
-- week_at_a_glance: up to four things happening in the seven days after the issue date that matter for U.S.-China relations. Build first on G sources (dated calendar entries); source_id is the G id and the tag is left empty, since it is filled from the calendar. Only when the G sources run out, an N source may be used if it states a specific date inside those seven days; then the tag is the topic and that date ("Trade, October 7"). Never an item without such a date. Say what happens and what to watch, with any N sources that explain the stakes in context_ids.
+- week_at_a_glance: three or four items, never fewer than three, on what is coming in the seven days after the issue date that matters for U.S.-China relations. Fill in this order until there are at least three: (1) G sources marked [this week]; (2) N sources that state a specific date inside those seven days; (3) G sources marked [following week], which still lead the section with their own date; (4) N sources reporting a decision, vote, deadline, release or meeting expected in the coming days without an exact date, tagged with the topic and "this week". For a G source, source_id is the G id and the tag is left empty (it is filled from the calendar); for an N source, the tag is the topic and the date ("Trade, October 7"). Say what happens and what to watch, with any N sources that explain the stakes in context_ids.
 - heard_on_the_hill: three to five items on Congress (members, bills, hearings, letters) from the past week, one per thread: several reports on the same bill, hold or arms package are one item, folded together. Prefer primary sources (marked [primary], including Congress.gov records of hearings and newly introduced bills), then U.S. outlets; use a non-U.S. outlet only when nothing else covers the item. Put the best source in source_id and the others in context_ids.
 - in_the_news: the five most important China events of the past week from the priority-outlet sources (marked [priority tier N], tier 1 best), ranked by importance to U.S.-China relations. Five distinct events: reactions to, follow-ups of and side deals from one event are that event, so fold them into its summary instead of giving them a slot. A story many outlets covered outranks one only a single outlet ran. Set source_id to the item from the best-tier outlet that covered it (New York Times, Wall Street Journal and Washington Post are tier 1; Bloomberg and Financial Times tier 2; Reuters and AP tier 3), and list every other source on the same event in also_ids. Give each a summary (body) of two or three sentences, under 70 words, drawing on every source that covered it; leave why empty unless the style asks for it.
 - research_roundup: three to six publications from the R sources, at most one per institution and at most two on the same news event. Prefer U.S. institutions (Brookings, CFR, Carnegie, RAND, CNAS, AEI, Hudson, Heritage, PIIE, Stimson, Hoover) and the Congressional Research Service; use non-U.S. institutions only to fill. For each, one or two sentences on what the piece argues or finds, from its text, naming the authors listed. Never restate the title. Skip an R source that has no text beyond its title."""
@@ -107,7 +107,7 @@ def corpus(news: list[dict], research: list[dict], glance: list[dict] | None = N
         index[sid] = {"kind": "glance", **e}
         when = e["start"].isoformat() + (f" to {e['end'].isoformat()}" if e["end"] != e["start"] else "")
         where = f", {e['where']}" if e.get("where") else ""
-        lines.append(f"{sid} | {when} | {e['type']} | from {e['source']}\n   {e['title']}{where}\n   {e.get('angle', '')}")
+        lines.append(f"{sid} | {when} | [{e.get('window', 'this week')}] | {e['type']} | from {e['source']}\n   {e['title']}{where}\n   {e.get('angle', '')}")
     for n, x in enumerate(news, 1):
         sid = f"N{n}"
         index[sid] = {"kind": "news", **x}
@@ -128,8 +128,8 @@ def corpus(news: list[dict], research: list[dict], glance: list[dict] | None = N
 def draft(news, research, glance: list[dict], window: str, style: str = "house") -> dict:
     text, index = corpus(news, research, glance)
     user = (f"Week covered: {window}.\nStyle: {STYLE[style]}\n\n"
-            f"G sources are the calendar for the seven days after the issue date"
-            f"{'' if glance else ' (none this week: use only N sources that state a specific date inside those seven days)'}.\n\nSources:\n" + text)
+            f"G sources are the calendar for the two weeks after the issue date. Week at a Glance needs at least "
+            f"three items.\n\nSources:\n" + text)
     # A key that is not scoped to a workspace must name one on every request.
     ws = os.environ.get("ANTHROPIC_WORKSPACE_ID", "").strip()
     client = anthropic.Anthropic(default_headers={"anthropic-workspace-id": ws} if ws else None)
@@ -182,13 +182,15 @@ def resolve(out: dict, index: dict) -> dict:
             item = _item(it, copy, "week_at_a_glance", tag=f"{src['type']}, {_span(src['start'], src['end'])}",
                          url=src.get("url") or (ctx[0]["url"] if ctx else ""), iso=src["start"].isoformat())
             item["calendar_title"] = src["title"]
-        elif src and src["kind"] == "news" and re.search(r"\d", it.get("tag", "")):
+        elif src and src["kind"] == "news" and it.get("tag", "").strip():
             item = _item(it, copy, "week_at_a_glance", tag=it["tag"], url=src.get("url", ""), iso="")
             item["from_news"] = True
         else:
             copy["warnings"].append(f"week_at_a_glance: dropped {it['source_id']} (no dated calendar entry)")
             continue
         copy["week_at_a_glance"].append(item)
+    if len(copy["week_at_a_glance"]) < 3:
+        copy["warnings"].append(f"week_at_a_glance: only {len(copy['week_at_a_glance'])} items; three is the minimum")
     copy["heard_on_the_hill"] = []
     for it in out["heard_on_the_hill"][:5]:
         cands = [index[i] for i in [it["source_id"]] + list(it.get("context_ids") or [])

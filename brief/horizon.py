@@ -198,18 +198,24 @@ GLANCE_DAYS = 7
 
 
 def glance(entries: list[dict], issue_date: date, days: int = GLANCE_DAYS) -> list[dict]:
-    """Everything on the calendars in the week after the issue date, best first.
-    Week at a Glance is written from these, so it can only name a dated event."""
+    """Calendar entries for the two weeks after the issue date, this week first,
+    best first within each. The following week is there to fill Week at a
+    Glance when this week's calendar is thin."""
     merged, _ = merge(entries)
-    end = issue_date + timedelta(days=days)
-    week = [e for e in merged if e["end"] > issue_date and e["start"] <= end]
-    return sorted(week, key=lambda e: (-e["score"], e["start"]))
+    week_end, far_end = issue_date + timedelta(days=days), issue_date + timedelta(days=2 * days)
+    out = []
+    for e in merged:
+        if e["end"] > issue_date and e["start"] <= far_end:
+            out.append({**e, "window": "this week" if e["start"] <= week_end else "following week"})
+    return sorted(out, key=lambda e: (e["window"] != "this week", -e["score"], e["start"]))
 
 
 def build(entries: list[dict], issue_date: date, near_days: int = 30, far_cap: int = 6,
-          skip_days: int = GLANCE_DAYS) -> dict:
-    """On the Horizon picks up where Week at a Glance stops (day skip_days + 1)."""
+          skip_days: int = GLANCE_DAYS, exclude: set | None = None) -> dict:
+    """On the Horizon picks up where Week at a Glance stops (day skip_days + 1),
+    and leaves out anything Week at a Glance already ran (exclude, by title)."""
     merged, notes = merge(entries)
+    merged = [e for e in merged if e["title"] not in (exclude or set())]
     cutoff = issue_date + timedelta(days=near_days)
     near = [e for e in merged if e["start"] > issue_date + timedelta(days=skip_days) and e["start"] <= cutoff]
     far = [e for e in merged if cutoff < e["start"] <= issue_date + timedelta(days=90)]

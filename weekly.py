@@ -86,7 +86,8 @@ def cmd_draft(issue_date: date, style: str) -> None:
     items, audit = load_tracker()
     upcoming = collect.daily_upcoming(end)
     week = hz.glance(hz.from_tracker(items, issue_date) + upcoming + hz.from_docket(dk, issue_date), issue_date)
-    print(f"calendar entries for Week at a Glance: {len(week)}")
+    this_week = sum(e["window"] == "this week" for e in week)
+    print(f"calendar entries for Week at a Glance: {this_week} this week, {len(week) - this_week} the week after")
 
     copy = compose.draft(news, research, week, f"{label(start)} to {label(end)}", style)
     copy["hill_docket"] = dk

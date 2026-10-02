@@ -37,8 +37,12 @@ def check(copy: dict, window: tuple[date, date], calendar_count: int | None = No
     """Plain-language findings, most important first."""
     out = []
     if calendar_count == 0:
-        out.append("The ER sheet and the daily brief list nothing for the seven days after the issue date. "
-                   "Week at a Glance leans on dates found in news reports; add the week's events to the sheet.")
+        out.append("The ER sheet and the daily brief list nothing for the two weeks after the issue date. "
+                   "Week at a Glance leans on news reports; add the coming weeks' events to the sheet.")
+    n_glance = len(copy.get("week_at_a_glance", []))
+    if n_glance < 3:
+        out.insert(0, f"Week at a Glance has {n_glance} item(s); three is the minimum. Add from the candidates "
+                      f"under the section.")
     news_dated = [it["headline"] for it in copy.get("week_at_a_glance", []) if it.get("from_news")]
     if news_dated:
         out.append("Week at a Glance items dated from news reports, not the calendar (confirm the date): "

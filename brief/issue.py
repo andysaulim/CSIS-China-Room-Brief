@@ -114,7 +114,8 @@ def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date
     iso = issue_date.isoformat()
     works, _ = csis_style(list(calendars(tracker_items, issue_date)))
     hzn = hz.build(hz.from_tracker(tracker_items, issue_date) + (daily_upcoming or [])
-                   + hz.from_docket(copy.get("hill_docket") or {}, issue_date), issue_date)
+                   + hz.from_docket(copy.get("hill_docket") or {}, issue_date), issue_date,
+                   exclude={g.get("calendar_title") for g in copy.get("week_at_a_glance", []) if g.get("calendar_title")})
     hzn = csis_style(hzn)
     ahead_start = issue_date + timedelta(days=(7 - issue_date.weekday()) % 7 or 7)
     return {
