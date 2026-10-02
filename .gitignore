@@ -1,0 +1,6 @@
+# The ER tracker lists unannounced CSIS reports and events. This repository is
+# public, so the workbook and anything rendered from it stay out of git.
+data/
+out/
+*.xlsx
+__pycache__/
