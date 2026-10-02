@@ -10,6 +10,7 @@ collected item, and an omission beats an invention.
 from __future__ import annotations
 
 import json
+import os
 import re
 
 import anthropic
@@ -105,7 +106,9 @@ def draft(news, research, calendar_lines: list[str], window: str, style: str = "
     user = (f"Week covered: {window}.\nStyle: {STYLE[style]}\n\n"
             f"Scheduled items from the editorial calendar (usable for Week at a Glance):\n"
             + ("\n".join(calendar_lines) or "(none)") + "\n\nSources:\n" + text)
-    client = anthropic.Anthropic()
+    # A key that is not scoped to a workspace must name one on every request.
+    ws = os.environ.get("ANTHROPIC_WORKSPACE_ID", "").strip()
+    client = anthropic.Anthropic(default_headers={"anthropic-workspace-id": ws} if ws else None)
     resp = client.beta.messages.create(
         model=MODEL,
         max_tokens=16000,

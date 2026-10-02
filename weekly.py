@@ -97,7 +97,8 @@ def cmd_draft(issue_date: date, style: str) -> None:
 def cmd_send(issue_date: date) -> None:
     f = ISSUES / f"{issue_date.isoformat()}.json"
     if not f.exists():
-        sys.exit(f"{f} not found; run the draft first")
+        sys.exit(f"No draft for {issue_date} yet ({f.name} not found). Run the workflow in draft mode first, "
+                 f"then send.")
     copy = json.loads(f.read_text(encoding="utf-8"))
     items, _ = load_tracker()
     n = len(sorted(ISSUES.glob("*.json")))

@@ -59,7 +59,8 @@ Repository secrets (Settings > Secrets and variables > Actions):
 
 | Secret | Value |
 |--------|-------|
-| `ANTHROPIC_API_KEY` | API key |
+| `ANTHROPIC_API_KEY` | API key, ideally created inside a Console workspace |
+| `ANTHROPIC_WORKSPACE_ID` | Only if the key is not scoped to a workspace: that workspace's ID |
 | `GMAIL_USER`, `GMAIL_APP_PASS`, `GMAIL_FROM` | Same sending account as the daily brief |
 | `DRAFT_TO` | Nina, the coordinator, Andy |
 | `BRIEF_TO` | During test runs, the same people as `DRAFT_TO` |
