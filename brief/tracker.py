@@ -213,9 +213,12 @@ def week_ahead(items, issue_date: date):
 def in_the_works(items, issue_date: date, limit: int = 4):
     """CSIS products not yet out, soonest first; a month-only (TBC) date sorts
     after the dated items in its month."""
+    key = lambda i: (i.start.year, i.start.month, i.precision != "day", i.start.day)
     out = [i for i in items if SOURCE_TABS.get(i.tab) == "works" and i.end >= issue_date]
-    return sorted(out, key=lambda i: (i.start.year, i.start.month,
-                                      i.precision != "day", i.start.day))[:limit]
+    # The tracker's own rows come first; csis.org events only fill open slots.
+    sheet = sorted([i for i in out if i.row], key=key)[:limit]
+    web = sorted([i for i in out if not i.row], key=key)[:limit - len(sheet)]
+    return sorted(sheet + web, key=key)
 
 
 def audit(path: str, items) -> list[str]:

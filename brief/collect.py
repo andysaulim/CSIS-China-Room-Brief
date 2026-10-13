@@ -236,8 +236,7 @@ CSIS_LISTINGS = {
     "analysis": ["https://www.csis.org/analysis?f%5B0%5D=regions%3A801",
                  "https://www.csis.org/regions/asia/china"],
     "events": ["https://www.csis.org/events?f%5B0%5D=regions%3A801",
-               "https://www.csis.org/regions/asia/china",
-               "https://www.csis.org/events"],
+               "https://www.csis.org/regions/asia/china"],
 }
 _LONG_DATE = re.compile(r"\b(January|February|March|April|May|June|July|August|September|October|November|December)"
                         r"\s+(\d{1,2}),\s+(\d{4})\b")
@@ -284,6 +283,9 @@ def csis_listing(kind: str) -> tuple[list[dict], str]:
         seen.add(href)
         people = [re.sub(r"\s+", " ", p.get_text(" ", strip=True)) for p in box.find_all("a", href=re.compile(r"/people/"))]
         cards.append({"title": title, "url": href, "date": when, "authors": [x for x in people if x][:4]})
+    if "regions%3A801" not in r.url:
+        # a fallback page also carries site-wide items: keep only those about China
+        cards = [c for c in cards if _CHINA.search(c["title"])]
     return cards, f"{kind}: {len(cards)} cards from {r.url}" + (f" (after {', '.join(notes)})" if notes else "")
 
 
