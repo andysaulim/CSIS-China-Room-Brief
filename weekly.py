@@ -53,7 +53,12 @@ def load_tracker():
         sys.exit("TRACKER_URL is not set")
     path = collect.tracker_file(url, os.path.join(tempfile.gettempdir(), "tracker.xlsx"))
     if not path:
-        sys.exit("could not download the tracker (is it shared by link, and is the URL a direct download?)")
+        # Carry on without it: the news sections still draft, and the checks say why the calendars are thin.
+        print("could not download the tracker; drafting without it")
+        items = []
+        added = tracker.add_events(items, collect.csis_events(date.today()))
+        print(f"csis.org events added to In the Works: {added}")
+        return items, ["TRACKER_UNAVAILABLE"]
     print("tracker tabs:\n  " + "\n  ".join(tracker.describe(path)))
     items, skipped = tracker.load(path)
     audit = tracker.audit(path, items) + skipped
@@ -106,6 +111,9 @@ def cmd_draft(issue_date: date, style: str) -> None:
         for it in copy.get(sec, []):
             it["url"] = collect.publisher_url(it["url"])
     copy["qa"] = qa.check(csis_style(copy), (start, end))
+    if "TRACKER_UNAVAILABLE" in audit:
+        copy["qa"].insert(0, "The ER tracker sheet could not be downloaded (check that it is shared as Anyone with "
+                             "the link). In the Works and On the Horizon are missing its entries.")
     print("checks:\n  " + "\n  ".join(copy["qa"] or ["none"]))
     ISSUES.mkdir(exist_ok=True)
     f = ISSUES / f"{issue_date.isoformat()}.json"
