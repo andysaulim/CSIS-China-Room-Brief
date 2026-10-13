@@ -1,0 +1,195 @@
+{
+ "re_line": "Spying arrest at LAX, stalled Taiwan arms, slow post-summit trade steps, China's Laos base, EU trade tool",
+ "editors_note": "After Xi's Washington state visit, tariff cuts still have no date and the $14 billion Taiwan arms package remains stalled, while Congress presses on Taiwan arms, Hong Kong and China-linked firms.",
+ "warnings": [],
+ "week_at_a_glance": [
+  {
+   "tag": "Meeting, October 12–18",
+   "headline": "Boao Forum for Asia meets in Hainan",
+   "body": "The Boao Forum for Asia convenes in Boao, Hainan. Xi Jinping or Li Qiang typically addresses the forum, so watch which of them speaks.",
+   "url": "",
+   "iso": "2026-10-12",
+   "event": "Boao Forum for Asia",
+   "calendar_title": "Boao Forum for Asia 2027"
+  },
+  {
+   "tag": "Meeting, October 13–15",
+   "headline": "National People's Congress meets in Beijing",
+   "body": "The 14th National People's Congress holds its fifth session in Beijing. It is the final year of the 14th NPC, and the session coincides with Xi's leadership consolidation ahead of the 20th CCP National Congress cycle.",
+   "url": "",
+   "iso": "2026-10-13",
+   "event": "National People's Congress session",
+   "calendar_title": "China National People's Congress (NPC): 5th Session of 14th NPC"
+  },
+  {
+   "tag": "Technology, October 15",
+   "headline": "TSMC holds investor conference on October 15",
+   "body": "TSMC meets investors on October 15 with its shares at another record high, the Taipei Times reported. Watch for comments on overseas spending: Nikkei Asia reports TSMC's supply-chain partners are putting fresh capital into the United States and Southeast Asia.",
+   "url": "https://www.taipeitimes.com/News/biz/archives/2026/10/07/2003865511",
+   "iso": "",
+   "event": "TSMC investor conference",
+   "from_news": true
+  },
+  {
+   "tag": "Economy, this week",
+   "headline": "China's third-quarter GDP data due",
+   "body": "China's third-quarter GDP data is due in mid-October. Economists surveyed by Nikkei estimate growth of 4.4% year-on-year, only marginally above the prior quarter despite a boom in AI-related investment.",
+   "url": "https://asia.nikkei.com/economy/china-s-q3-growth-estimated-below-target-at-4.4-despite-ai-boom",
+   "iso": "",
+   "event": "China Q3 GDP release",
+   "from_news": true
+  }
+ ],
+ "heard_on_the_hill": [
+  {
+   "tag": "House, October 7",
+   "headline": "House China panel faults Webull over China ties",
+   "body": "A bipartisan Select Committee on China investigation led by Chairman John Moolenaar (R-MI) and Ranking Member Ro Khanna (D-CA) found that brokerage Webull Financial \"has not been transparent about its links to China.\" Webull shares fell after the report, Reuters reported, citing CNBC.",
+   "url": "http://chinaselectcommittee.house.gov/media/reports/free-trades-hidden-ties-exposing-webull-s-china-links",
+   "iso": "2026-10-07",
+   "event": "Webull China ties probe"
+  },
+  {
+   "tag": "House, October 7",
+   "headline": "Moolenaar seeks review of Hong Kong's Fed access",
+   "body": "Select Committee Chairman John Moolenaar called for a review of Hong Kong's access to a Federal Reserve liquidity facility, according to a committee release. CNBC set the push against China's promotion of the renminbi as a global reserve currency.",
+   "url": "https://www.cnbc.com/2026/10/06/hong-kong-fed-fima-dollar-liquidity-china-moolenaar.html",
+   "iso": "2026-10-06",
+   "event": "Hong Kong Fed liquidity access"
+  },
+  {
+   "tag": "House, October 5",
+   "headline": "Moolenaar asks New Haven to end Xi'an partnership",
+   "body": "In a letter to University of New Haven President Jens Frederiksen, Moolenaar called on the school to end its partnership with Xi'an University over ties to China's military. He noted the university has been a National Security Agency Center of Academic Excellence in Cyber Operations since 2019.",
+   "url": "http://chinaselectcommittee.house.gov/media/letters/university-of-new-haven-should-end-partnership-with-xi-an-university-over-ties-to-china-s-military",
+   "iso": "2026-10-05",
+   "event": "University of New Haven Xi'an partnership"
+  },
+  {
+   "tag": "Senate, October 2",
+   "headline": "21 Senate Democrats urge Taiwan arms delivery",
+   "body": "Twenty-one Democratic senators led by Jeanne Shaheen urged Trump to \"immediately deliver congressionally approved defense assistance to Taiwan,\" citing $1.3 billion in appropriated funds and a $14 billion arms package approved nine months ago, the Taipei Times reported. Taiwan Defense Minister Wellington Koo said he had not heard of plans to split the package into smaller tranches.",
+   "url": "https://www.bloomberg.com/news/articles/2026-10-04/taiwan-s-envoy-prods-trump-administration-on-stalled-arms-sale",
+   "iso": "2026-10-05",
+   "event": "Taiwan arms package stall"
+  },
+  {
+   "tag": "Senate, October 7",
+   "headline": "Senator Bennet among lawmakers visiting Taiwan",
+   "body": "Several U.S. lawmakers are visiting Taiwan after last month's Trump-Xi summit, VOA Chinese reported, and AIT said the visits reinforce the U.S.-Taiwan partnership. Senator Michael Bennet is meeting senior officials this week on regional security.",
+   "url": "https://www.voachinese.com/a/democratic-members-of-us-congress-visit-taiwan-after-trump-s-meeting-with-xi-20261006/8208364.html",
+   "iso": "2026-10-07",
+   "event": "Congressional visits to Taiwan"
+  }
+ ],
+ "in_the_news": [
+  {
+   "iso": "2026-10-05",
+   "event": "Zhang Wanying espionage arrest",
+   "tag": "Associated Press, October 5",
+   "headline": "FBI arrests California woman accused of spying for China on Taiwan leader's son",
+   "body": "The FBI arrested Wanying \"Heather\" Zhang, 34, at Los Angeles International Airport as she prepared to board a flight to Shanghai, AP reported, charging her as an unregistered agent of a foreign government. Prosecutors say she surveilled Lai Ting-yu, son of Taiwan President Lai Ching-te, in Seattle. Beijing said it was unaware of the case; Taiwan's Presidential Office called it \"a typical case of transnational repression.\"",
+   "url": "https://apnews.com/article/fbi-arrest-china-taiwan-spying-42e55337e768722b67874b9dc29f127c"
+  },
+  {
+   "iso": "2026-10-02",
+   "event": "Trump-Xi trade deal implementation",
+   "tag": "Bloomberg, October 2",
+   "headline": "Greer says no date set for U.S.-China Board of Trade tariff cuts",
+   "body": "No timeline has been set for tariff reductions under the Board of Trade mechanism agreed at the May 2026 Trump-Xi summit, USTR Jamieson Greer said, according to Bloomberg. Reuters reported Washington has slowed aircraft-part exports to China for leverage. Soybean futures slid to a roughly one-month low after soybeans were left off a list of products covered by tariff adjustments.",
+   "url": "https://www.bloomberg.com/news/articles/2026-10-01/greer-says-no-date-set-for-us-china-board-of-trade-tariff-cuts"
+  },
+  {
+   "iso": "2026-10-08",
+   "event": "Laos military base",
+   "tag": "New York Times, October 8",
+   "headline": "China expands military reach with new base in Laos",
+   "body": "China is building a military facility with a new runway at Ban Keun, Laos, the New York Times reported, and neighbors are watching whether Beijing expands it for larger aircraft. Satellite imagery reviewed by Reuters showed attack aircraft and military vehicles already at the site, extending the PLA's overseas footprint beyond Djibouti and Cambodia.",
+   "url": "https://www.nytimes.com/2026/10/08/world/asia/china-military-base-laos.html"
+  },
+  {
+   "iso": "2026-10-06",
+   "event": "EU-China trade talks",
+   "tag": "Wall Street Journal, October 6",
+   "headline": "Germany and France propose new EU weapon against flood of Chinese goods",
+   "body": "Germany and France proposed a rapid-response tool to let the EU restrict market access for countries flooding Europe with subsidized exports, aimed chiefly at China, the Wall Street Journal reported. EU trade commissioner Maroš Šefčovič opened two days of Beijing talks on October 8, calling the deficit with China \"unsustainable.\" Bloomberg reported the EU is also preparing an import cap on Chinese hybrids.",
+   "url": "https://www.wsj.com/world/europe/germany-and-france-are-proposing-a-new-weapon-to-counter-flood-of-chinese-goods-f723dfdf"
+  },
+  {
+   "iso": "2026-10-05",
+   "event": "Huawei-Qualcomm patent deal",
+   "tag": "Bloomberg, October 5",
+   "headline": "Huawei, Qualcomm sign first-ever 5G patent cross-license",
+   "body": "Huawei announced a multiyear cross-license with Qualcomm covering 5G, computing, AI and networking patents, the first time Qualcomm has paid Huawei for a patent license, Bloomberg reported. Huawei remains on the U.S. Entity List, Nikkei noted, and Guancha reported that Qualcomm disputes being described as the net payer.",
+   "url": "https://www.bloomberg.com/news/articles/2026-10-05/qualcomm-licenses-patents-on-huawei-s-logicfolding-chip-tech"
+  }
+ ],
+ "research_roundup": [
+  {
+   "institution": "PIIE",
+   "date": "October 2",
+   "iso": "2026-10-02",
+   "authors": [
+    "Gregory Auclair"
+   ],
+   "event": "U.S.-China trade data gap",
+   "headline": "Lost in tabulation: Diverging US-China trade data point to tariff evasion",
+   "body": "Gregory Auclair of PIIE finds China reports exporting more goods to the United States than U.S. data show arriving, particularly since early 2025, and that tariff evasion appears to be an important contributor. He argues the reported decline in U.S. imports from China should not be treated as a clean measure of decoupling or tariff effectiveness.",
+   "url": "https://www.piie.com/blogs/realtime-economics/2026/lost-tabulation-diverging-us-china-trade-data-point-tariff-evasion"
+  },
+  {
+   "institution": "Council on Foreign Relations",
+   "date": "October 6",
+   "iso": "2026-10-06",
+   "authors": [
+    "Zongyuan Zoe Liu"
+   ],
+   "event": "China oil import cut",
+   "headline": "The Import Cut Beijing Did Not Order",
+   "body": "Zongyuan Zoe Liu at CFR finds China cut crude imports to the lowest level in nearly a decade by June without Beijing directly ordering it, because Beijing treated the Hormuz shock as a macroeconomic stability challenge. She argues a decade of building buffers has changed the pressure points of an oil disruption on China.",
+   "url": "https://www.cfr.org/articles/the-import-cut-beijing-did-not-order"
+  },
+  {
+   "institution": "Asia Society Policy Institute",
+   "date": "October 4",
+   "iso": "2026-10-04",
+   "authors": [],
+   "event": "U.S.-China economic dialogue",
+   "headline": "Implementing Effective U.S.-China Economic Engagement Channels",
+   "body": "Brendan Kelly and Scott Shaw of the Asia Society Policy Institute make the case for selective, disciplined U.S.-China economic engagement channels. Washington, they write, must ensure dialogues are not used by China to delay progress on core issues and be clear-eyed that they will likely not \"change China.\"",
+   "url": "https://asiasociety.org/policy-institute/implementing-effective-us-china-economic-engagement-channels"
+  },
+  {
+   "institution": "Hudson Institute",
+   "date": "October 3",
+   "iso": "2026-10-03",
+   "authors": [],
+   "event": "Chinese information warfare",
+   "headline": "China Twisted Trump’s Words—And Proved You Don’t Need Lies to Win an Information War",
+   "body": "A Hudson Institute piece argues that some of the most consequential information contests are battles over interpretation, such as the Chinese translation of an agreed English word, and that winning them can generate tangible strategic returns.",
+   "url": "https://www.hudson.org/foreign-policy/china-twisted-trumps-words-proved-you-dont-need-lies-win-information-war-ken%3Dmoriyasu"
+  },
+  {
+   "institution": "CNAS",
+   "date": "October 5",
+   "iso": "2026-10-05",
+   "authors": [],
+   "event": "U.S.-China military balance",
+   "headline": "Can the U.S. Win a War in the Pacific Against China?",
+   "body": "In a CNAS conversation, adjunct senior fellow Thomas Shugart examines the shifting U.S.-China military balance, from Taiwan invasion planning and shipbuilding to missile stockpiles, and why Beijing may be far closer than many realize to being ready for a prolonged conflict.",
+   "url": "https://www.cnas.org/publications/podcast/can-the-u-s-win-a-war-in-the-pacific-against-china"
+  }
+ ],
+ "hill_docket": {
+  "hearings": [],
+  "bills": []
+ },
+ "qa": [
+  "Week at a Glance items dated from news reports, not the calendar (confirm the date): \"TSMC holds investor conference on October 15\"; \"China's third-quarter GDP data due\".",
+  "In the News outlets: Associated Press, Bloomberg, New York Times, Wall Street Journal, Bloomberg. 4 of 5 from NYT, WSJ, Washington Post, Bloomberg or FT.",
+  "Heard on the Hill cites voachinese.com, not a primary record or priority outlet: \"Senator Bennet among lawmakers visiting Taiwan\".",
+  "Research Roundup summaries that mostly repeat the title: Asia Society Policy Institute. Rewrite from the piece itself.",
+  "Em dash in the copy.",
+  "\"Reported\" two or more times in 2 item(s), first: \"Germany and France propose new EU weapon against flood of Chinese goods\"."
+ ]
+}
