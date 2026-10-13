@@ -82,16 +82,6 @@
  "research_roundup": [
   {
    "institution": "CSIS",
-   "date": "October 8",
-   "iso": "2026-10-08",
-   "authors": [],
-   "event": "U.S.-China trade truce",
-   "headline": "FAQ | ANOTHER CEASEFIRE: CAN THE US AND CHINA END THEIR TRADE WAR?",
-   "body": "",
-   "url": "https://www.csis.org/node/51143"
-  },
-  {
-   "institution": "CSIS",
    "date": "October 7",
    "iso": "2026-10-07",
    "authors": [
@@ -153,8 +143,7 @@
  "qa": [
   "In the News outlets: Washington Post, Reuters, New York Times, New York Times, Washington Post. 4 of 5 from NYT, WSJ, Washington Post, Bloomberg or FT.",
   "Heard on the Hill cites chinatimes.com, not a primary record or priority outlet: \"Senators link spy case on Lai's son to CCP surveillance\".",
-  "Heard on the Hill cites voachinese.com, not a primary record or priority outlet: \"Bennet, other lawmakers visit Taiwan after Trump-Xi summit\".",
-  "Word to replace: \"landscape\"."
+  "Heard on the Hill cites voachinese.com, not a primary record or priority outlet: \"Bennet, other lawmakers visit Taiwan after Trump-Xi summit\"."
  ],
  "keep": [
   "editors_note"

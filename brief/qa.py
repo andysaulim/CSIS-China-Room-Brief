@@ -108,7 +108,8 @@ def check(copy: dict, window: tuple[date, date], calendar_count: int | None = No
 
     # 7. prose
     bodies = [it.get("body", "") for _, it in items] + [copy.get("editors_note", "")]
-    joined = " ".join(bodies + [it.get("headline", "") for _, it in items])
+    # CSIS's own titles are quoted as published, so Research Roundup headlines are not checked
+    joined = " ".join(bodies + [it.get("headline", "") for t, it in items if t != "Research Roundup"])
     for w in BANNED:
         if re.search(rf"\b{re.escape(w)}\b", joined, re.I):
             out.append(f'Word to replace: "{w}".')

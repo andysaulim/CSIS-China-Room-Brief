@@ -233,8 +233,11 @@ def publisher_url(url: str) -> str:
 # The China-filtered listing pages on csis.org (regions:801 is China). Read
 # first; the feeds above fill in if Cloudflare turns the runner away.
 CSIS_LISTINGS = {
-    "analysis": "https://www.csis.org/analysis?f%5B0%5D=regions%3A801",
-    "events": "https://www.csis.org/events?f%5B0%5D=regions%3A801",
+    "analysis": ["https://www.csis.org/analysis?f%5B0%5D=regions%3A801",
+                 "https://www.csis.org/regions/asia/china"],
+    "events": ["https://www.csis.org/events?f%5B0%5D=regions%3A801",
+               "https://www.csis.org/regions/asia/china",
+               "https://www.csis.org/events"],
 }
 _LONG_DATE = re.compile(r"\b(January|February|March|April|May|June|July|August|September|October|November|December)"
                         r"\s+(\d{1,2}),\s+(\d{4})\b")
@@ -244,13 +247,20 @@ def csis_listing(kind: str) -> tuple[list[dict], str]:
     """Cards from a csis.org listing page: title, url, date, authors. Returns (cards, status note)."""
     from bs4 import BeautifulSoup
 
-    url = CSIS_LISTINGS[kind]
-    try:
-        r = requests.get(url, headers=BROWSER_UA, timeout=25)
-    except requests.RequestException as e:
-        return [], f"{kind}: {type(e).__name__}"
-    if not r.ok:
-        return [], f"{kind}: HTTP {r.status_code}"
+    notes, r = [], None
+    for url in CSIS_LISTINGS[kind]:
+        try:
+            r = requests.get(url, headers=BROWSER_UA, timeout=25)
+        except requests.RequestException as e:
+            notes.append(f"{type(e).__name__}")
+            r = None
+            continue
+        if r.ok:
+            break
+        notes.append(f"HTTP {r.status_code}")
+        r = None
+    if r is None:
+        return [], f"{kind}: " + ", ".join(notes)
     soup = BeautifulSoup(r.text, "html.parser")
     pat = re.compile(rf"^(https://www\.csis\.org)?/{kind}/[a-z0-9][^?#]*$")
     cards, seen = [], set()
@@ -274,7 +284,7 @@ def csis_listing(kind: str) -> tuple[list[dict], str]:
         seen.add(href)
         people = [re.sub(r"\s+", " ", p.get_text(" ", strip=True)) for p in box.find_all("a", href=re.compile(r"/people/"))]
         cards.append({"title": title, "url": href, "date": when, "authors": [x for x in people if x][:4]})
-    return cards, f"{kind}: {len(cards)} cards"
+    return cards, f"{kind}: {len(cards)} cards from {r.url}" + (f" (after {', '.join(notes)})" if notes else "")
 
 
 def csis_events(issue_date: date, days: int = 90) -> list[dict]:
@@ -317,7 +327,8 @@ def csis_research(start: date, end: date) -> list[dict]:
             elif not _CHINA.search(title + " " + summary):
                 continue
             key = re.sub(r"\W+", " ", title.lower()).strip()
-            if not key or key in seen:
+            # skip section labels ("FAQ", "Podcast") that come through as titles
+            if not key or key in seen or len(title) < 20 or title.isupper():
                 continue
             seen.add(key)
             kept += 1
