@@ -1,37 +1,37 @@
 {
- "re_line": "Lai's National Day address, militia boat off Taiwan's east coast, EU caps Chinese hybrids, China's base in Laos, House scrutiny of Hong Kong and Webull",
+ "re_line": "Lai's Double Ten speech, militia boat off Taiwan, EU-China hybrid deal, China's Laos base, Webull probe",
  "editors_note": "This is the second China Room Brief. It arrives every Tuesday with a recap of the past week in U.S.-China relations and a look ahead.",
  "warnings": [],
  "week_at_a_glance": [],
  "heard_on_the_hill": [
   {
-   "tag": "Senate, October 7",
-   "headline": "Senators link spy case on Lai's son to CCP surveillance",
-   "body": "Republican Senators Blackburn, Ricketts and Scott called the case against Zhang Wanying evidence that the CCP is exporting repressive surveillance to the U.S., VOA Chinese reported. Prosecutors charged Zhang with acting as an unregistered PRC agent after she allegedly surveilled an adult child of Taiwan President Lai Ching-te in Seattle; the FBI arrested her October 4 at Los Angeles International Airport. China's foreign ministry said it was unaware of the case.",
-   "url": "https://www.chinatimes.com/newspapers/20261007000529-260121",
-   "iso": "2026-10-07",
-   "event": "Zhang Wanying spy case"
-  },
-  {
-   "tag": "House, October 7",
-   "headline": "Moolenaar seeks review of Hong Kong's Fed facility access",
-   "body": "House Select Committee on the CCP Chairman John Moolenaar called for a review of Hong Kong's access to a Federal Reserve liquidity facility, per a committee release. CNBC reported he wants the Fed to reconsider the city's dollar-swap access as China promotes the renminbi as a global reserve currency.",
-   "url": "https://www.cnbc.com/2026/10/06/hong-kong-fed-fima-dollar-liquidity-china-moolenaar.html",
-   "iso": "2026-10-06",
-   "event": "Hong Kong Fed liquidity access"
-  },
-  {
    "tag": "House, October 7",
    "headline": "House China panel faults Webull over China links",
-   "body": "Webull Financial \"has not been transparent about its links to China,\" a bipartisan Select Committee investigation led by Chairman John Moolenaar (R-MI) and Ranking Member Ro Khanna (D-CA) found. The brokerage's shares fell after the panel flagged the ties, Reuters reported.",
+   "body": "A bipartisan Select Committee on China investigation led by Chairman John Moolenaar (R-MI) and Ranking Member Ro Khanna (D-CA) found that brokerage Webull Financial \"has not been transparent about its links to China.\" Webull shares fell after the House panel flagged the ties, Reuters reported.",
    "url": "http://chinaselectcommittee.house.gov/media/reports/free-trades-hidden-ties-exposing-webull-s-china-links",
    "iso": "2026-10-07",
-   "event": "House probe of Webull China ties"
+   "event": "Select Committee Webull investigation"
+  },
+  {
+   "tag": "House, October 6",
+   "headline": "Moolenaar asks Fed to review Hong Kong dollar access",
+   "body": "Rep. John Moolenaar, who chairs the House Select Committee on the CCP, called in a committee release for a review of Hong Kong's access to a Federal Reserve liquidity facility.",
+   "url": "https://www.cnbc.com/2026/10/06/hong-kong-fed-fima-dollar-liquidity-china-moolenaar.html",
+   "iso": "2026-10-06",
+   "event": "Moolenaar Hong Kong Fed facility review"
   },
   {
    "tag": "Senate, October 7",
-   "headline": "Bennet, other lawmakers visit Taiwan after Trump-Xi summit",
-   "body": "Several members of Congress are visiting Taiwan after last month's Trump-Xi summit, VOA Chinese reported, with AIT saying the visits reinforce the U.S.-Taiwan partnership. Senator Michael Bennet is in Taiwan this week to meet senior officials on regional security.",
+   "headline": "Senators cite FBI spy case as CCP repression in U.S.",
+   "body": "Republican Senators Blackburn, Ricketts and Scott called the case of Zhang Wanying, charged with acting as an unregistered PRC agent after allegedly surveilling an adult child of Taiwan President Lai Ching-te, evidence the CCP is exporting repressive surveillance to the United States, VOA Chinese reported. China's foreign ministry said it was unaware of the case.",
+   "url": "https://www.chinatimes.com/newspapers/20261007000529-260121",
+   "iso": "2026-10-07",
+   "event": "Zhang Wanying espionage case"
+  },
+  {
+   "tag": "Congress, October 7",
+   "headline": "Bennet among lawmakers visiting Taiwan after summit",
+   "body": "Several U.S. lawmakers are visiting Taiwan following last month's Trump-Xi summit, VOA Chinese reported, with AIT saying the visits reinforce the U.S.-Taiwan partnership. AIT announced that Senator Michael Bennet is visiting this week to meet senior officials on regional security.",
    "url": "https://www.voachinese.com/a/democratic-members-of-us-congress-visit-taiwan-after-trump-s-meeting-with-xi-20261006/8208364.html",
    "iso": "2026-10-07",
    "event": "Congressional visits to Taiwan"
@@ -40,10 +40,10 @@
  "in_the_news": [
   {
    "iso": "2026-10-11",
-   "event": "Lai National Day address",
+   "event": "Lai Double Ten address",
    "tag": "Washington Post, October 11",
    "headline": "Lai says Taiwan will not give up its freedom; Beijing calls him 'pragmatic independence worker'",
-   "body": "President Lai Ching-te told Double Ten crowds in Taipei that Taiwan \"cherishes peace\" but will not give up its freedom, the Washington Post reported, and pledged NT$1.1 trillion ($34.5 billion) for defense in 2027. Beijing's Taiwan Affairs Office called him a \"pragmatic Taiwan independence worker,\" while the U.S. welcomed his commitment to Taiwan Strait stability. China then announced live-fire drills across four seas running October 12 to 20.",
+   "body": "Lai Ching-te told Double Ten crowds in Taipei that Taiwan \"cherishes peace\" but will not give up its freedom, and pledged a record NT$1.1 trillion ($34.5 billion) for defense in 2027, the Washington Post and AFP reported. Beijing's Taiwan Affairs Office called him a \"pragmatic Taiwan independence worker,\" and China announced live-fire drills in four seas for October 12-20. Washington welcomed Lai's commitment to Taiwan Strait stability.",
    "url": "https://www.washingtonpost.com/world/2026/10/10/taiwan-national-day-lai-ching-te/1e902798-c466-11f1-8170-681419af1cc9_story.html"
   },
   {
@@ -51,15 +51,15 @@
    "event": "Chinese militia boat off Taiwan's east coast",
    "tag": "Reuters, October 8",
    "headline": "China militia boat spotted for first time off Taiwan's east coast",
-   "body": "A Taiwanese patrol spotted a Chinese maritime militia boat off Taiwan's east coast for the first time, Reuters reported October 8. A State Department spokesperson said China's patrols there \"only exacerbate tensions.\" Taiwan officials believe the regular coast guard patrols China has run off the east coast since June are rehearsals for a maritime blockade.",
+   "body": "A Chinese maritime militia boat, the Minfudingyu 07902, was seen off Taiwan's east coast in mid-August, the first confirmed sighting there, Reuters reported. A State Department spokesperson said China's patrols off the east coast \"only exacerbate tensions.\" Taiwan's defense ministry said Beijing is using \"law enforcement and scientific research as cover for harassment\" to practice for a potential blockade.",
    "url": "https://www.reuters.com/world/china/china-militia-boat-spotted-first-time-off-taiwans-east-coast-patrol-finds-2026-10-08/"
   },
   {
    "iso": "2026-10-10",
-   "event": "EU-China hybrid car deal",
+   "event": "EU-China hybrid vehicle deal",
    "tag": "New York Times, October 10",
    "headline": "China, EU step back from trade war with limits on hybrid car exports",
-   "body": "A deal with Beijing could roughly halve hybrid vehicle shipments from China over the next four years, the European Union said, the New York Times reported. Bloomberg put the cap at 350,000 units a year, following talks between Maroš Šefčovič and Commerce Minister Wang Wentao on October 8 and 9. MOFCOM said the deal secures China's \"export space\" in Europe.",
+   "body": "The EU agreed to cap imports of Chinese-made hybrid vehicles at 350,000 units a year after Maroš Šefčovič and Commerce Minister Wang Wentao met in Beijing October 8-9, Bloomberg reported. The EU said the deal could roughly halve such shipments over four years, according to the New York Times. MOFCOM said it secures China's \"export space\" in Europe.",
    "url": "https://www.nytimes.com/2026/10/09/business/china-european-union-trade.html"
   },
   {
@@ -67,7 +67,7 @@
    "event": "China-Laos military base",
    "tag": "New York Times, October 8",
    "headline": "China expands military reach with new base in Laos",
-   "body": "China is building a military facility with a new runway at Ban Keun, Laos, the New York Times reported. Reuters satellite imagery showed attack aircraft and military vehicles at the site, while an analysis in The Diplomat counted eight Chinese training aircraft and described the facility, opened September 29, as a joint support center rather than an attack base.",
+   "body": "China is building a military facility with a new runway at Ban Keun, Laos, the New York Times reported, and neighbors are watching whether Beijing expands it for larger aircraft. Reuters satellite imagery showed attack aircraft and military vehicles at the site. An analysis in The Diplomat disputed calling it an attack base, counting eight Chinese training aircraft at a joint support center that opened September 29.",
    "url": "https://www.nytimes.com/2026/10/08/world/asia/china-military-base-laos.html"
   },
   {
@@ -75,24 +75,11 @@
    "event": "China WHO leadership bid",
    "tag": "Washington Post, October 9",
    "headline": "China nominates health official to lead WHO",
-   "body": "Song Li, a senior official of the All-China Women's Federation, is Beijing's nominee for WHO Director-General, Reuters reported. The Washington Post tied the bid to Beijing's push to fill multilateral leadership gaps amid reduced U.S. engagement with UN institutions.",
+   "body": "Beijing has nominated Song Li, a senior official of the All-China Women's Federation, for WHO Director-General, Reuters reported. The Washington Post placed the bid within Beijing's push to fill multilateral leadership gaps amid reduced U.S. engagement with UN institutions.",
    "url": "https://www.washingtonpost.com/world/2026/10/08/china-who-nominee-song-un/686b2846-c307-11f1-8170-681419af1cc9_story.html"
   }
  ],
  "research_roundup": [
-  {
-   "institution": "CSIS",
-   "date": "October 7",
-   "iso": "2026-10-07",
-   "authors": [
-    "Lilly Min-Chen Lee",
-    "Kateryna Bondar"
-   ],
-   "event": "PLA lessons from Ukraine drone war",
-   "headline": "Learning Without Bleeding: China’s Lessons from the Russia-Ukraine Drone War",
-   "body": "Lilly Min-Chen Lee and Kateryna Bondar trace how quickly Chinese analysts identify battlefield innovations from the Russia-Ukraine drone war and how the PLA translates those lessons into training, procurement, hardware and force structure.",
-   "url": "https://www.csis.org/analysis/learning-without-bleeding-chinas-lessons-russia-ukraine-drone-war"
-  },
   {
    "institution": "CSIS",
    "date": "October 8",
@@ -103,10 +90,23 @@
     "Nico Vacca",
     "Benjamin Jensen"
    ],
-   "event": "Chinese research vessels near subsea infrastructure",
+   "event": "Chinese research vessels and undersea infrastructure",
    "headline": "China’s Weaponization of Dual-Use Research Vessels for Undersea Data Dominance",
-   "body": "Analyzing 223 vessels, Jose M. Macias III, Tao-Hung Chang, Nico Vacca and Benjamin Jensen find that Chinese research ships spend an unusually large share of time near subsea infrastructure on the high seas. They call for stronger allied monitoring, coordinated patrols and faster cable repair.",
+   "body": "Jose M. Macias III, Tao-Hung Chang, Nico Vacca and Benjamin Jensen analyze 223 vessels and find that Chinese research ships spend an unusually large share of time near subsea infrastructure on the high seas. They call for stronger allied monitoring, coordinated patrols and faster cable repair.",
    "url": "https://www.csis.org/analysis/chinas-weaponization-dual-use-research-vessels-undersea-data-dominance"
+  },
+  {
+   "institution": "CSIS",
+   "date": "October 7",
+   "iso": "2026-10-07",
+   "authors": [
+    "Lilly Min-Chen Lee",
+    "Kateryna Bondar"
+   ],
+   "event": "PLA lessons from Russia-Ukraine drone war",
+   "headline": "Learning Without Bleeding: China’s Lessons from the Russia-Ukraine Drone War",
+   "body": "Lilly Min-Chen Lee and Kateryna Bondar trace how quickly Chinese analysts identify battlefield innovations and how the PLA translates them into training, procurement, hardware and force structure.",
+   "url": "https://www.csis.org/analysis/learning-without-bleeding-chinas-lessons-russia-ukraine-drone-war"
   },
   {
    "institution": "CSIS",
@@ -115,7 +115,7 @@
    "authors": [
     "Damien Spleeters"
    ],
-   "event": "Russia's sanctions evasion through China",
+   "event": "Russia sanctions evasion via China",
    "headline": "Russia’s Turn to China Under Sanctions: Sanctions Decay, Substitution Elasticity, and the Challenge of Sustaining Pressure",
    "body": "Damien Spleeters argues that sanctions lose force not only when governments stop updating them but also when targeted actors replace restricted products, suppliers and acquisition channels faster than controls can adapt.",
    "url": "https://www.csis.org/analysis/russias-turn-china-under-sanctions"
@@ -132,8 +132,18 @@
    ],
    "event": "Chinese-language media in Southeast Asia",
    "headline": "Understanding the Chinese-Language Media Landscape in Southeast Asia",
-   "body": "Lauren Mai, Andreyka Natalegawa, Gregory B. Poling and Japhet Quitzon argue there is no viable strategy for countering Chinese information warfare without buy-in from regional partners and awareness of the scale, scope and impact of Chinese-language media in the region.",
+   "body": "Lauren Mai, Andreyka Natalegawa, Gregory B. Poling and Japhet Quitzon argue there is no viable strategy for countering Chinese information warfare without buy-in from regional partners and awareness of the scale, scope and impact of Chinese-language media in Southeast Asia.",
    "url": "https://www.csis.org/analysis/understanding-chinese-language-media-landscape-southeast-asia"
+  },
+  {
+   "institution": "CSIS",
+   "date": "October 8",
+   "iso": "2026-10-08",
+   "authors": [],
+   "event": "China-Iran relations",
+   "headline": "China's Stealth Support of Iran: A Conversation with Mona Yacoubian",
+   "body": "Mona Yacoubian discusses the current state of the war in Iran and Beijing's evolving relationship with Tehran.",
+   "url": "https://www.csis.org/podcasts/chinapower/chinas-stealth-support-iran-conversation-mona-yacoubian"
   }
  ],
  "hill_docket": {
@@ -142,8 +152,9 @@
  },
  "qa": [
   "In the News outlets: Washington Post, Reuters, New York Times, New York Times, Washington Post. 4 of 5 from NYT, WSJ, Washington Post, Bloomberg or FT.",
-  "Heard on the Hill cites chinatimes.com, not a primary record or priority outlet: \"Senators link spy case on Lai's son to CCP surveillance\".",
-  "Heard on the Hill cites voachinese.com, not a primary record or priority outlet: \"Bennet, other lawmakers visit Taiwan after Trump-Xi summit\"."
+  "Heard on the Hill cites chinatimes.com, not a primary record or priority outlet: \"Senators cite FBI spy case as CCP repression in U.S.\".",
+  "Heard on the Hill cites voachinese.com, not a primary record or priority outlet: \"Bennet among lawmakers visiting Taiwan after summit\".",
+  "Research Roundup summaries that mostly repeat the title: \"Understanding the Chinese-Language Media Landscape in Southeast Asia\". Rewrite from the piece itself."
  ],
  "keep": [
   "editors_note"
