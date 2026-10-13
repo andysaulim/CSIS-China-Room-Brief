@@ -173,6 +173,20 @@ def load(path: str):
     return items, skipped
 
 
+def add_events(items, events: list[dict]) -> int:
+    """Fold csis.org China events into In the Works, skipping any the tracker already has."""
+    have = {re.sub(r"\W+", " ", i.name.lower()).strip() for i in items}
+    tab = "CSIS events (csis.org)"
+    SOURCE_TABS.setdefault(tab, "works")
+    n = 0
+    for e in events:
+        if re.sub(r"\W+", " ", e["title"].lower()).strip() in have:
+            continue
+        items.append(Item(tab, 0, e["date"], e["date"], "day", False, "Event", e["title"], "", "", e["url"], []))
+        n += 1
+    return n
+
+
 def published(items, start: date, end: date) -> list[dict]:
     """Rows from a publications tab dated in the week, shaped as Research Roundup sources."""
     return [{"institution": "CSIS", "title": i.name, "url": i.link, "date": i.start.isoformat(),

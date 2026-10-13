@@ -230,6 +230,60 @@ def publisher_url(url: str) -> str:
         return url
 
 
+# The China-filtered listing pages on csis.org (regions:801 is China). Read
+# first; the feeds above fill in if Cloudflare turns the runner away.
+CSIS_LISTINGS = {
+    "analysis": "https://www.csis.org/analysis?f%5B0%5D=regions%3A801",
+    "events": "https://www.csis.org/events?f%5B0%5D=regions%3A801",
+}
+_LONG_DATE = re.compile(r"\b(January|February|March|April|May|June|July|August|September|October|November|December)"
+                        r"\s+(\d{1,2}),\s+(\d{4})\b")
+
+
+def csis_listing(kind: str) -> tuple[list[dict], str]:
+    """Cards from a csis.org listing page: title, url, date, authors. Returns (cards, status note)."""
+    from bs4 import BeautifulSoup
+
+    url = CSIS_LISTINGS[kind]
+    try:
+        r = requests.get(url, headers=BROWSER_UA, timeout=25)
+    except requests.RequestException as e:
+        return [], f"{kind}: {type(e).__name__}"
+    if not r.ok:
+        return [], f"{kind}: HTTP {r.status_code}"
+    soup = BeautifulSoup(r.text, "html.parser")
+    pat = re.compile(rf"^(https://www\.csis\.org)?/{kind}/[a-z0-9][^?#]*$")
+    cards, seen = [], set()
+    for a in soup.find_all("a", href=pat):
+        title = re.sub(r"\s+", " ", a.get_text(" ", strip=True))
+        href = a["href"] if a["href"].startswith("http") else "https://www.csis.org" + a["href"]
+        if len(title) < 15 or href in seen:
+            continue
+        box, when = a, None
+        for _ in range(5):                       # climb to the card that carries the date
+            box = box.parent
+            # stop once the box spans a second card, or its date belongs to a neighbor
+            if box is None or len({x["href"] for x in box.find_all("a", href=pat)}) > 1:
+                break
+            m = _LONG_DATE.search(box.get_text(" ", strip=True))
+            if m:
+                when = datetime.strptime(" ".join(m.groups()), "%B %d %Y").date()
+                break
+        if not when:
+            continue
+        seen.add(href)
+        people = [re.sub(r"\s+", " ", p.get_text(" ", strip=True)) for p in box.find_all("a", href=re.compile(r"/people/"))]
+        cards.append({"title": title, "url": href, "date": when, "authors": [x for x in people if x][:4]})
+    return cards, f"{kind}: {len(cards)} cards"
+
+
+def csis_events(issue_date: date, days: int = 90) -> list[dict]:
+    """Upcoming CSIS China events from the listing page."""
+    cards, note = csis_listing("events")
+    print("csis.org " + note)
+    return [c for c in cards if issue_date <= c["date"] <= issue_date + timedelta(days=days)]
+
+
 def csis_research(start: date, end: date) -> list[dict]:
     """CSIS publications on China dated start..end."""
     import feedparser
@@ -237,6 +291,14 @@ def csis_research(start: date, end: date) -> list[dict]:
     lo = datetime.combine(start, datetime.min.time(), tzinfo=timezone.utc)
     hi = datetime.combine(end + timedelta(days=1), datetime.min.time(), tzinfo=timezone.utc)
     out, seen, log = [], set(), []
+    cards, note = csis_listing("analysis")
+    log.append("csis.org " + note)
+    for c in cards:
+        key = re.sub(r"\W+", " ", c["title"].lower()).strip()
+        if start <= c["date"] <= end and key not in seen:
+            seen.add(key)
+            out.append({"institution": "CSIS", "title": c["title"], "url": c["url"], "date": c["date"].isoformat(),
+                        "summary": "", "authors": c["authors"]})
     for url in CSIS_FEEDS:
         r = _get(url)
         entries = feedparser.parse(r.content).entries if r else []

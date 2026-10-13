@@ -96,7 +96,7 @@ def research(items: list[dict]) -> int:
     n = 0
     for x, p in zip(items, pages):
         x["url"] = p["url"]
-        x["authors"] = p["authors"]
+        x["authors"] = p["authors"] or x.get("authors", [])
         if p["text"] or p["description"]:
             n += 1
             x["summary"] = " ".join(s for s in (p["description"], p["text"]) if s)[:1600]

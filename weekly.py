@@ -56,7 +56,10 @@ def load_tracker():
         sys.exit("could not download the tracker (is it shared by link, and is the URL a direct download?)")
     print("tracker tabs:\n  " + "\n  ".join(tracker.describe(path)))
     items, skipped = tracker.load(path)
-    return items, tracker.audit(path, items) + skipped
+    audit = tracker.audit(path, items) + skipped
+    added = tracker.add_events(items, collect.csis_events(date.today()))
+    print(f"csis.org events added to In the Works: {added}")
+    return items, audit
 
 
 def calendar_url() -> str:

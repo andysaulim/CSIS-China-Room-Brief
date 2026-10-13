@@ -98,6 +98,7 @@ This repository is public. The tracker lists unannounced CSIS work, so `data/` a
 
 - Three Things to Know is written by Nina in `issues/YYYY-MM-DD.json` under `week_at_a_glance`; the draft shows three formatted empty slots and the coming week's calendar entries. A re-run never overwrites it.
 - No section runs past five entries. On the Horizon covers the next 30 days only.
-- Research Roundup is CSIS publications from the week covered: rows in a tracker tab whose name includes "Publications", plus csis.org feeds.
+- Research Roundup is CSIS publications from the week covered: the China-filtered csis.org analysis listing (`/analysis?f[0]=regions:801`), rows in a tracker tab whose name includes "Publications", then csis.org feeds as a fallback.
+- In the Works adds upcoming events from the China-filtered csis.org events listing (`/events?f[0]=regions:801`) that the tracker does not already list.
 - In the Works ends with "Open the full tracker", linking to `CHINA_ROOM_CALENDAR_URL`, or to the tracker sheet itself when that is unset.
 - `TRACKER_URL` can be the Google Sheet's ordinary share link; the run turns it into the xlsx export. The run log lists each tab, its role and its columns.
