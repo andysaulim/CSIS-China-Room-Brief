@@ -403,8 +403,21 @@ def tracker_file(url: str, dest: str) -> str | None:
     share link (it is turned into the xlsx export), or any direct .xlsx link."""
     if sheet_id(url):
         url = f"https://docs.google.com/spreadsheets/d/{sheet_id(url)}/export?format=xlsx"
-    r = _get(url, timeout=60)
-    if not r or not r.content[:2] == b"PK":
+    try:
+        r = requests.get(url, headers=UA, timeout=60)
+    except requests.RequestException as e:
+        print(f"tracker download: {type(e).__name__}")
+        return None
+    if not r.ok or r.content[:2] != b"PK":
+        # Say what came back without printing the (secret) link itself.
+        from urllib.parse import urlparse
+        host = urlparse(r.url).hostname or ""
+        why = ("Google asked for a sign-in: the sheet is not shared as 'Anyone with the link'"
+               if "accounts.google.com" in host or "ServiceLogin" in r.url else
+               "not an .xlsx file" if r.ok else f"HTTP {r.status_code}")
+        print(f"tracker download failed: {why} (status {r.status_code}, "
+              f"type {r.headers.get('content-type', '?')}, ended at {host}, "
+              f"Google Sheet id found: {'yes' if sheet_id(url) else 'no'})")
         return None
     with open(dest, "wb") as f:
         f.write(r.content)
