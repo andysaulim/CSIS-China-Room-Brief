@@ -395,14 +395,8 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
                    f'padding:16px 20px 14px;">{mast}</div></div>')
     else:
         out.append(f'<div class="sec" style="padding:22px 32px 18px;">{mast}</div>')
-    if draft and issue.get("qa"):
-        rows = "".join(f'<li style="margin:0 0 6px;">{esc(q)}</li>' for q in issue["qa"])
-        out.append(f'<div class="sec" style="padding:0 20px 16px;"><div class="card-in" style="background:#FFFFFF;'
-                   f'border-left:4px solid #B52B2B;padding:16px 24px 12px;">'
-                   f'<div style="font-family:{SANS};font-size:14px;font-weight:700;color:{t["navy"]};">'
-                   f'Checks before send ({len(issue["qa"])})</div>'
-                   f'<ul style="margin:8px 0 0 18px;padding:0;font-family:{SANS};font-size:13px;line-height:1.45;'
-                   f'color:#2E2B28;">{rows}</ul></div></div>')
+    # The checks stay in the run log and the issue JSON, not in the email: the draft is
+    # edited by hand, and boxes that have to be deleted before send get in the way.
     out.append(r.numbers(issue.get("by_the_numbers") or []))
 
     def sec(key):
@@ -411,9 +405,9 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
         items = s.get("items", [])[:MAX_ITEMS]
         if key == "week_at_a_glance" and not items and draft:
             # Nina writes this one: three empty, formatted slots to fill
-            inner = r.items([{"tag": "Topic, date", "headline": "Headline in sentence case",
-                              "body": "One or two sentences on what happens and why it matters."}] * 3)
-            inner = f'<div style="opacity:0.45;">{inner}</div>'
+            # in normal type, so text typed over them in the email keeps the issue's formatting
+            inner = r.items([{"tag": "[Topic, date]", "headline": "[Headline]",
+                              "body": "[One or two sentences on what happens and why it matters.]"}] * 3)
         elif key == "on_the_horizon" and ("near" in s or "far" in s):
             inner = r.horizon(s)
         elif key in ("in_the_works", "on_the_horizon"):
@@ -428,8 +422,6 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
             inner = r.items(items)
             if key == "heard_on_the_hill":
                 inner += r.docket(s.get("docket") or {}, issue.get("iso", "9999"))
-        if draft and (not inner or s.get("candidates") or s.get("gap")):
-            inner += slot(s.get("spec", ""), s.get("candidates"), s.get("gap", ""))
         if inner:
             out.append(r.section(key, title, inner))
 
