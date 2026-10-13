@@ -1,11 +1,11 @@
 name: China Room Brief
 
-# Thursday 12:00 ET: draft to DRAFT_TO (Nina and the coordinator).
-# Friday send is manual during the test runs: Actions > China Room Brief >
+# Monday 12:00 ET: draft to DRAFT_TO (Nina and the coordinator).
+# Tuesday send is manual during the test runs: Actions > China Room Brief >
 # Run workflow > mode "send". Schedule it once the test runs hold up.
 on:
   schedule:
-    - cron: "0 16 * * 4"   # 12:00 EDT; becomes 11:00 EST after Nov 1
+    - cron: "0 16 * * 1"   # Monday 12:00 EDT; becomes 11:00 EST after Nov 1
   workflow_dispatch:
     inputs:
       mode:
@@ -15,7 +15,7 @@ on:
         type: choice
         options: [draft, send]
       issue_date:
-        description: "Friday issue date, YYYY-MM-DD (blank = next Friday)"
+        description: "Tuesday issue date, YYYY-MM-DD (blank = next Tuesday)"
         required: false
       style:
         description: "house or brevity"

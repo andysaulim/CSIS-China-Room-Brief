@@ -210,14 +210,16 @@ def glance(entries: list[dict], issue_date: date, days: int = GLANCE_DAYS) -> li
     return sorted(out, key=lambda e: (e["window"] != "this week", -e["score"], e["start"]))
 
 
-def build(entries: list[dict], issue_date: date, near_days: int = 30, far_cap: int = 6,
-          skip_days: int = GLANCE_DAYS, exclude: set | None = None) -> dict:
+def build(entries: list[dict], issue_date: date, near_days: int = 30, far_cap: int = 0,
+          skip_days: int = 0, exclude: set | None = None, limit: int = 5) -> dict:
     """On the Horizon picks up where Week at a Glance stops (day skip_days + 1),
     and leaves out anything Week at a Glance already ran (exclude, by title)."""
     merged, notes = merge(entries)
     merged = [e for e in merged if e["title"] not in (exclude or set())]
     cutoff = issue_date + timedelta(days=near_days)
-    near = [e for e in merged if e["start"] > issue_date + timedelta(days=skip_days) and e["start"] <= cutoff]
+    near = [e for e in merged if e["end"] >= issue_date + timedelta(days=skip_days) and e["start"] <= cutoff]
+    # Nothing past 30 days, and at most `limit` entries: the best-scored, shown in date order
+    near = sorted(sorted(near, key=lambda e: (-e["score"], e["start"]))[:limit], key=lambda e: e["start"])
     far = [e for e in merged if cutoff < e["start"] <= issue_date + timedelta(days=90)]
     far = sorted(sorted(far, key=lambda e: -e["score"])[:far_cap], key=lambda e: e["start"])
 

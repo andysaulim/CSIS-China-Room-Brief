@@ -75,17 +75,76 @@ def parse_date(val):
     return None
 
 
+_COLS = {   # header keywords -> field; first match wins
+    "date": ("date", "when", "deadline"),
+    "type": ("type", "category", "kind", "format"),
+    "name": ("name", "title", "event", "product", "publication"),
+    "desc": ("description", "notes", "detail", "summary", "about"),
+    "status": ("status", "stage"),
+    "link": ("link", "url", "source", "resource"),
+}
+
+
+def tab_role(name: str) -> str | None:
+    """Which section a tab feeds, by its name, so renamed or added tabs still load."""
+    n = name.lower()
+    if "master" in n or "readme" in n or "instruction" in n:
+        return None
+    if "publish" in n or "publication" in n or "released" in n:
+        return "published"
+    if "csis" in n or "activit" in n or "in the works" in n or "upcoming" in n:
+        return "works"
+    if "global" in n or "event" in n or "policy" in n or "horizon" in n or "calendar" in n:
+        return "horizon"
+    return None
+
+
+def _header_map(ws) -> tuple[int, dict]:
+    """(header row number, field -> column index), falling back to the original layout."""
+    for r, row in enumerate(ws.iter_rows(min_row=1, max_row=5, values_only=True), start=1):
+        cells = [str(c).strip().lower() if c is not None else "" for c in row]
+        if sum(bool(c) for c in cells) < 3:
+            continue
+        found = {}
+        for f, words in _COLS.items():
+            for i, c in enumerate(cells):
+                if i not in found.values() and any(w in c for w in words):
+                    found[f] = i
+                    break
+        if "date" in found and "name" in found:
+            return r, found
+    return 1, {"date": 0, "type": 1, "name": 2, "desc": 3, "status": 4, "link": 5}
+
+
+def describe(path: str) -> list[str]:
+    """One line per tab: its role, header row and columns, so a new sheet layout shows in the run log."""
+    import openpyxl
+    wb = openpyxl.load_workbook(path, data_only=True)
+    out = []
+    for name in wb.sheetnames:
+        ws = wb[name]
+        hr, cols = _header_map(ws)
+        heads = [str(c).strip() for c in next(ws.iter_rows(min_row=hr, max_row=hr, values_only=True), ()) if c]
+        out.append(f"{name} [{tab_role(name) or 'skipped'}], {ws.max_row - hr} rows, columns: {', '.join(heads[:10])}")
+    return out
+
+
 def load(path: str):
     """Return (items, skipped). skipped lists rows whose date cannot be read."""
     import openpyxl
     wb = openpyxl.load_workbook(path, data_only=True)
     items, skipped, seen = [], [], set()
-    for tab in SOURCE_TABS:
-        if tab not in wb.sheetnames:
+    for tab in wb.sheetnames:
+        role = tab_role(tab)
+        if not role:
             continue
+        SOURCE_TABS.setdefault(tab, role)
         ws = wb[tab]
-        for r, row in enumerate(ws.iter_rows(min_row=2, max_col=6, values_only=True), start=2):
-            raw_date, typ, name, desc, status, link = (list(row) + [None] * 6)[:6]
+        hr, cols = _header_map(ws)
+        for r, row in enumerate(ws.iter_rows(min_row=hr + 1, values_only=True), start=hr + 1):
+            row = list(row)
+            get = lambda f: row[cols[f]] if f in cols and cols[f] < len(row) else None
+            raw_date, typ, name, desc, status, link = (get(f) for f in ("date", "type", "name", "desc", "status", "link"))
             if not name:
                 continue
             key = (str(name).strip().lower())
@@ -114,10 +173,17 @@ def load(path: str):
     return items, skipped
 
 
+def published(items, start: date, end: date) -> list[dict]:
+    """Rows from a publications tab dated in the week, shaped as Research Roundup sources."""
+    return [{"institution": "CSIS", "title": i.name, "url": i.link, "date": i.start.isoformat(),
+             "summary": i.description, "authors": []}
+            for i in items if SOURCE_TABS.get(i.tab) == "published" and start <= i.start <= end and i.link]
+
+
 def on_the_horizon(items, issue_date: date, weeks: int = 7, limit: int = 6):
     """Global events and policy deadlines from the issue date forward."""
     horizon = date.fromordinal(issue_date.toordinal() + weeks * 7)
-    out = [i for i in items if SOURCE_TABS[i.tab] == "horizon"
+    out = [i for i in items if SOURCE_TABS.get(i.tab) == "horizon"
            and i.end >= issue_date and i.start <= horizon]
     return sorted(out, key=lambda i: i.start)[:limit]
 
@@ -133,7 +199,7 @@ def week_ahead(items, issue_date: date):
 def in_the_works(items, issue_date: date, limit: int = 4):
     """CSIS products not yet out, soonest first; a month-only (TBC) date sorts
     after the dated items in its month."""
-    out = [i for i in items if SOURCE_TABS[i.tab] == "works" and i.end >= issue_date]
+    out = [i for i in items if SOURCE_TABS.get(i.tab) == "works" and i.end >= issue_date]
     return sorted(out, key=lambda i: (i.start.year, i.start.month,
                                       i.precision != "day", i.start.day))[:limit]
 

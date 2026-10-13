@@ -13,8 +13,8 @@ banner), the By the numbers strip, and the navy contact band at the foot.
 Web fonts load where the client allows (Apple Mail, iOS, Outlook for Mac);
 Gmail and Outlook for Windows fall back to Georgia and Arial.
 
-Two modes. "draft" is the Thursday-noon copy for review: human-owned sections
-show their brief and the agent's candidates. "final" is what goes out Friday:
+Two modes. "draft" is the Monday-noon copy for review: human-owned sections
+show their brief and the agent's candidates. "final" is what goes out Tuesday:
 an empty section is left out, never padded.
 """
 
@@ -54,12 +54,12 @@ THEMES = {
     "briefing": {
         "page": "#E6E9EE", "body_bg": "#E6E9EE", "head": SS, "text": SS, "label": SS,
         "ink": "#111418", "body": "#2A2E35", "mute": "#5F6670", "rule": "#E3E6EA",
-        "accent": CERULEAN, "navy": BANNER_NAVY, "size": 16, "hl": 18, "news_hl": 20,
+        "accent": CERULEAN, "navy": BANNER_NAVY, "size": 14, "hl": 15, "news_hl": 16,
     },
 }
 
 SECTIONS = [
-    ("week_at_a_glance", "Week at a Glance", "ahead"),
+    ("week_at_a_glance", "Three Things to Know", "ahead"),
     ("heard_on_the_hill", "Heard on the Hill", "back"),
     ("in_the_news", "In the News", "back"),
     ("research_roundup", "Research Roundup", "back"),
@@ -67,8 +67,8 @@ SECTIONS = [
     ("on_the_horizon", "On the Horizon", "ahead"),
 ]
 KICKER = {
-    "week_at_a_glance": "Next week", "heard_on_the_hill": "Congress", "in_the_news": "Top five",
-    "research_roundup": "Think tanks and CRS", "in_the_works": "CSIS scholars", "on_the_horizon": "Calendar",
+    "week_at_a_glance": "Three things", "heard_on_the_hill": "Congress", "in_the_news": "Top five",
+    "research_roundup": "CSIS this week", "in_the_works": "CSIS scholars", "on_the_horizon": "Calendar",
 }
 
 
@@ -102,14 +102,14 @@ class R:
         if not text:
             return ""
         color = t["accent"] if self.name != "pubs" else t["mute"]
-        return (f'<div style="font-family:{t["label"]};font-size:13px;font-weight:700;color:{color};'
-                f'margin-bottom:3px;">{text}</div>')
+        return (f'<div style="font-family:{t["label"]};font-size:12px;font-weight:700;color:{color};'
+                f'margin-bottom:2px;">{text}</div>')
 
     def body(self, text, top=5):
         t = self.t
         if not text:
             return ""
-        return (f'<div style="font-family:{t["text"]};font-size:{t["size"]}px;line-height:1.55;color:{t["body"]};'
+        return (f'<div style="font-family:{t["text"]};font-size:{t["size"]}px;line-height:1.5;color:{t["body"]};'
                 f'margin-top:{top}px;">{esc(text)}</div>')
 
     def headline(self, text, url, size=None):
@@ -149,16 +149,12 @@ class R:
                     f'<div style="font-family:{t["head"]};font-size:24px;font-weight:400;color:{t["ink"]};'
                     f'margin:4px 0 8px;padding-bottom:10px;border-bottom:1px solid {t["ink"]};">{esc(title)}</div>'
                     f'{inner}</div>')
-        # briefing: white card with a navy header carrying a count
-        cnt = (f'<td align="right" style="font-family:{t["label"]};font-size:12px;color:#B9C6DA;white-space:nowrap;">'
-               f'{esc(count)}</td>') if count else ""
-        return (f'<div class="sec" style="padding:0 20px 16px;">{anchor}'
+        # briefing: white card under a one-line navy header
+        return (f'<div class="sec" style="padding:0 20px 12px;">{anchor}'
                 f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF;">'
-                f'<tr><td style="background:{t["navy"]};padding:13px 24px;">'
-                f'<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
-                f'<td style="font-family:{t["head"]};font-size:17px;font-weight:700;color:#FFFFFF;">{esc(title)}</td>'
-                f'{cnt}</tr></table></td></tr>'
-                f'<tr><td class="card-in" style="padding:8px 24px 14px;">{inner}</td></tr></table></div>')
+                f'<tr><td style="background:{t["navy"]};padding:9px 20px;font-family:{t["head"]};font-size:15px;'
+                f'font-weight:700;line-height:1.2;color:#FFFFFF;white-space:nowrap;overflow:hidden;">{esc(title)}</td></tr>'
+                f'<tr><td class="card-in" style="padding:4px 20px 10px;">{inner}</td></tr></table></div>')
 
     def part(self, label, dek):
         t = self.t
@@ -179,7 +175,7 @@ class R:
         out = []
         for n, i in enumerate(items):
             why = self.axiom("Why it matters", i["why"]) if i.get("why") else ""
-            out.append(f'<div style="padding:16px 0 18px;{self.sep(n == 0)}">{self.tag(i.get("tag", ""))}'
+            out.append(f'<div style="padding:11px 0 12px;{self.sep(n == 0)}">{self.tag(i.get("tag", ""))}'
                        f'{self.headline(i["headline"], i.get("url", ""))}{self.body(i.get("body", ""))}'
                        f'{why}{self.bullets(i.get("bullets", []))}</div>')
         return "".join(out)
@@ -187,16 +183,11 @@ class R:
     def news(self, items):
         t = self.t
         out = []
-        for n, i in enumerate(items, 1):
+        for n, i in enumerate(items):
             why = self.axiom("Why it matters", i["why"]) if i.get("why") else ""
-            num_color = t["accent"] if self.name != "pubs" else t["navy"]
-            out.append(
-                f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="{self.sep(n == 1)}"><tr>'
-                f'<td width="46" style="padding:16px 0;vertical-align:top;font-family:{t["head"]};font-size:34px;'
-                f'font-weight:700;line-height:1;color:{num_color};">{n}</td>'
-                f'<td style="padding:16px 0 18px;vertical-align:top;">{self.tag(i.get("tag", ""))}'
-                f'{self.headline(i["headline"], i.get("url", ""), t["news_hl"])}{self.body(i.get("body", ""), 7)}{why}'
-                f'</td></tr></table>')
+            out.append(f'<div style="padding:11px 0 12px;{self.sep(n == 0)}">{self.tag(i.get("tag", ""))}'
+                       f'{self.headline(i["headline"], i.get("url", ""), t["news_hl"])}{self.body(i.get("body", ""), 4)}'
+                       f'{why}</div>')
         return "".join(out)
 
     def research(self, items):
@@ -205,11 +196,11 @@ class R:
         for n, i in enumerate(items):
             out.append(
                 f'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="{self.sep(n == 0)}"><tr>'
-                f'<td width="130" class="r-inst" style="padding:14px 14px 14px 0;vertical-align:top;">'
-                f'<div style="font-family:{t["label"]};font-size:14px;font-weight:700;line-height:1.3;color:{t["navy"]};">'
-                f'{esc(i["institution"])}</div>'
-                f'<div style="font-family:{t["label"]};font-size:12px;color:{t["mute"]};margin-top:3px;">{esc(i.get("date", ""))}</div></td>'
-                f'<td class="r-main" style="padding:14px 0;vertical-align:top;">{self.headline(i["headline"], i.get("url", ""))}'
+                f'<td width="120" class="r-inst" style="padding:11px 12px 11px 0;vertical-align:top;">'
+                f'<div style="font-family:{t["label"]};font-size:12px;font-weight:700;line-height:1.3;color:{t["navy"]};">'
+                f'{esc(", ".join(i.get("authors") or []) or i.get("institution", ""))}</div>'
+                f'<div style="font-family:{t["label"]};font-size:11px;color:{t["mute"]};margin-top:2px;">{esc(i.get("date", ""))}</div></td>'
+                f'<td class="r-main" style="padding:11px 0;vertical-align:top;">{self.headline(i["headline"], i.get("url", ""))}'
                 f'{self.body(i.get("body", ""))}</td></tr></table>')
         return "".join(out)
 
@@ -226,12 +217,12 @@ class R:
             day = i.get("day") or ""
             meta = (f'<div style="font-family:{t["label"]};font-size:13px;color:{t["mute"]};margin-top:2px;">'
                     f'{esc(i.get("kind", ""))}</div>') if i.get("kind") else ""
-            day_td = (f'<td width="64" style="padding:12px 10px 12px 0;vertical-align:top;font-family:{t["head"]};'
-                      f'font-size:20px;font-weight:700;line-height:1.1;color:{t["navy"]};white-space:nowrap;">{esc(day)}</td>'
+            day_td = (f'<td width="56" style="padding:9px 10px 9px 0;vertical-align:top;font-family:{t["head"]};'
+                      f'font-size:17px;font-weight:700;line-height:1.1;color:{t["navy"]};white-space:nowrap;">{esc(day)}</td>'
                       ) if day else ""
             html += (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
                      f'style="border-bottom:1px solid {t["rule"]};"><tr>{day_td}'
-                     f'<td style="padding:12px 0;vertical-align:top;">{self.headline(i["headline"], i.get("url", ""), t["hl"] - 1)}'
+                     f'<td style="padding:9px 0;vertical-align:top;">{self.headline(i["headline"], i.get("url", ""), t["hl"] - 1)}'
                      f'{meta}{self.body(i.get("detail", ""), 3)}</td></tr></table>')
             first = False
         cut = html.rfind(f'style="border-bottom:1px solid {t["rule"]};"')
@@ -240,7 +231,7 @@ class R:
         return html
 
     def horizon(self, s):
-        """Next 30 days in full; later dates one line each."""
+        """The next 30 days. Nothing further out."""
         t = self.t
         def type_label(e):
             color = "#B52B2B" if e["type"] == "Deadline" else t["accent"]
@@ -251,38 +242,28 @@ class R:
                     f'margin:{top} 0 0;padding-bottom:6px;border-bottom:2px solid {t["navy"]};">{x}</div>')
         html = ""
         if s.get("near"):
-            html += head("Next 30 days", "6px")
             for n, e in enumerate(s["near"]):
                 mon = e["group"].split(" ")[0][:3].upper()
                 where = (f'<div style="font-family:{t["label"]};font-size:13px;color:{t["mute"]};margin-top:3px;">'
                          f'{esc(e["where"])}</div>') if e.get("where") else ""
                 html += (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
                          f'style="{"" if n == len(s["near"]) - 1 else "border-bottom:1px solid " + t["rule"] + ";"}"><tr>'
-                         f'<td width="70" style="padding:14px 10px 14px 0;vertical-align:top;">'
+                         f'<td width="56" style="padding:10px 10px 10px 0;vertical-align:top;">'
                          f'<div style="font-family:{t["label"]};font-size:12px;font-weight:700;letter-spacing:1px;color:{t["mute"]};">{mon}</div>'
-                         f'<div style="font-family:{t["head"]};font-size:22px;font-weight:700;line-height:1.1;color:{t["navy"]};'
+                         f'<div style="font-family:{t["head"]};font-size:17px;font-weight:700;line-height:1.1;color:{t["navy"]};'
                          f'white-space:nowrap;">{esc(e["day"])}</div></td>'
-                         f'<td style="padding:14px 0;vertical-align:top;">{type_label(e)}'
+                         f'<td style="padding:10px 0;vertical-align:top;">{type_label(e)}'
                          f'<div style="margin-top:2px;">{self.headline(e["headline"], e.get("url", ""))}</div>'
                          f'{self.body(e.get("angle", ""), 4)}{where}</td></tr></table>')
-        if s.get("far"):
-            html += head("Further out", "22px")
-            for n, e in enumerate(s["far"]):
-                when = e["group"].split(" ")[0] + (f' {e["day"]}' if e["day"] and e["day"] != "TBC" else " (TBC)")
-                where = f', {esc(e["where"])}' if e.get("where") else ""
-                html += (f'<table width="100%" cellpadding="0" cellspacing="0" border="0" '
-                         f'style="{"" if n == len(s["far"]) - 1 else "border-bottom:1px solid " + t["rule"] + ";"}"><tr>'
-                         f'<td width="120" style="padding:10px 10px 10px 0;vertical-align:top;font-family:{t["label"]};'
-                         f'font-size:14px;font-weight:700;color:{t["navy"]};">{esc(when)}</td>'
-                         f'<td style="padding:10px 0;vertical-align:top;">'
-                         f'<div style="font-family:{t["text"]};font-size:15px;font-weight:700;color:{t["ink"]};">'
-                         f'{self.link(esc(e["headline"]), e.get("url", ""))}</div>'
-                         f'<div style="font-family:{t["label"]};font-size:13px;color:{t["mute"]};margin-top:2px;">'
-                         f'<span style="font-weight:700;color:{"#B52B2B" if e["type"] == "Deadline" else t["accent"]};">'
-                         f'{esc(e["type"])}</span>{where}</div>'
-                         f'{self.body(e.get("angle", ""), 3) if e.get("angle") else ""}'
-                         f'</td></tr></table>')
         return html
+
+    def more(self, url, label):
+        """A bordered link out of the email, e.g. to the full tracker."""
+        t = self.t
+        return (f'<table cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 4px;"><tr>'
+                f'<td style="border:1px solid {t["navy"]};padding:7px 14px;">'
+                f'<a href="{esc(url)}" style="font-family:{t["label"]};font-size:13px;font-weight:700;color:{t["navy"]};'
+                f'text-decoration:none;">{esc(label)}</a></td></tr></table>')
 
     def docket(self, dk, issue_iso):
         t = self.t
@@ -298,15 +279,17 @@ class R:
                     f'<td style="padding:10px 0;vertical-align:top;">{self.headline(title, url, t["hl"] - 2)}'
                     f'<div style="font-family:{t["label"]};font-size:13px;color:{t["mute"]};margin-top:2px;">{meta}</div></td></tr></table>')
         html = ""
-        if dk.get("hearings"):
+        hearings = dk.get("hearings", [])[:MAX_ITEMS]
+        bills = dk.get("bills", [])[:max(0, MAX_ITEMS - len(hearings))]
+        if hearings:
             html += head("Hearings")
-            for h in dk["hearings"]:
+            for h in hearings:
                 when = _full(h["date"]) + (f"<br><span style='font-weight:400;color:{t['mute']};'>scheduled</span>"
                                            if h["date"] >= issue_iso else "")
                 html += row(when, h["title"], h.get("url", ""), esc(f'{h["chamber"]}: {h["committee"]}'))
-        if dk.get("bills"):
+        if bills:
             html += head("New legislation")
-            for b in dk["bills"]:
+            for b in bills:
                 html += row(esc(b["number"]), b["title"], b.get("url", ""),
                             esc(f'{b["sponsor"]}, introduced {_full(b["introduced"])}'))
         return html
@@ -363,8 +346,7 @@ def word_count(issue: dict) -> int:
     return len(re.findall(r"[\w'’$%.,-]+", " ".join(parts)))
 
 
-COUNT = {"in_the_news": "{n} stories", "research_roundup": "{n} reports", "heard_on_the_hill": "{n} items",
-         "week_at_a_glance": "{n} to watch", "in_the_works": "{n} coming", "on_the_horizon": "{n} dates"}
+MAX_ITEMS = 5    # no section runs longer
 
 
 def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
@@ -398,19 +380,19 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
     present = [(k, ti) for k, ti, _ in SECTIONS if draft or issue.get(k, {}).get("items")]
     toc = "".join(
         f'<tr><td width="50%" style="padding:3px 0;">{a}</td><td width="50%" style="padding:3px 0;">{b}</td></tr>'
-        for a, b in zip(*[iter([f'<a href="#{k}" style="font-family:{t["label"]};font-size:14px;font-weight:700;'
-                                f'color:{t["navy"]};text-decoration:none;">{esc(ti)}</a>' for k, ti in present]
+        for a, b in zip(*[iter([f'<a href="#{k}" style="font-family:{t["label"]};font-size:13px;font-weight:700;'
+                                f'color:{t["navy"]};text-decoration:none;white-space:nowrap;">{esc(ti)}</a>' for k, ti in present]
                                + ([""] if len(present) % 2 else []))] * 2))
     mast = (f'<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
-            f'<td class="mast-main" style="font-family:{t["head"]};font-size:20px;font-weight:700;color:{t["ink"]};">'
+            f'<td class="mast-main" style="font-family:{t["head"]};font-size:18px;font-weight:700;color:{t["ink"]};">'
             f'{esc(issue["date_line"])}</td>'
             f'<td class="mast-meta" align="right" style="font-family:{t["label"]};font-size:13px;color:{t["mute"]};'
             f'white-space:nowrap;">{mins} min read</td></tr></table>{note}'
-            f'<div style="margin-top:14px;padding-top:12px;border-top:1px solid {t["rule"]};">'
+            f'<div style="margin-top:12px;padding-top:10px;border-top:1px solid {t["rule"]};">'
             f'<table width="100%" cellpadding="0" cellspacing="0" border="0">{toc}</table></div>')
     if theme == "briefing":
-        out.append(f'<div class="sec" style="padding:16px 20px;"><div class="card-in" style="background:#FFFFFF;'
-                   f'padding:20px 24px 18px;">{mast}</div></div>')
+        out.append(f'<div class="sec" style="padding:14px 20px 12px;"><div class="card-in" style="background:#FFFFFF;'
+                   f'padding:16px 20px 14px;">{mast}</div></div>')
     else:
         out.append(f'<div class="sec" style="padding:22px 32px 18px;">{mast}</div>')
     if draft and issue.get("qa"):
@@ -426,11 +408,18 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
     def sec(key):
         _, title, half = next(x for x in SECTIONS if x[0] == key)
         s = issue.get(key, {})
-        items = s.get("items", [])
-        if key == "on_the_horizon" and ("near" in s or "far" in s):
+        items = s.get("items", [])[:MAX_ITEMS]
+        if key == "week_at_a_glance" and not items and draft:
+            # Nina writes this one: three empty, formatted slots to fill
+            inner = r.items([{"tag": "Topic, date", "headline": "Headline in sentence case",
+                              "body": "One or two sentences on what happens and why it matters."}] * 3)
+            inner = f'<div style="opacity:0.45;">{inner}</div>'
+        elif key == "on_the_horizon" and ("near" in s or "far" in s):
             inner = r.horizon(s)
         elif key in ("in_the_works", "on_the_horizon"):
             inner = r.agenda(items)
+            if key == "in_the_works" and inner and issue.get("calendar_url"):
+                inner += r.more(issue["calendar_url"], "Open the full tracker")
         elif key == "in_the_news":
             inner = r.news(items)
         elif key == "research_roundup" and items and "institution" in items[0]:
@@ -442,14 +431,9 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
         if draft and (not inner or s.get("candidates") or s.get("gap")):
             inner += slot(s.get("spec", ""), s.get("candidates"), s.get("gap", ""))
         if inner:
-            out.append(r.section(key, title, inner, COUNT.get(key, "").format(n=len(items)) if items else ""))
+            out.append(r.section(key, title, inner))
 
-    sec("week_at_a_glance")
-    out.append(r.part("The Week That Was", issue.get("back_window", "")))
-    for k in ("heard_on_the_hill", "in_the_news", "research_roundup"):
-        sec(k)
-    out.append(r.part("The Week Ahead", issue.get("ahead_window", "")))
-    for k in ("in_the_works", "on_the_horizon"):
+    for k, *_ in SECTIONS:
         sec(k)
 
     c = issue.get("contact") or {}

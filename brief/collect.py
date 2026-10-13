@@ -60,6 +60,16 @@ RESEARCH_FEEDS = {
     "Jamestown Foundation": "https://jamestown.org/feed/",
     "Congressional Research Service": _gnews("China site:congress.gov/crs-product OR site:crsreports.congress.gov"),
 }
+# Research Roundup is CSIS work only. csis.org's own feeds are tried first;
+# Google News site searches catch what they miss. Every feed is read, and
+# items are de-duplicated by title.
+CSIS_FEEDS = [
+    "https://www.csis.org/analysis/feed",
+    "https://www.csis.org/rss.xml",
+    _gnews("China site:csis.org/analysis"),
+    _gnews("China site:csis.org"),
+    _gnews("Taiwan OR Beijing OR \"Xi Jinping\" site:csis.org"),
+]
 _CHINA = re.compile(r"\b(China|Chinese|Beijing|Xi|PLA|Taiwan|PRC|CCP|Hong Kong|South China Sea)\b", re.I)
 
 
@@ -220,6 +230,43 @@ def publisher_url(url: str) -> str:
         return url
 
 
+def csis_research(start: date, end: date) -> list[dict]:
+    """CSIS publications on China dated start..end."""
+    import feedparser
+
+    lo = datetime.combine(start, datetime.min.time(), tzinfo=timezone.utc)
+    hi = datetime.combine(end + timedelta(days=1), datetime.min.time(), tzinfo=timezone.utc)
+    out, seen, log = [], set(), []
+    for url in CSIS_FEEDS:
+        r = _get(url)
+        entries = feedparser.parse(r.content).entries if r else []
+        kept = 0
+        for e in entries[:80]:
+            t = e.get("published_parsed") or e.get("updated_parsed")
+            if not t or not (lo <= datetime(*t[:6], tzinfo=timezone.utc) < hi):
+                continue
+            title = _html.unescape(e.get("title", "")).strip()
+            summary = re.sub(r"<[^>]+>", " ", e.get("summary", ""))
+            gn = "news.google.com" in url
+            if gn:
+                for _ in range(2):
+                    title = re.sub(r"\s+[-|–]\s+[^-|–]{2,60}$", "", title)
+                summary = ""
+            elif not _CHINA.search(title + " " + summary):
+                continue
+            key = re.sub(r"\W+", " ", title.lower()).strip()
+            if not key or key in seen:
+                continue
+            seen.add(key)
+            kept += 1
+            out.append({"institution": "CSIS", "title": title, "url": e.get("link", ""),
+                        "date": datetime(*t[:6]).date().isoformat(),
+                        "summary": _html.unescape(re.sub(r"\s+", " ", summary)).strip()[:500]})
+        log.append(f"{'Google News' if 'news.google.com' in url else url}: {len(entries)} in feed, {kept} kept")
+    print("CSIS feeds: " + "; ".join(log))
+    return out
+
+
 # ---------- 4. Congress's own releases ----------
 
 # Committees that put out China statements most weeks. Direct feeds first
@@ -284,9 +331,16 @@ def hill_releases(start: date, end: date) -> list[dict]:
 
 # ---------- the tracker ----------
 
+def sheet_id(url: str) -> str:
+    m = re.search(r"/spreadsheets/d/([A-Za-z0-9_-]{20,})", url or "")
+    return m.group(1) if m else ""
+
+
 def tracker_file(url: str, dest: str) -> str | None:
-    """Download the ER tracker workbook. url is a direct-download link to the
-    .xlsx, or to a native Google Sheet's export?format=xlsx endpoint."""
+    """Download the ER tracker workbook. url may be the Google Sheet's ordinary
+    share link (it is turned into the xlsx export), or any direct .xlsx link."""
+    if sheet_id(url):
+        url = f"https://docs.google.com/spreadsheets/d/{sheet_id(url)}/export?format=xlsx"
     r = _get(url, timeout=60)
     if not r or not r.content[:2] == b"PK":
         return None

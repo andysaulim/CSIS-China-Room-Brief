@@ -122,7 +122,7 @@ def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date
         "date_line": f"{issue_date.strftime('%A, %B')} {issue_date.day}, {issue_date.year}",
         "issue_label": issue_label,
         "iso": iso,
-        "draft_for": "Nina Prieur, Thursday noon",
+        "draft_for": "Nina Prieur, Monday noon",
         "calendar_url": os.environ.get("CHINA_ROOM_CALENDAR_URL", ""),
         "web_url": f"{web_base}/{iso}.html" if web_base else "",
         "archive_url": f"{web_base}/archive.html" if web_base else "",
@@ -135,7 +135,7 @@ def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date
         "qa": copy.get("qa", []),
         "week_at_a_glance": {
             "items": copy.get("week_at_a_glance", []),
-            "spec": "Drafted from the calendars for the seven days after the issue date. Rewrite or swap from the candidates below.",
+            "spec": "Nina writes these three. Calendar entries for the coming week are listed below as a starting point.",
             "candidates": candidates.get("glance", []),
         },
         "heard_on_the_hill": {
