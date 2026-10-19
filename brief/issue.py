@@ -10,6 +10,7 @@ from datetime import date, timedelta
 
 from . import horizon as hz
 from . import tracker
+from .textfix import clean
 
 FOOTER = ("This newsletter is automatically generated, so it may contain errors. Please check all information "
           "and sources before citing.")
@@ -100,7 +101,8 @@ def calendars(items, issue_date: date):
     works = [{"month": _chip(i)[0], "day": "TBD" if i.precision in ("month", "tbd") else _chip(i)[1],
               "headline": i.name, "kind": _program(i),
               "group": "Date TBD" if i.precision == "tbd" else i.start.strftime("%B %Y"),
-              "detail": _short(i.description), "url": i.link, "tbd": i.precision != "day"}
+              "detail": clean(_short(i.description), i.start, i.end) if i.description else "",
+              "url": i.link, "tbd": i.precision != "day"}
              for i in tracker.in_the_works(items, issue_date, limit=5)]
     horizon = [{"month": _chip(i)[0], "day": _chip(i)[1], "headline": i.name,
                 "kind": _where(i.description), "group": _group(i), "detail": "", "url": i.link}

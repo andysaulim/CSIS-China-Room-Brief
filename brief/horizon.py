@@ -17,6 +17,13 @@ from __future__ import annotations
 import re
 from datetime import date, timedelta
 
+from .textfix import _SCHEDULING, clean
+
+
+def _drop_notes(desc: str) -> str:
+    """Remove the team's scheduling notes before an angle is chosen from the text."""
+    return " ".join(c for c in re.split(r"(?<=[.;])\s+", desc or "") if not _SCHEDULING.search(c))
+
 _ANGLE = re.compile(r"\b(China|Chinese|Beijing|Xi|U\.?S\.?|United States|Trump|Taiwan|PLA|CCP)\b")
 _GENERIC = {"summit", "meeting", "meetings", "leaders", "leaders'", "annual", "china", "chinese", "economic",
             "forum", "conference", "session", "edition", "global", "world", "national", "approach", "lapse",
@@ -101,7 +108,8 @@ def from_tracker(items, issue_date: date, days: int = 150) -> list[dict]:
         if len(where) > 40 or "," not in where:
             where = ""
         out.append({"start": i.start, "end": i.end, "precision": i.precision, "title": i.name, "where": where,
-                    "angle": angle_from(i.description), "url": i.link, "source": "tracker",
+                    "angle": clean(angle_from(_drop_notes(i.description)), i.start, i.end), "url": i.link,
+                    "source": "tracker",
                     "type": kind(i.name, i.description)})
     return out
 
@@ -140,7 +148,7 @@ def parse_daily_upcoming(html: str, issue_date: date) -> list[dict]:
             if not re.search(r"\d|anniversary|session|meeting", tail, re.I):   # a place, not a qualifier
                 title, where = head, tail
         out.append({"start": d, "end": d, "precision": "day", "title": title, "where": where,
-                    "angle": _cap(_trim(_sentences(detail)[0])) if detail else "", "url": "",
+                    "angle": clean(_cap(_trim(_sentences(detail)[0])), d, d) if detail else "", "url": "",
                     "source": "China Daily Brief", "type": typ})
     return out
 

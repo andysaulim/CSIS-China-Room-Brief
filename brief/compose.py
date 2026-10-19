@@ -45,7 +45,7 @@ Rules that are never broken:
 - Write months in full ("September 30"), never "Sept." or "Oct.". No em dashes.
 
 Sections:
-- heard_on_the_hill: up to five items on Congress and China from the past week (members, bills, hearings, letters, committee reports), one per thread: several reports on the same bill, hold or arms package are one item, folded together. Prefer primary sources (marked [primary], including Congress.gov records of hearings and newly introduced bills and committee releases), then U.S. outlets. Put the best source in source_id and the others in context_ids. One or two sentences each; name the outlet once when a claim comes from reporting.
+- heard_on_the_hill: up to five items on Congress and China from the past week (members, bills, hearings, letters, committee reports), one per thread: several reports on the same bill, hold or arms package are one item, folded together. Prefer primary sources (marked [primary]: Congress.gov records of hearings and newly introduced bills, and committee releases), then Hill coverage from Punchbowl News, POLITICO and Playbook, Axios and The Hill, then other U.S. outlets. Put the best source in source_id and the others in context_ids. One or two sentences each; name the outlet once when a claim comes from reporting.
 - csis_research: up to five CSIS publications from the R sources released in the week covered. Prefer work on U.S.-China relations, then China, then the region. For each, ONE line of 25 words or fewer saying what the piece argues or finds, from its text, starting with the verb ("Argues ...", "Finds ..."); the authors print beside the line, so do not name them. Never restate the title; if an R source has only a title, leave line empty.
 - csis_engagements: one entry per E source (form submissions on last week's CSIS policy engagements), ONE line of 25 words or fewer saying who engaged whom on what, using only what the submission says. Skip a submission that does not describe an engagement."""
 
@@ -159,7 +159,9 @@ def resolve(out: dict, index: dict) -> dict:
     for it in out["heard_on_the_hill"][:5]:
         cands = [index[i] for i in [it["source_id"]] + list(it.get("context_ids") or [])
                  if i in index and index[i]["kind"] == "news"]
-        cands = [c for c in cands if _allowed(c.get("url", ""))]
+        # committee releases and the named Hill outlets are trusted by source; anything else by its link
+        cands = [c for c in cands if c.get("primary") or c.get("section") == "Hill coverage"
+                 or _allowed(c.get("url", ""))]
         if not cands:
             copy["warnings"].append(f"heard_on_the_hill: dropped {it['source_id']} (no source on the approved list)")
             continue

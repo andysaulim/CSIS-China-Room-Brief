@@ -56,6 +56,9 @@ def xlsx(url: str, dest: str) -> str | None:
     """Save the sheet at url as an .xlsx file. Prints why when it cannot."""
     sid = sheet_id(url)
     auth = _auth() if sid else None
+    if not sid and "sharepoint.com" in (url or ""):
+        # an Excel file on OneDrive/SharePoint: works only if it is shared with anyone who has the link
+        url = url.split("#")[0] + ("&" if "?" in url else "?") + "download=1"
     try:
         if sid and auth:
             r = requests.get(f"https://www.googleapis.com/drive/v3/files/{sid}/export",
@@ -95,7 +98,7 @@ def tabs(url: str) -> list[str]:
 
 def rows(url: str, tab: str | None = None) -> list[dict]:
     """Rows of one tab as dicts keyed by the header row. Uses the API when it can, the xlsx otherwise."""
-    if _auth():
+    if sheet_id(url) and _auth():
         name = tab or tabs(url)[0]
         values = _api(sheet_id(url), f"/values/{quote(name)}").get("values", [])
     else:

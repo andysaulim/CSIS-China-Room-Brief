@@ -346,19 +346,91 @@ def csis_research(start: date, end: date) -> list[dict]:
 
 # Committees that put out China statements most weeks. Direct feeds first
 # where the site is known to publish one, then a Google News site search.
+def _cmte(site: str) -> list[str]:
+    return [_gnews(f"China site:{site}")]
+
+
+# Every committee with a China docket, House and Senate, plus the two China
+# commissions. Direct feeds where the site publishes one, Google News site
+# searches otherwise (they return titles only; the draft links the release).
 HILL_FEEDS = {
     "House Select Committee on the CCP": ["https://selectcommitteeontheccp.house.gov/rss.xml",
                                           _gnews("site:selectcommitteeontheccp.house.gov")],
-    "House Foreign Affairs Committee": ["https://foreignaffairs.house.gov/feed/",
-                                        _gnews("China site:foreignaffairs.house.gov")],
-    "Senate Foreign Relations Committee": [_gnews("China site:foreign.senate.gov")],
-    "House Armed Services Committee": [_gnews("China site:armedservices.house.gov")],
-    "Senate Armed Services Committee": [_gnews("China site:armed-services.senate.gov")],
-    "Senate Banking Committee": [_gnews("China site:banking.senate.gov")],
-    "House Financial Services Committee": [_gnews("China site:financialservices.house.gov")],
+    "House Foreign Affairs": ["https://foreignaffairs.house.gov/feed/", *_cmte("foreignaffairs.house.gov")],
+    "House Armed Services": _cmte("armedservices.house.gov"),
+    "House Financial Services": _cmte("financialservices.house.gov"),
+    "House Energy and Commerce": _cmte("energycommerce.house.gov"),
+    "House Homeland Security": _cmte("homeland.house.gov"),
+    "House Judiciary": _cmte("judiciary.house.gov"),
+    "House Ways and Means": _cmte("waysandmeans.house.gov"),
+    "House Oversight": _cmte("oversight.house.gov"),
+    "House Science, Space and Technology": _cmte("science.house.gov"),
+    "House Intelligence": _cmte("intelligence.house.gov"),
+    "House Agriculture": _cmte("agriculture.house.gov"),
+    "Senate Foreign Relations": _cmte("foreign.senate.gov"),
+    "Senate Armed Services": _cmte("armed-services.senate.gov"),
+    "Senate Banking": _cmte("banking.senate.gov"),
+    "Senate Commerce": _cmte("commerce.senate.gov"),
+    "Senate Finance": _cmte("finance.senate.gov"),
+    "Senate Homeland Security": _cmte("hsgac.senate.gov"),
+    "Senate Judiciary": _cmte("judiciary.senate.gov"),
+    "Senate Intelligence": _cmte("intelligence.senate.gov"),
+    "Senate Energy and Natural Resources": _cmte("energy.senate.gov"),
+    "Senate Agriculture": _cmte("agriculture.senate.gov"),
     "Congressional-Executive Commission on China": [_gnews("site:cecc.gov")],
     "U.S.-China Economic and Security Review Commission": [_gnews("site:uscc.gov")],
 }
+
+# Hill coverage from the Washington outlets that cover Congress daily. Kept
+# only when the headline is about China and about Congress.
+HILL_NEWS = {
+    "Punchbowl News": [_gnews("China site:punchbowl.news")],
+    "POLITICO": ["https://rss.politico.com/congress.xml", _gnews("China Congress site:politico.com")],
+    "POLITICO Playbook": [_gnews("China site:politico.com/newsletters/playbook")],
+    "Axios": [_gnews("China Congress site:axios.com"), _gnews("China senators site:axios.com")],
+    "The Hill": ["https://thehill.com/homenews/senate/feed/", "https://thehill.com/homenews/house/feed/",
+                 _gnews("China Congress site:thehill.com")],
+}
+_CONGRESS = re.compile(r"\b(Congress\w*|Senat\w*|Sens?\.|House|Reps?\.|Representatives?|lawmakers?|legislat\w*|"
+                       r"bills?|hearings?|committees?|caucus|Speaker|Schumer|Thune|Johnson|Jeffries|Moolenaar|"
+                       r"Krishnamoorthi|Risch|Wicker)\b")
+
+
+def hill_news(start: date, end: date) -> list[dict]:
+    """China-and-Congress headlines from Punchbowl, POLITICO and Playbook, Axios and The Hill.
+    Every feed of an outlet is read (not only the first that answers), then de-duplicated."""
+    import feedparser
+
+    lo = datetime.combine(start, datetime.min.time(), tzinfo=timezone.utc)
+    hi = datetime.combine(end + timedelta(days=1), datetime.min.time(), tzinfo=timezone.utc)
+    out, seen, log = [], set(), []
+    for outlet, urls in HILL_NEWS.items():
+        kept = 0
+        for url in urls:
+            r = _get(url)
+            for e in (feedparser.parse(r.content).entries if r else [])[:80]:
+                t = e.get("published_parsed") or e.get("updated_parsed")
+                if not t or not (lo <= datetime(*t[:6], tzinfo=timezone.utc) < hi):
+                    continue
+                title = _html.unescape(e.get("title", "")).strip()
+                gn = "news.google.com" in url
+                if gn:
+                    for _ in range(2):
+                        title = re.sub(r"\s+[-|–]\s+[^-|–]{2,60}$", "", title)
+                summary = "" if gn else _html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", e.get("summary", "")))).strip()
+                text = f"{title} {summary}"
+                key = re.sub(r"\W+", " ", re.sub(r"\s+[-|–]\s+[^-|–]{2,60}$", "", title).lower()).strip()
+                if not key or key in seen or not (_CHINA.search(text) and _CONGRESS.search(text)):
+                    continue
+                seen.add(key)
+                kept += 1
+                link = e.get("link", "")
+                out.append({"date": datetime(*t[:6]).date().isoformat(), "section": "Hill coverage", "tag": outlet,
+                            "headline": title, "body": summary[:600], "url": link, "outlet": outlet,
+                            "outlet_rank": 6})
+        log.append(f"{outlet} {kept}")
+    print("Hill outlets: " + ", ".join(log))
+    return out
 
 
 def hill_releases(start: date, end: date) -> list[dict]:

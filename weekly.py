@@ -97,8 +97,10 @@ def keep_edits(f: Path, copy: dict) -> None:
 
 
 def cmd_sweep(issue_date: date) -> None:
-    missing = [k for k in ("APIFY_TOKEN", "X_ACCOUNTS_URL", "APPROVALS_SHEET_URL", "GOOGLE_SERVICE_ACCOUNT_JSON")
-               if not os.environ.get(k)]
+    from brief.config import X_ACCOUNTS
+    missing = [k for k in ("APIFY_TOKEN", "APPROVALS_SHEET_URL", "GOOGLE_SERVICE_ACCOUNT_JSON") if not os.environ.get(k)]
+    if not os.environ.get("X_ACCOUNTS_URL") and not X_ACCOUNTS:
+        missing.append("X_ACCOUNTS_URL (or the X_ACCOUNTS list in brief/config.py)")
     if missing:
         print("sweep skipped; not set up yet: " + ", ".join(missing))
         return
@@ -122,8 +124,9 @@ def cmd_draft(issue_date: date, style: str) -> None:
                      "tag": f'{b["number"]}, {b["sponsor"]}', "headline": b["title"],
                      "body": f'Introduced {b["introduced"]}', "url": b["url"]})
     hill = collect.hill_releases(start, end)
-    news += hill
-    print(f"news items: {len(news)} ({len(hill)} committee releases)")
+    coverage = collect.hill_news(start, end)
+    news += hill + coverage
+    print(f"news items: {len(news)} ({len(hill)} committee releases, {len(coverage)} Hill outlet stories)")
     # CSIS Impact
     research = collect.csis_research(start, end)
     read = enrich.research(research)

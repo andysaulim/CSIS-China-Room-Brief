@@ -109,3 +109,8 @@ HILL_ALLOWED = [
     "rollcall.com", "punchbowl.news", "defensenews.com", "breakingdefense.com", "insidedefense.com",
     "insidetrade.com", "washingtontimes.com", "nationaljournal.com", "govexec.com", "federalnewsnetwork.com",
 ]
+
+
+# Talk Around Town falls back to these handles when X_ACCOUNTS_URL is not set
+# or cannot be read. Paste Brian's list here (handles without the @).
+X_ACCOUNTS: list[str] = []

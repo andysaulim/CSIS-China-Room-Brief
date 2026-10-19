@@ -125,7 +125,10 @@ def topics(all_posts: list[dict], keep: int = 8) -> list[dict]:
 
 def sweep(issue_date: date) -> list[dict]:
     """Run the week's sweep and write candidates for Brian to approve."""
-    handles = accounts(os.environ.get("X_ACCOUNTS_URL", ""))
+    handles = accounts(os.environ.get("X_ACCOUNTS_URL", "")) if os.environ.get("X_ACCOUNTS_URL") else []
+    if not handles:
+        from .config import X_ACCOUNTS     # fallback list kept in the repo
+        handles = list(X_ACCOUNTS)
     print(f"X accounts: {len(handles)}")
     if not handles:
         raise RuntimeError("no X accounts read from X_ACCOUNTS_URL")
