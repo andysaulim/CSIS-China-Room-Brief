@@ -59,17 +59,18 @@ THEMES = {
 }
 
 SECTIONS = [
-    ("week_at_a_glance", "Three Things to Know", "ahead"),
+    ("talk_around_town", "Talk Around Town", "back"),
     ("heard_on_the_hill", "Heard on the Hill", "back"),
-    ("in_the_news", "In the News", "back"),
-    ("research_roundup", "Research Roundup", "back"),
+    ("csis_impact", "CSIS Impact", "back"),
     ("in_the_works", "In the Works @ CSIS", "ahead"),
     ("on_the_horizon", "On the Horizon", "ahead"),
 ]
 KICKER = {
-    "week_at_a_glance": "Three things", "heard_on_the_hill": "Congress", "in_the_news": "Top five",
-    "research_roundup": "CSIS this week", "in_the_works": "CSIS scholars", "on_the_horizon": "Calendar",
+    "talk_around_town": "On X", "heard_on_the_hill": "Congress", "csis_impact": "Last week",
+    "in_the_works": "CSIS scholars", "on_the_horizon": "Calendar",
 }
+NAME = "China Room Engagement Brief"
+CAP = {"talk_around_town": 3}       # every other section stops at MAX_ITEMS
 
 
 def esc(text) -> str:
@@ -214,7 +215,7 @@ class R:
                 html += (f'<div style="font-family:{t["label"]};font-size:13px;font-weight:700;color:{t["navy"]};'
                          f'margin:{"6px" if not html else "20px"} 0 0;padding-bottom:6px;'
                          f'border-bottom:2px solid {t["navy"]};">{esc(g)}</div>')
-            day = i.get("day") or ""
+            day = i.get("day") or ("TBD" if i.get("tbd") else "")
             meta = (f'<div style="font-family:{t["label"]};font-size:13px;color:{t["mute"]};margin-top:2px;">'
                     f'{esc(i.get("kind", ""))}</div>') if i.get("kind") else ""
             day_td = (f'<td width="56" style="padding:9px 10px 9px 0;vertical-align:top;font-family:{t["head"]};'
@@ -255,6 +256,31 @@ class R:
                          f'<td style="padding:10px 0;vertical-align:top;">{type_label(e)}'
                          f'<div style="margin-top:2px;">{self.headline(e["headline"], e.get("url", ""))}</div>'
                          f'{self.body(e.get("angle", ""), 4)}{where}</td></tr></table>')
+        return html
+
+    def lines(self, groups):
+        """CSIS Impact: one line per item under small sub-heads. groups: [(label, rows)]."""
+        t = self.t
+        html = ""
+        for g, (label, rows) in enumerate(groups):
+            if not rows:
+                continue
+            html += (f'<div style="font-family:{t["label"]};font-size:12px;font-weight:700;letter-spacing:1px;'
+                     f'text-transform:uppercase;color:{t["navy"]};margin:{"10px" if not html else "16px"} 0 2px;'
+                     f'padding-bottom:5px;border-bottom:2px solid {t["navy"]};">{esc(label)}</div>')
+            for n, x in enumerate(rows):
+                text = esc(x.get("line", ""))
+                if x.get("title"):        # research: title, the line, then the authors in grey
+                    head = f'<strong style="color:{t["ink"]};">{self.link(esc(x["title"]), x.get("url", ""))}.</strong> '
+                    tail = (f' <span style="color:{t["mute"]};font-size:{t["size"] - 1}px;">({esc(x["lead"])})</span>'
+                            if x.get("lead") and x["lead"] != "CSIS" else "")
+                else:                     # engagement: who, then the line
+                    head = f'<strong style="color:{t["ink"]};">{esc(x.get("lead", ""))}</strong>&nbsp; ' if x.get("lead") else ""
+                    tail = ""
+                    if x.get("url"):
+                        text = self.link(text, x["url"])
+                html += (f'<div style="padding:8px 0;{self.sep(n == 0)}font-family:{t["text"]};font-size:{t["size"]}px;'
+                         f'line-height:1.45;color:{t["body"]};">{head}{text}{tail}</div>')
         return html
 
     def more(self, url, label):
@@ -338,11 +364,12 @@ def slot(spec, candidates=None, note=""):
 
 
 def word_count(issue: dict) -> int:
-    parts = [issue.get("editors_note", "")]
+    parts = []
     for key, *_ in SECTIONS:
-        for it in issue.get(key, {}).get("items", []):
-            parts += [it.get("headline", ""), it.get("body", ""), it.get("detail", ""), it.get("why", "")]
-            parts += it.get("bullets", [])
+        s = issue.get(key, {})
+        for it in s.get("items", []) + s.get("research", []) + s.get("engagements", []):
+            parts += [it.get("headline", ""), it.get("body", ""), it.get("detail", ""), it.get("line", ""),
+                      it.get("title", ""), it.get("angle", "")]
     return len(re.findall(r"[\w'’$%.,-]+", " ".join(parts)))
 
 
@@ -370,13 +397,12 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
     if issue.get("banner_src"):
         out.append(f'<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
                    f'<td align="center" bgcolor="{BANNER_NAVY}" style="background:{BANNER_NAVY};line-height:0;">'
-                   f'<img src="{esc(issue["banner_src"])}" width="600" height="200" alt="CSIS China Room Brief" '
+                   f'<img src="{esc(issue["banner_src"])}" width="600" height="200" alt="CSIS China Room Engagement Brief" '
                    f'style="display:block;margin:0 auto;width:100%;max-width:600px;height:auto;border:0;color:#FFFFFF;'
                    f'font-family:{SERIF};font-size:28px;font-weight:700;line-height:1.2;"></td></tr></table>')
 
     # Masthead block: date, reading time, editor's note, contents
-    note = (f'<div style="font-family:{t["text"]};font-size:{t["size"]}px;line-height:1.55;color:{t["body"]};margin-top:8px;">'
-            f'{esc(issue["editors_note"])}</div>') if issue.get("editors_note") else ""
+    note = ""
     present = [(k, ti) for k, ti, _ in SECTIONS if draft or issue.get(k, {}).get("items")]
     toc = "".join(
         f'<tr><td width="50%" style="padding:3px 0;">{a}</td><td width="50%" style="padding:3px 0;">{b}</td></tr>'
@@ -397,27 +423,24 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
         out.append(f'<div class="sec" style="padding:22px 32px 18px;">{mast}</div>')
     # The checks stay in the run log and the issue JSON, not in the email: the draft is
     # edited by hand, and boxes that have to be deleted before send get in the way.
-    out.append(r.numbers(issue.get("by_the_numbers") or []))
 
     def sec(key):
         _, title, half = next(x for x in SECTIONS if x[0] == key)
         s = issue.get(key, {})
-        items = s.get("items", [])[:MAX_ITEMS]
-        if key == "week_at_a_glance" and not items and draft:
-            # Nina writes this one: three empty, formatted slots to fill
-            # in normal type, so text typed over them in the email keeps the issue's formatting
-            inner = r.items([{"tag": "[Topic, date]", "headline": "[Headline]",
-                              "body": "[One or two sentences on what happens and why it matters.]"}] * 3)
-        elif key == "on_the_horizon" and ("near" in s or "far" in s):
+        items = s.get("items", [])[:CAP.get(key, MAX_ITEMS)]
+        if key == "talk_around_town":
+            inner = r.items(items)
+        elif key == "csis_impact":
+            inner = r.lines([("Research", s.get("research", [])),
+                             ("Engagements", s.get("engagements", []))])
+        elif key == "on_the_horizon" and "near" in s:
             inner = r.horizon(s)
-        elif key in ("in_the_works", "on_the_horizon"):
+            if inner and issue.get("horizon_url"):
+                inner += r.more(issue["horizon_url"], "View the full calendar")
+        elif key == "in_the_works":
             inner = r.agenda(items)
-            if key == "in_the_works" and inner and issue.get("calendar_url"):
+            if inner and issue.get("calendar_url"):
                 inner += r.more(issue["calendar_url"], "Open the full tracker")
-        elif key == "in_the_news":
-            inner = r.news(items)
-        elif key == "research_roundup" and items and "institution" in items[0]:
-            inner = r.research(items)
         else:
             inner = r.items(items)
             if key == "heard_on_the_hill":
@@ -429,16 +452,13 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
         sec(k)
 
     c = issue.get("contact") or {}
-    contact = ""
-    if c.get("email"):
-        title = f', {esc(c["title"])},' if c.get("title") else ""
-        contact = (f'<div style="font-family:{t["head"]};font-size:17px;font-weight:700;color:#FFFFFF;">Questions?</div>'
-                   f'<div style="font-family:{t["text"]};font-size:15px;line-height:1.6;color:#DCE4EC;margin-top:4px;">'
-                   f'Reach out to {esc(c.get("name", ""))}{title} at '
-                   f'<a href="mailto:{esc(c["email"])}" style="color:#FFFFFF;">{esc(c["email"])}</a>.</div>')
-    out.append(f'<div class="sec bottom-band" style="background:{BANNER_NAVY};padding:26px 32px 28px;margin-top:24px;">{contact}'
-               f'<div style="font-family:{t["label"]};font-size:13px;color:#9FB2C8;margin-top:16px;padding-top:14px;'
-               f'border-top:1px solid #2E4677;">The China Room Brief is compiled by CSIS External Relations.</div></div>')
+    mail = (f'<a href="mailto:{esc(c["email"])}" style="color:#FFFFFF;">{esc(c["email"])}</a>'
+            if c.get("email") else "")
+    out.append(f'<div class="sec bottom-band" style="background:{BANNER_NAVY};padding:22px 32px 24px;margin-top:20px;">'
+               f'<div style="font-family:{t["text"]};font-size:13px;line-height:1.6;color:#DCE4EC;">'
+               f'This newsletter is automatically generated, so it may contain errors. Please check all information '
+               f'and sources before citing. To report errors or other issues, please contact '
+               f'{esc(c.get("name", ""))} at {mail}.</div></div>')
 
     body = "\n".join(out)
     return f"""<!DOCTYPE html>
@@ -446,7 +466,7 @@ def render(issue: dict, mode: str = "final", theme: str = "briefing") -> str:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light">
 {FONT_LINK}
-<title>China Room Brief, {esc(issue["date_line"])}</title>
+<title>{NAME}, {esc(issue["date_line"])}</title>
 <style>
 body {{ margin:0; padding:0; background:{t["page"]}; -webkit-text-size-adjust:100%; }}
 .container {{ width:100% !important; max-width:680px !important; }}

@@ -41,6 +41,8 @@ class Item:
 
     @property
     def date_label(self) -> str:
+        if self.precision == "tbd":
+            return "TBD"
         if self.precision == "month":
             lab = self.start.strftime("%b %Y")
             return lab + " (TBC)" if self.tentative else lab
@@ -52,8 +54,14 @@ class Item:
                 f"{self.end.strftime('%b')} {self.end.day}")
 
 
+TBD = date(9999, 12, 31)    # an undated item: sorts after everything dated
+_TBD = re.compile(r"^\s*(tbd|tbc|tba|date tbd|to be determined|to be confirmed|n/?a)?\s*$", re.I)
+
+
 def parse_date(val):
-    """Cell value -> (start, end, precision, tentative) or None."""
+    """Cell value -> (start, end, precision, tentative) or None. Blank or "TBD" gives precision "tbd"."""
+    if val is None or (isinstance(val, str) and _TBD.match(val)):
+        return TBD, TBD, "tbd", True
     if isinstance(val, datetime):
         d = val.date()
         return d, d, "day", False
@@ -129,16 +137,21 @@ def describe(path: str) -> list[str]:
     return out
 
 
-def load(path: str):
-    """Return (items, skipped). skipped lists rows whose date cannot be read."""
+def load(path: str, role: str | None = None):
+    """Return (items, skipped). skipped lists rows whose date cannot be read.
+    role forces every tab to one section, for a sheet that feeds only one."""
     import openpyxl
     wb = openpyxl.load_workbook(path, data_only=True)
     items, skipped, seen = [], [], set()
     for tab in wb.sheetnames:
-        role = tab_role(tab)
-        if not role:
+        if role:   # a one-section sheet: every working tab feeds that section
+            tab_kind = None if re.search(r"master|readme|instruction|archive", tab, re.I) else role
+        else:
+            tab_kind = tab_role(tab)
+        if not tab_kind:
             continue
-        SOURCE_TABS.setdefault(tab, role)
+        key_tab = f"{role}: {tab}" if role else tab     # two sheets can both have a "Sheet1"
+        SOURCE_TABS[key_tab] = tab_kind
         ws = wb[tab]
         hr, cols = _header_map(ws)
         for r, row in enumerate(ws.iter_rows(min_row=hr + 1, values_only=True), start=hr + 1):
@@ -154,9 +167,9 @@ def load(path: str):
             parsed = parse_date(raw_date)
             issues = []
             if parsed is None:
-                skipped.append(f"{tab} row {r} ({name}): unreadable date {raw_date!r}")
+                skipped.append(f"{key_tab} row {r} ({name}): unreadable date {raw_date!r}")
                 continue
-            if isinstance(raw_date, str):
+            if isinstance(raw_date, str) and parsed[2] != "tbd":
                 issues.append("date typed as text; sorts and filters as text in Sheets")
             if not typ:
                 issues.append("Type is blank")
@@ -167,7 +180,7 @@ def load(path: str):
             start, end, prec, tent = parsed
             if "\u2014" in str(name):
                 issues.append("em-dash in Name; shown as a colon in the brief")
-            items.append(Item(tab, r, start, end, prec, tent, str(typ or ""),
+            items.append(Item(key_tab, r, start, end, prec, tent, str(typ or ""),
                               str(name).strip().replace(" \u2014 ", ": "), str(desc or "").strip(),
                               str(status or "").strip(), str(link or "").strip(), issues))
     return items, skipped
@@ -210,9 +223,9 @@ def week_ahead(items, issue_date: date):
                   key=lambda i: i.start)
 
 
-def in_the_works(items, issue_date: date, limit: int = 4):
-    """CSIS products not yet out, soonest first; a month-only (TBC) date sorts
-    after the dated items in its month."""
+def in_the_works(items, issue_date: date, limit: int = 5):
+    """The next items chronologically; a month-only date sorts after the dated items
+    in its month, and TBD items come last."""
     key = lambda i: (i.start.year, i.start.month, i.precision != "day", i.start.day)
     out = [i for i in items if SOURCE_TABS.get(i.tab) == "works" and i.end >= issue_date]
     # The tracker's own rows come first; csis.org events only fill open slots.

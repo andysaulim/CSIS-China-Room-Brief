@@ -11,10 +11,9 @@ from datetime import date, timedelta
 from . import horizon as hz
 from . import tracker
 
-FOOTER = ("The China Room Brief is compiled by CSIS External Relations. Look-back items draw on the "
-          "CSIS China Daily Brief; calendar items come from the China Room editorial calendar.")
-CONTACT = {"name": "Nina Prieur", "title": "Director of Strategic Communications, External Relations",
-           "email": "nprieur@csis.org"}
+FOOTER = ("This newsletter is automatically generated, so it may contain errors. Please check all information "
+          "and sources before citing.")
+CONTACT = {"name": "Brian Hart", "title": "", "email": "bhart@csis.org"}
 
 
 _US = re.compile(r"\bUS\b(?![$])")
@@ -42,6 +41,8 @@ def label(d: date) -> str:
 
 
 def _chip(i):
+    if i.precision == "tbd":
+        return "", "TBD"
     if i.precision == "month":
         return i.start.strftime("%b").upper(), "TBC" if i.tentative else ""
     day = str(i.start.day) if i.start == i.end else f"{i.start.day}–{i.end.day}"
@@ -66,6 +67,8 @@ def _short(desc: str) -> str:
 
 
 def _group(i) -> str:
+    if i.precision == "tbd":
+        return "Date TBD"
     g = i.start.strftime("%B %Y")
     return g + ", date to come" if i.precision == "month" else g
 
@@ -93,8 +96,11 @@ def headline_case(t: str) -> str:
 
 
 def calendars(items, issue_date: date):
-    works = [{"month": _chip(i)[0], "day": "" if i.precision == "month" else _chip(i)[1], "headline": i.name,
-              "kind": _program(i), "group": _group(i), "detail": _short(i.description), "url": i.link}
+    # a month without a day, or no date at all, prints TBD in the day column
+    works = [{"month": _chip(i)[0], "day": "TBD" if i.precision in ("month", "tbd") else _chip(i)[1],
+              "headline": i.name, "kind": _program(i),
+              "group": "Date TBD" if i.precision == "tbd" else i.start.strftime("%B %Y"),
+              "detail": _short(i.description), "url": i.link, "tbd": i.precision != "day"}
              for i in tracker.in_the_works(items, issue_date, limit=5)]
     horizon = [{"month": _chip(i)[0], "day": _chip(i)[1], "headline": i.name,
                 "kind": _where(i.description), "group": _group(i), "detail": "", "url": i.link}
@@ -103,57 +109,40 @@ def calendars(items, issue_date: date):
 
 
 def assemble(copy: dict, tracker_items, issue_date: date, back: tuple[date, date], *,
-             issue_label: str, banner_src: str = "", candidates: dict | None = None,
-             research_note: str = "", web_base: str | None = None,
-             daily_upcoming: list | None = None) -> dict:
-    candidates = candidates or {}
+             issue_label: str, banner_src: str = "", web_base: str | None = None,
+             daily_upcoming: list | None = None, talk: list | None = None) -> dict:
     copy = csis_style(copy)
-    for r in copy.get("research_roundup", []):
-        r["headline"] = headline_case(r["headline"])
     web_base = (os.environ.get("CHINA_ROOM_WEB_BASE", "") if web_base is None else web_base).rstrip("/")
     iso = issue_date.isoformat()
     works, _ = csis_style(list(calendars(tracker_items, issue_date)))
-    hzn = hz.build(hz.from_tracker(tracker_items, issue_date) + (daily_upcoming or [])
-                   + hz.from_docket(copy.get("hill_docket") or {}, issue_date), issue_date,
-                   exclude={g.get("calendar_title") for g in copy.get("week_at_a_glance", []) if g.get("calendar_title")})
-    hzn = csis_style(hzn)
-    ahead_start = issue_date + timedelta(days=(7 - issue_date.weekday()) % 7 or 7)
+    # On the Horizon comes from Brian's calendar sheet; the daily brief and Congress.gov
+    # fill in only when that sheet has nothing in the window.
+    own = hz.from_tracker(tracker_items, issue_date, days=30)
+    hzn = csis_style(hz.build(own or (hz.from_tracker(tracker_items, issue_date) + (daily_upcoming or [])
+                                      + hz.from_docket(copy.get("hill_docket") or {}, issue_date)),
+                              issue_date, near_days=30, chrono=True))
+    impact = copy.get("csis_impact") or {"research": [], "engagements": []}
+    n_r = min(len(impact.get("research", [])), 5 - min(2, len(impact.get("engagements", []))))
+    impact = {"research": impact.get("research", [])[:n_r],
+              "engagements": impact.get("engagements", [])[:5 - n_r]}
+    talk = csis_style(talk if talk is not None else copy.get("talk_around_town", []))
     return {
         "date_line": f"{issue_date.strftime('%A, %B')} {issue_date.day}, {issue_date.year}",
         "issue_label": issue_label,
         "iso": iso,
-        "draft_for": "Nina Prieur, Monday noon",
+        "draft_for": "Brian Hart and Nina Prieur, Monday noon",
         "calendar_url": os.environ.get("CHINA_ROOM_CALENDAR_URL", ""),
+        "horizon_url": os.environ.get("HORIZON_VIEW_URL", ""),
         "web_url": f"{web_base}/{iso}.html" if web_base else "",
         "archive_url": f"{web_base}/archive.html" if web_base else "",
         "banner_src": banner_src,
-        "re_line": copy.get("re_line", ""),
-        "editors_note": copy.get("editors_note", ""),
-        "by_the_numbers": copy.get("by_the_numbers", []),
         "back_window": f"{label(back[0])} to {label(back[1])}",
-        "ahead_window": f"{label(ahead_start)} onward",
         "qa": copy.get("qa", []),
-        "week_at_a_glance": {
-            "items": copy.get("week_at_a_glance", []),
-            "spec": "Nina writes these three. Calendar entries for the coming week are listed below as a starting point.",
-            "candidates": candidates.get("glance", []),
-        },
-        "heard_on_the_hill": {
-            "items": copy.get("heard_on_the_hill", []),
-            "spec": "Drafted from Congress.gov, committee releases and the daily brief. Add hearings and floor action it missed.",
-            "candidates": candidates.get("hill", []),
-            "docket": copy.get("hill_docket") or {},
-        },
-        "in_the_news": {"items": copy.get("in_the_news", []),
-                        "dek": "Top five China stories of the week in priority outlets"},
-        "research_roundup": {
-            "items": copy.get("research_roundup", []),
-            "spec": "Check each item on its page before send.",
-            "gap": research_note,
-        },
+        "talk_around_town": {"items": talk[:3]},
+        "heard_on_the_hill": {"items": copy.get("heard_on_the_hill", []), "docket": copy.get("hill_docket") or {}},
+        "csis_impact": {**impact, "items": impact["research"] + impact["engagements"]},
         "in_the_works": {"items": works},
-        "on_the_horizon": {"items": hzn["near"] + hzn["far"], "near": hzn["near"], "far": hzn["far"],
-                           "spec": "Calendar check", "gap": " ".join(hzn["notes"])},
+        "on_the_horizon": {"items": hzn["near"], "near": hzn["near"], "far": []},
         "contact": copy.get("contact", CONTACT),
         "footer": FOOTER,
     }

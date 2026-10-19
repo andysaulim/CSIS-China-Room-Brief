@@ -1,19 +1,21 @@
-name: China Room Brief
+name: China Room Engagement Brief
 
-# Monday 12:00 ET: draft to DRAFT_TO (Nina and the coordinator).
+# Sunday 20:00 ET: X sweep writes Talk Around Town candidates for Brian to approve.
+# Monday 12:00 ET: draft to DRAFT_TO (Brian and Nina).
 # Tuesday send is manual during the test runs: Actions > China Room Brief >
 # Run workflow > mode "send". Schedule it once the test runs hold up.
 on:
   schedule:
-    - cron: "0 16 * * 1"   # Monday 12:00 EDT; becomes 11:00 EST after Nov 1
+    - cron: "0 0 * * 1"    # sweep: Sunday 20:00 EDT (19:00 EST after Nov 1)
+    - cron: "0 16 * * 1"   # draft: Monday 12:00 EDT (11:00 EST after Nov 1)
   workflow_dispatch:
     inputs:
       mode:
-        description: "draft or send"
+        description: "sweep (X topics to the approvals sheet), draft, or send"
         required: true
         default: "draft"
         type: choice
-        options: [draft, send]
+        options: [sweep, draft, send]
       issue_date:
         description: "Tuesday issue date, YYYY-MM-DD (blank = next Tuesday)"
         required: false
@@ -45,11 +47,21 @@ jobs:
           DRAFT_TO: ${{ secrets.DRAFT_TO }}
           BRIEF_TO: ${{ secrets.BRIEF_TO }}
           TRACKER_URL: ${{ secrets.TRACKER_URL }}
+          WORKS_URL: ${{ secrets.WORKS_URL }}
+          HORIZON_URL: ${{ secrets.HORIZON_URL }}
+          HORIZON_VIEW_URL: ${{ secrets.HORIZON_VIEW_URL }}
+          X_ACCOUNTS_URL: ${{ secrets.X_ACCOUNTS_URL }}
+          APPROVALS_SHEET_URL: ${{ secrets.APPROVALS_SHEET_URL }}
+          ENGAGEMENTS_URL: ${{ secrets.ENGAGEMENTS_URL }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          APIFY_ACTOR: ${{ secrets.APIFY_ACTOR }}
           CONGRESS_API_KEY: ${{ secrets.CONGRESS_API_KEY }}
           CHINA_ROOM_CALENDAR_URL: ${{ secrets.CHINA_ROOM_CALENDAR_URL }}
           CHINA_ROOM_WEB_BASE: ${{ vars.CHINA_ROOM_WEB_BASE }}
         run: |
           MODE="${{ github.event.inputs.mode || 'draft' }}"
+          if [ "${{ github.event.schedule }}" = "0 0 * * 1" ]; then MODE="sweep"; fi
           ARGS=""
           if [ -n "${{ github.event.inputs.issue_date }}" ]; then ARGS="--issue-date ${{ github.event.inputs.issue_date }}"; fi
           if [ "$MODE" = "draft" ]; then ARGS="$ARGS --style ${{ github.event.inputs.style || 'house' }}"; fi

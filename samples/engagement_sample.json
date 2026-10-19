@@ -1,0 +1,60 @@
+{
+ "_note": "Built from the October 13 draft's real items, reshaped to the Engagement Brief sections. Talk Around Town and the engagement lines stay empty until the X sweep and the Google Form produce real ones.",
+ "talk_around_town": [],
+ "heard_on_the_hill": [
+  {
+   "tag": "House, October 7",
+   "headline": "Moolenaar seeks review of Hong Kong's Fed liquidity access",
+   "body": "House Select Committee on the CCP Chairman John Moolenaar called for a review of Hong Kong's access to a Federal Reserve liquidity facility, a request CNBC set against China's promotion of the renminbi as a global reserve currency.",
+   "url": "https://www.cnbc.com/2026/10/06/hong-kong-fed-fima-dollar-liquidity-china-moolenaar.html",
+   "iso": "2026-10-06"
+  },
+  {
+   "tag": "House, October 7",
+   "headline": "Select Committee faults Webull over China links",
+   "body": "A bipartisan Select Committee on China investigation led by Chairman John Moolenaar and Ranking Member Ro Khanna found that brokerage Webull Financial \"has not been transparent about its links to China.\" Webull shares fell after the committee flagged the ties, Reuters reported.",
+   "url": "http://chinaselectcommittee.house.gov/media/reports/free-trades-hidden-ties-exposing-webull-s-china-links",
+   "iso": "2026-10-07"
+  }
+ ],
+ "csis_impact": {
+  "research": [
+   {
+    "lead": "Jose M. Macias III, Tao-Hung Chang, Nico Vacca, Benjamin Jensen",
+    "title": "China’s Weaponization of Dual-Use Research Vessels for Undersea Data Dominance",
+    "line": "Analyzing 223 vessels, finds Chinese research ships spend an unusually large share of time near subsea infrastructure on the high seas.",
+    "url": "https://www.csis.org/analysis/chinas-weaponization-dual-use-research-vessels-undersea-data-dominance",
+    "iso": "2026-10-08"
+   },
+   {
+    "lead": "Lilly Min-Chen Lee, Kateryna Bondar",
+    "title": "Learning Without Bleeding: China’s Lessons from the Russia-Ukraine Drone War",
+    "line": "Traces how quickly Chinese analysts identify battlefield innovations and how the PLA turns them into training, procurement, hardware and force structure.",
+    "url": "https://www.csis.org/analysis/learning-without-bleeding-chinas-lessons-russia-ukraine-drone-war",
+    "iso": "2026-10-07"
+   },
+   {
+    "lead": "Damien Spleeters",
+    "title": "Russia’s Turn to China Under Sanctions: Sanctions Decay, Substitution Elasticity, and the Challenge of Sustaining Pressure",
+    "line": "Argues sanctions lose force when targeted actors replace restricted products, suppliers and acquisition channels faster than controls adapt.",
+    "url": "https://www.csis.org/analysis/russias-turn-china-under-sanctions",
+    "iso": "2026-10-09"
+   },
+   {
+    "lead": "Lauren Mai, Andreyka Natalegawa, Gregory B. Poling, Japhet Quitzon",
+    "title": "Understanding the Chinese-Language Media Landscape in Southeast Asia",
+    "line": "Argues countering Chinese information warfare requires buy-in from regional partners and awareness of Chinese-language media's reach in Southeast Asia.",
+    "url": "https://www.csis.org/analysis/understanding-chinese-language-media-landscape-southeast-asia",
+    "iso": "2026-10-09"
+   },
+   {
+    "lead": "William Alan Reinsch",
+    "title": "The AI Export Dilemma",
+    "line": "Weighs whether the United States should allow AI technology exports and how it could stay ahead in the global technology race.",
+    "url": "https://www.csis.org/analysis/ai-export-dilemma",
+    "iso": "2026-10-06"
+   }
+  ],
+  "engagements": []
+ }
+}

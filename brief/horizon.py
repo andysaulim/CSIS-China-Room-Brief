@@ -94,7 +94,8 @@ def from_tracker(items, issue_date: date, days: int = 150) -> list[dict]:
     end = issue_date + timedelta(days=days)
     out = []
     for i in items:
-        if i.tab not in ("Global Events", "Policy Developments") or i.end < issue_date or i.start > end:
+        from .tracker import SOURCE_TABS
+        if SOURCE_TABS.get(i.tab) != "horizon" or i.end < issue_date or i.start > end:
             continue
         where = re.split(r"\s+-\s+|\s+—\s+|\s+\(", i.description or "", maxsplit=1)[0].strip()
         if len(where) > 40 or "," not in where:
@@ -211,7 +212,7 @@ def glance(entries: list[dict], issue_date: date, days: int = GLANCE_DAYS) -> li
 
 
 def build(entries: list[dict], issue_date: date, near_days: int = 30, far_cap: int = 0,
-          skip_days: int = 0, exclude: set | None = None, limit: int = 5) -> dict:
+          skip_days: int = 0, exclude: set | None = None, limit: int = 5, chrono: bool = False) -> dict:
     """On the Horizon picks up where Week at a Glance stops (day skip_days + 1),
     and leaves out anything Week at a Glance already ran (exclude, by title)."""
     merged, notes = merge(entries)
@@ -219,7 +220,10 @@ def build(entries: list[dict], issue_date: date, near_days: int = 30, far_cap: i
     cutoff = issue_date + timedelta(days=near_days)
     near = [e for e in merged if e["end"] >= issue_date + timedelta(days=skip_days) and e["start"] <= cutoff]
     # Nothing past 30 days, and at most `limit` entries: the best-scored, shown in date order
-    near = sorted(sorted(near, key=lambda e: (-e["score"], e["start"]))[:limit], key=lambda e: e["start"])
+    if chrono:     # the next `limit` entries by date
+        near = sorted(near, key=lambda e: e["start"])[:limit]
+    else:          # the best-scored, shown in date order
+        near = sorted(sorted(near, key=lambda e: (-e["score"], e["start"]))[:limit], key=lambda e: e["start"])
     far = [e for e in merged if cutoff < e["start"] <= issue_date + timedelta(days=90)]
     far = sorted(sorted(far, key=lambda e: -e["score"])[:far_cap], key=lambda e: e["start"])
 

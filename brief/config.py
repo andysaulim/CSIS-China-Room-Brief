@@ -101,3 +101,11 @@ HILL_PATTERN = (r"\b(senat\w*|congress\w*|house speaker|speaker johnson|lawmaker
 
 # Taiwan and other legislatures that the Hill pattern would otherwise catch.
 NOT_HILL_PATTERN = r"\b(KMT|DPP|Legislative Yuan|Diet|National Assembly|LegCo|NPC)\b"
+
+
+# Heard on the Hill links only to these, plus any .gov domain and the priority
+# outlets above. Add the approved source list from comms (Chloe) here.
+HILL_ALLOWED = [
+    "rollcall.com", "punchbowl.news", "defensenews.com", "breakingdefense.com", "insidedefense.com",
+    "insidetrade.com", "washingtontimes.com", "nationaljournal.com", "govexec.com", "federalnewsnetwork.com",
+]
