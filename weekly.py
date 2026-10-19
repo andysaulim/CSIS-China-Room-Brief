@@ -130,7 +130,12 @@ def cmd_draft(issue_date: date, style: str) -> None:
     # CSIS Impact
     research = collect.csis_research(start, end)
     read = enrich.research(research)
-    print(f"CSIS publications: {len(research)}, pages read: {read}")
+    tagged = [x for x in research if enrich.china_tagged(x)]
+    print(f"CSIS publications: {len(research)}, pages read: {read}, tagged China: {len(tagged)}")
+    for x in research:
+        if x not in tagged:
+            print(f"  not China-tagged, left out: {x['title'][:80]}  tags={x.get('tags', [])[:6]}")
+    research = tagged
     engaged = forms.engagements(os.environ.get("ENGAGEMENTS_URL", ""), start, end)
     print(f"engagement form submissions in the week: {len(engaged)}")
     # Talk Around Town

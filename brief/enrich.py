@@ -86,7 +86,30 @@ def read(url: str) -> dict:
     out["authors"] = _authors(soup)
     out["description"] = _meta(soup, "og:description", "description", "twitter:description")
     out["text"] = _opening(soup)
+    out["tags"] = _tags(soup)
     return out
+
+
+def _tags(soup) -> list[str]:
+    """The page's own topic and region tags: meta keywords, JSON-LD keywords, and
+    /regions/ or /topics/ links outside the site menu."""
+    tags = []
+    for name in ("keywords", "article:tag", "parsely-tags", "news_keywords"):
+        for m in soup.find_all("meta", attrs={"name": name}) + soup.find_all("meta", attrs={"property": name}):
+            tags += [t.strip() for t in m.get("content", "").split(",") if t.strip()]
+    for block in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(block.string or "")
+        except ValueError:
+            continue
+        for node in data if isinstance(data, list) else data.get("@graph", [data]):
+            kw = node.get("keywords") if isinstance(node, dict) else None
+            tags += [k.strip() for k in (kw if isinstance(kw, list) else str(kw or "").split(",")) if k.strip()]
+    for nav in soup.find_all(["nav", "header", "footer"]):
+        nav.decompose()
+    for a in soup.find_all("a", href=re.compile(r"/(regions|topics)/")):
+        tags.append(a["href"].rstrip("/").split("/")[-1].replace("-", " "))
+    return list(dict.fromkeys(t.lower() for t in tags))
 
 
 def research(items: list[dict]) -> int:
@@ -97,7 +120,20 @@ def research(items: list[dict]) -> int:
     for x, p in zip(items, pages):
         x["url"] = p["url"]
         x["authors"] = p["authors"] or x.get("authors", [])
+        x["tags"] = p.get("tags", [])
         if p["text"] or p["description"]:
             n += 1
             x["summary"] = " ".join(s for s in (p["description"], p["text"]) if s)[:1600]
     return n
+
+
+_CHINA_TITLE = re.compile(r"\b(China|Chinese|Beijing|Xi|PRC|CCP|PLA|Taiwan|Hong Kong|Sino-|U\.S\.-China|US-China)\b")
+
+
+def china_tagged(item: dict) -> bool:
+    """CSIS Impact keeps research tagged China on csis.org. When the page could not be
+    read for tags, the title has to be about China."""
+    tags = item.get("tags") or []
+    if tags:
+        return any(t in ("china", "chinese", "taiwan", "hong kong") or t.startswith("china ") for t in tags)
+    return bool(_CHINA_TITLE.search(item.get("title", "")))
