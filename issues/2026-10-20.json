@@ -1,0 +1,69 @@
+{
+ "warnings": [
+  "heard_on_the_hill: dropped N138 (no source on the approved list)"
+ ],
+ "heard_on_the_hill": [
+  {
+   "tag": "House Select Committee, October 15",
+   "headline": "Moolenaar urges Pentagon to flag 58 Chinese universities",
+   "body": "House Select Committee on China Chairman John Moolenaar, in a letter to Defense Secretary Pete Hegseth, urged designation of 58 Chinese universities and 62 technology labs as national security threats, SCMP reported. He also called on the Pentagon to update its list of PLA-linked institutions and foreign talent-recruitment programs; Beijing called the request Cold War-style overreach.",
+   "url": "https://selectcommitteeontheccp.house.gov/media/press-releases/moolenaar-calls-for-pentagon-to-update-its-list-of-pla-linked-institutions-and-talent-recruitment-programs",
+   "iso": "2026-10-15"
+  },
+  {
+   "tag": "Legislation, October 14",
+   "headline": "ASML says proposed Match Act curbs would backfire",
+   "body": "ASML's chief financial officer said proposed U.S. legislation restricting the Dutch firm's sales of deep ultraviolet lithography equipment to China would be 'counterproductive,' Reuters reported.",
+   "url": "https://www.reuters.com/technology/asml-cfo-says-us-match-act-limiting-duv-sales-china-would-be-counterproductive-2026-10-14/",
+   "iso": "2026-10-14"
+  }
+ ],
+ "csis_impact": {
+  "research": [
+   {
+    "lead": "Henry Ziemer",
+    "title": "Assessing the Impact of China-Russia Economic Coordination in Latin America and the Caribbean",
+    "line": "Shares results of a tabletop exercise examining China and Russia's economic and trade strategies in Latin America and the Caribbean.",
+    "url": "https://www.csis.org/analysis/assessing-impact-china-russia-economic-coordination-latin-america-and-caribbean",
+    "iso": "2026-10-13"
+   },
+   {
+    "lead": "Troy Stangarone",
+    "title": "The U.S. and Korea Should Be Bold in Their Investments",
+    "line": "Argues Seoul and Washington should dedicate a portion of the investments to national security and supply chain security projects, even accepting some commercial risk.",
+    "url": "https://www.csis.org/analysis/us-and-korea-should-be-bold-their-investments",
+    "iso": "2026-10-13"
+   },
+   {
+    "lead": "Japhet Quitzon",
+    "title": "Cambodia’s Scam Center Cleanup: Is It Working?",
+    "line": "Assesses Cambodia's new legislation, sweeping crackdowns and international anti-scam coalition building since the 2025 Thailand-Cambodia border skirmishes.",
+    "url": "https://www.csis.org/analysis/cambodias-scam-center-cleanup-it-working",
+    "iso": "2026-10-15"
+   },
+   {
+    "lead": "William Alan Reinsch",
+    "title": "Diplomacy or Coercion?",
+    "line": "Discusses how Trump's coercive trade policies played out at the recent G20 foreign ministers' meeting.",
+    "url": "https://www.csis.org/analysis/diplomacy-or-coercion",
+    "iso": "2026-10-13"
+   },
+   {
+    "lead": "Victor Cha, Joseph Kim",
+    "title": "Human Rights Abuses in Drone Production at Yelabuga",
+    "line": "Contends the labor force powering the Alabuga drone factory has become a site of gross human rights abuses and human trafficking.",
+    "url": "https://www.csis.org/analysis/human-rights-abuses-drone-production-yelabuga",
+    "iso": "2026-10-15"
+   }
+  ],
+  "engagements": []
+ },
+ "talk_around_town": [],
+ "hill_docket": {
+  "hearings": [],
+  "bills": []
+ },
+ "qa": [
+  "Talk Around Town: APPROVALS_SHEET_URL not set."
+ ]
+}
