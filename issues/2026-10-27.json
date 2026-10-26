@@ -1,0 +1,91 @@
+{
+ "warnings": [
+  "heard_on_the_hill: dropped N199 (no source on the approved list)"
+ ],
+ "heard_on_the_hill": [
+  {
+   "tag": "House Foreign Affairs, October 23",
+   "headline": "Mast issues statement on outbound investment curbs",
+   "body": "House Foreign Affairs Committee Chairman Mast issued a statement on outbound investment restrictions on October 23. The Treasury Department proposed a rule on Thursday restricting U.S. investment in Chinese artificial intelligence, hypersonic weapons and biotechnology, the AP reported, and MOFCOM said it \"firmly opposes\" the proposal.",
+   "url": "https://foreignaffairs.house.gov/news/press-releases/chairman-mast-statement-on-outbound-investment-restrictions",
+   "iso": "2026-10-23"
+  },
+  {
+   "tag": "House, October 22",
+   "headline": "Rep. Biggs introduces Stop Beijing's Bots Act",
+   "body": "Rep. Sheri Biggs (R-SC) introduced H.R. 10860, the Stop Beijing's Bots Act, on October 22.",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/10860",
+   "iso": "2026-10-22"
+  },
+  {
+   "tag": "House, October 21",
+   "headline": "Select Committee cites Webull messages on China access",
+   "body": "The House Select Committee on the CCP said internal 2021 Webull messages indicate an employee believed to be based in China had access to information about a U.S. customer account, CNBC reported. Webull says sensitive U.S. customer data is restricted to U.S.-based employees.",
+   "url": "https://www.cnbc.com/video/2026/10/21/house-committee-says-webull-messages-point-to-china-access-to-us-customer-data.html",
+   "iso": "2026-10-22"
+  },
+  {
+   "tag": "USCC, October 20",
+   "headline": "Congress-appointed official faults patrols east of Taiwan",
+   "body": "A U.S. Congress-appointed official said Chinese naval and coast guard patrols to Taiwan's east are destabilising regional security, Reuters reported. Separately, USCC Chair Randall Schriver warned China is using coast guard vessels to advance territorial claims around Taiwan, per Taiwan News.",
+   "url": "https://www.reuters.com/world/china/chinese-patrols-taiwans-east-are-destabilising-us-congress-appointed-official-2026-10-20/",
+   "iso": "2026-10-20"
+  }
+ ],
+ "csis_impact": {
+  "research": [
+   {
+    "lead": "Thomas J. Christensen",
+    "title": "Not Just an Island: Why Geography Should Not Drive U.S. Taiwan Policy",
+    "line": "Argues U.S. Taiwan policy should center on preventing a PRC attack and its catastrophe, not Taiwan's place in the first island chain.",
+    "url": "https://www.csis.org/analysis/not-just-island-why-geography-should-not-drive-us-taiwan-policy",
+    "iso": "2026-10-21"
+   },
+   {
+    "lead": "CSIS",
+    "title": "The Eurofile Live: Are Europe and China on an Economic Collision Course?",
+    "line": "Discusses the EU-China EV agreement, Franco-German pushback on Chinese overcapacity and where Europe's China strategy is heading.",
+    "url": "https://www.csis.org/events/eurofile-live-are-europe-and-china-economic-collision-course",
+    "iso": "2026-10-22"
+   },
+   {
+    "lead": "CSIS",
+    "title": "A China-India Tactical Thaw?: A Conversation with Dhruva Jaishankar and Tanvi Madan",
+    "line": "Discusses the current state of China-India relations and whether recent developments signal a thaw between the two countries.",
+    "url": "https://www.csis.org/podcasts/chinapower/china-india-tactical-thaw-conversation-dhruva-jaishankar-and-tanvi-madan",
+    "iso": "2026-10-22"
+   },
+   {
+    "lead": "CSIS",
+    "title": "The Impossible State Live Podcast: Bridge to Beijing? Kim Jong-un Crosses the Yalu",
+    "line": "Discusses Kim Jong-un's weekend visit to Dandong, China, via the New Yalu River Bridge.",
+    "url": "https://www.csis.org/events/impossible-state-live-podcast-bridge-beijing-kim-jong-un-crosses-yalu",
+    "iso": "2026-10-26"
+   },
+   {
+    "lead": "Meredith Schwartz",
+    "title": "The Race for Malaysia’s Rare Earths: An Indo-Pacific Strategy",
+    "line": "Finds Malaysia has expanded rare earth refining and processing outside China, but further progress will require managing its close ties with China.",
+    "url": "https://www.csis.org/analysis/race-malaysias-rare-earths-indo-pacific-strategy",
+    "iso": "2026-10-20"
+   }
+  ],
+  "engagements": []
+ },
+ "talk_around_town": [],
+ "hill_docket": {
+  "hearings": [],
+  "bills": [
+   {
+    "number": "H.R. 10860",
+    "title": "Stop Beijing’s Bots Act",
+    "sponsor": "Rep. Biggs, Sheri [R-SC-3]",
+    "introduced": "2026-10-22",
+    "url": "https://www.congress.gov/bill/119th-congress/house-bill/10860"
+   }
+  ]
+ },
+ "qa": [
+  "Talk Around Town: APPROVALS_SHEET_URL not set."
+ ]
+}
