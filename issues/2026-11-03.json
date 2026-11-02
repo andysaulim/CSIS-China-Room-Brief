@@ -1,0 +1,39 @@
+{
+ "warnings": [],
+ "heard_on_the_hill": [
+  {
+   "tag": "Senate Banking, October 29",
+   "headline": "Warren issues statement on Nvidia CEO spy plot reports",
+   "body": "Senator Warren issued a statement through the Senate Banking Committee on October 29 on reports that NVIDIA CEO Jensen Huang was seen as the target of a Chinese spy plot. The Wall Street Journal and New York Times reported that U.S. intelligence concluded a Chinese executive tied to Singapore-based data-center firm Megaspeed developed a close relationship with Huang and may have relayed insight on U.S. AI policy to Beijing.",
+   "url": "https://www.banking.senate.gov/newsroom/minority/senator-warren-statement-on-reports-that-nvidia-ceo-jensen-huang-seen-as-target-of-chinese-spy-plot",
+   "iso": "2026-10-29"
+  }
+ ],
+ "csis_impact": {
+  "research": [
+   {
+    "lead": "Hugh Grant-Chapman",
+    "title": "Transshipment Crackdowns Won’t Fix the U.S.-China Trade Imbalance",
+    "line": "Challenges the White House claim that Chinese exports are rerouted through third countries to circumvent U.S. tariffs, highlighting persistent structural issues.",
+    "url": "https://www.csis.org/analysis/transshipment-crackdowns-wont-fix-us-china-trade-imbalance",
+    "iso": "2026-10-29"
+   },
+   {
+    "lead": "CSIS",
+    "title": "Bridge to Beijing? Kim Jong-un Crosses the Yalu",
+    "line": "Explores why Kim Jong-un chose to visit China at this time and what the visit means ahead of President Trump's upcoming trip to Asia.",
+    "url": "https://www.csis.org/podcasts/impossible-state/bridge-beijing-kim-jong-un-crosses-yalu",
+    "iso": "2026-10-27"
+   }
+  ],
+  "engagements": []
+ },
+ "talk_around_town": [],
+ "hill_docket": {
+  "hearings": [],
+  "bills": []
+ },
+ "qa": [
+  "Talk Around Town: APPROVALS_SHEET_URL not set."
+ ]
+}
