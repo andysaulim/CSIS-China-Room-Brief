@@ -1,0 +1,69 @@
+{
+ "warnings": [
+  "heard_on_the_hill: dropped N145 (no source on the approved list)"
+ ],
+ "heard_on_the_hill": [
+  {
+   "tag": "House and Senate, November 5",
+   "headline": "House chairmen ask Jensen Huang to brief Congress",
+   "body": "Chairmen Mast, Moolenaar and Crawford requested that Nvidia CEO Jensen Huang brief Congress on his link to a Chinese intelligence asset, according to a November 5 House Foreign Affairs Committee release. On November 9, Sen. Chris Coons (D-Del.) wrote that he is \"pushing to investigate Jensen Huang and Nvidia to determine whether our national security was compromised,\" The Hill reported, and Warren and Banks issued a Senate Banking Committee statement on Nvidia's continued export of advanced AI chips.",
+   "url": "https://foreignaffairs.house.gov/news/press-releases/chairmen-mast-moolenaar-and-crawford-request-jensen-huang-brief-congress-on-link-to-chinese-intelligence-asset",
+   "iso": "2026-11-05"
+  },
+  {
+   "tag": "House, November 9",
+   "headline": "Jeffries pushes China chip export limits in defense bill",
+   "body": "Hakeem Jeffries is pushing to restrict China chip exports in the defense bill, POLITICO reported November 9. The post-election push comes as Nvidia investigates an alleged Chinese spy effort targeting its CEO.",
+   "url": "https://www.politico.com/live-updates/2026/11/09/congress/momentum-builds-on-chip-exports-01157548",
+   "iso": "2026-11-09"
+  },
+  {
+   "tag": "House, November 4",
+   "headline": "Moolenaar, Khanna seek Air Force briefing on CASI",
+   "body": "House Select Committee on China Chairman John Moolenaar (R-MI) and Ranking Member Ro Khanna (D-CA) requested a briefing from the Department of the Air Force on changes to the China Aerospace Studies Institute (CASI) at Air University. Their letter to Air Force Secretary Troy E. Meink highlighted CASI's \"critical role\" in providing research and analysis on China's aerospace strategy and military modernization.",
+   "url": "http://chinaselectcommittee.house.gov/media/letters/moolenaar-khanna-seek-answers-on-air-force-changes-to-china-aerospace-studies-institute",
+   "iso": "2026-11-04"
+  },
+  {
+   "tag": "House, November 7",
+   "headline": "Moolenaar says China committee work should continue",
+   "body": "House Select Committee on the CCP Chairman John Moolenaar said the committee should continue its bipartisan work into the next Congress, per a committee press release. Democrats won control of both chambers in the November 3 midterms.",
+   "url": "https://selectcommitteeontheccp.house.gov/media/press-releases/moolenaar-the-select-committee-on-china-should-continue-its-bipartisan-work-for-the-american-people-in-the-next-congress",
+   "iso": "2026-11-07"
+  }
+ ],
+ "csis_impact": {
+  "research": [
+   {
+    "lead": "Heather Williams",
+    "title": "Trilateral “Denuclearization”: False Promises or Way Forward?",
+    "line": "Argues Washington should use potential APEC talks with Putin and Xi to lay groundwork for trilateral arms control, promote transparency and out-compete Beijing and Moscow.",
+    "url": "https://www.csis.org/analysis/trilateral-denuclearization-false-promises-or-way-forward",
+    "iso": "2026-11-09"
+   },
+   {
+    "lead": "CSIS",
+    "title": "Dissecting China's Fifth Plenum: A Conversation with Neil Thomas and Joseph Torigian",
+    "line": "Discusses the outcomes of China's recent Fifth Plenum.",
+    "url": "https://www.csis.org/podcasts/chinapower/dissecting-chinas-fifth-plenum-conversation-neil-thomas-and-joseph-torigian",
+    "iso": "2026-11-05"
+   },
+   {
+    "lead": "CSIS",
+    "title": "Chinese Overcapacity and Southeast Asia with Scott Kennedy",
+    "line": "Discusses preliminary results from an upcoming joint report by the Southeast Asia Program and Trustee Chair on effects of Chinese industrial overcapacity.",
+    "url": "https://www.csis.org/podcasts/southeast-asia-radio/chinese-overcapacity-and-southeast-asia-scott-kennedy",
+    "iso": "2026-11-05"
+   }
+  ],
+  "engagements": []
+ },
+ "talk_around_town": [],
+ "hill_docket": {
+  "hearings": [],
+  "bills": []
+ },
+ "qa": [
+  "Talk Around Town: APPROVALS_SHEET_URL not set."
+ ]
+}
