@@ -1,0 +1,100 @@
+{
+ "warnings": [],
+ "heard_on_the_hill": [
+  {
+   "tag": "House, November 13",
+   "headline": "Lawmakers renew request for Huang to brief Congress",
+   "body": "Chairmen Mast, Moolenaar and Crawford sent a second request on November 13 asking Jensen Huang and Nvidia to \"Brief Congress on the Chinese Intelligence Asset.\" Moolenaar had said he would look to subpoena Huang if they could not agree on a date, per POLITICO, and later said Huang agreed to closed-door testimony with a date still pending, Lianhe Zaobao reported.",
+   "url": "https://foreignaffairs.house.gov/news/press-releases/chairmen-mast-moolenaar-and-crawford-send-second-request-to-jensen-huang-and-nvidia-to-brief-congress-on-the-chinese-intelligence-asset",
+   "iso": "2026-11-13"
+  },
+  {
+   "tag": "House Select Committee on the CCP, November 13",
+   "headline": "Select Committee releases report on U.S. manufacturing",
+   "body": "Chairman John Moolenaar (R-MI) and Ranking Member Ro Khanna (D-CA) released a bipartisan report on November 13 on \"How China Undermined Western Manufacturing and Helped Hollow Out American Industry.\" It focuses on four case studies: the biomanufacturing, aerospace, semiconductor and machine tool industries.",
+   "url": "https://chinaselectcommittee.house.gov/media/reports/rigging-the-game-how-china-undermined-western-manufacturing-and-helped-hollow-out-american-industry",
+   "iso": "2026-11-13"
+  },
+  {
+   "tag": "Senate, November 11",
+   "headline": "Democrats press Lutnick on Nvidia chip approvals",
+   "body": "Senators Warren and Coons on November 11 directed Lutnick, Rubio and Miller to preserve Nvidia records, and on November 12 Wyden and Neal began investigating what they called an \"Administration Scheme to Take Cut of Nvidia AI Chip Sales to Chinese Companies.\" Lutnick has reportedly agreed to testify before the Senate Banking Committee on the administration's approval of Nvidia chip exports to China, CNBC reports.",
+   "url": "https://www.banking.senate.gov/newsroom/minority/senators-warren-and-coons-direct-lutnick-rubio-and-miller-to-preserve-nvidia-records-following-reports-of-foreign-intelligence-operation-targeting-ceo-jensen-huang",
+   "iso": "2026-11-11"
+  },
+  {
+   "tag": "Senate, November 15",
+   "headline": "Cantwell urges Lutnick to halt AI chip sales to China",
+   "body": "Sen. Maria Cantwell, the top Democrat on the Senate Commerce Committee, sent Commerce Secretary Howard Lutnick a letter on Sunday, November 15, telling him \"You Failed to Protect National Security & America's Tech Edge.\" CNBC reported she urged him to halt AI chip sales to China ahead of this week's Trump-Xi summit.",
+   "url": "https://www.commerce.senate.gov/press/dem/release/cantwell-tells-lutnick-you-failed-to-protect-national-security-americas-tech-edge/",
+   "iso": "2026-11-16"
+  },
+  {
+   "tag": "House, November 12",
+   "headline": "Johnson sees consensus for tighter China chip curbs",
+   "body": "House Speaker Mike Johnson told reporters on November 12 there is a developing consensus in Congress to limit China's access to advanced AI chips, per the Taipei Times. Congressional Republicans want to attach new chip-export restrictions to the annual defense authorization bill, with lawmakers pushing at least four separate bills on chip exports.",
+   "url": "https://www.reuters.com/world/china/speaker-johnson-says-congress-developing-consensus-limiting-chip-exports-china-2026-11-12/",
+   "iso": "2026-11-13"
+  }
+ ],
+ "csis_impact": {
+  "research": [
+   {
+    "lead": "Scott Kennedy, Ryan Featherston, Yves Tiberghien, Mary E. Lovely",
+    "title": "Resilience and Reform: U.S.-China Relations and the Global Economic Order",
+    "line": "Examines, through survey results and essays, how Chinese and international experts view the trade truce, export controls, WTO reform and the global economy's future.",
+    "url": "https://www.csis.org/analysis/resilience-and-reform-us-china-relations-and-global-economic-order",
+    "iso": "2026-11-12"
+   },
+   {
+    "lead": "Seth G. Jones, Eric D. Heginbotham, Daniel Byman",
+    "title": "Peace Disease: Is the PLA Battle Ready?",
+    "line": "Finds the People's Liberation Army likely has significant wartime weaknesses in mission command, power projection, the undersea domain, joint warfighting and corruption.",
+    "url": "https://www.csis.org/analysis/peace-disease-pla-battle-ready",
+    "iso": "2026-11-16"
+   },
+   {
+    "lead": "CSIS",
+    "title": "Behind the Scenes of China's Fifth Plenum",
+    "line": "Discusses China's Fifth Plenum with guests Victor Shih and Edgard Kagan.",
+    "url": "https://www.csis.org/podcasts/pekingology/behind-scenes-chinas-fifth-plenum",
+    "iso": "2026-11-12"
+   },
+   {
+    "lead": "CSIS",
+    "title": "Tapping Out or Tapping In? South China Sea Oil and Gas in 2026",
+    "line": "Finds China made six northern South China Sea discoveries since AMTI's last survey while the Philippines stays under an exploration moratorium lasting over 12 years.",
+    "url": "https://amti.csis.org/tapping-out-or-tapping-in-south-china-sea-oil-and-gas-in-2026/",
+    "iso": "2026-11-16"
+   }
+  ],
+  "engagements": []
+ },
+ "talk_around_town": [],
+ "hill_docket": {
+  "hearings": [
+   {
+    "date": "2026-11-19",
+    "chamber": "House",
+    "committee": "House Foreign Affairs East Asia and Pacific Subcommittee",
+    "title": "The Hidden Chokepoint: China’s Dominance in Pharmaceuticals",
+    "type": "Hearing",
+    "status": "Scheduled",
+    "url": "https://www.congress.gov/event/119th-congress/house-event/119606"
+   },
+   {
+    "date": "2026-11-20",
+    "chamber": "House",
+    "committee": "",
+    "title": "Outproducing the CCP: Restoring American Manufacturing",
+    "type": "Hearing",
+    "status": "Rescheduled",
+    "url": "https://www.congress.gov/event/119th-congress/house-event/119593"
+   }
+  ],
+  "bills": []
+ },
+ "qa": [
+  "Talk Around Town: APPROVALS_SHEET_URL not set."
+ ]
+}
